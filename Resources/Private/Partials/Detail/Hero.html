@@ -1,0 +1,57 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:n="http://typo3.org/ns/GeorgRinger/News/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+<header class="gastgeber-detail-hero mb-5">
+    <div class="row g-4 align-items-stretch">
+        <div class="col-12 col-lg-6 col-xl-7">
+            <div class="gastgeber-detail-hero__content h-100 p-4 p-lg-5 rounded-4 border bg-body-tertiary">
+                <f:if condition="{newsItem.categories}">
+                    <div class="gastgeber-detail__categories mb-3">
+                        <f:render partial="Category/Items" arguments="{categories: newsItem.categories, settings: settings}" />
+                    </div>
+                </f:if>
+
+                <h1 class="gastgeber-detail__title display-6 mb-3" itemprop="name">{newsItem.title}</h1>
+
+                <f:if condition="{newsItem.txGastgeberStreet} || {newsItem.txGastgeberCity}">
+                    <p class="gastgeber-detail-hero__location mb-3" itemprop="address" itemscope="itemscope" itemtype="https://schema.org/PostalAddress">
+                        <span aria-hidden="true">📍</span>
+                        <f:if condition="{newsItem.txGastgeberStreet}"><span itemprop="streetAddress">{newsItem.txGastgeberStreet}</span><f:if condition="{newsItem.txGastgeberCity}">, </f:if></f:if>
+                        <f:if condition="{newsItem.txGastgeberZip} || {newsItem.txGastgeberCity}"><span itemprop="postalCode">{newsItem.txGastgeberZip}</span> <span itemprop="addressLocality">{newsItem.txGastgeberCity}</span></f:if>
+                    </p>
+                </f:if>
+
+                <f:if condition="{newsItem.teaser}">
+                    <div class="lead gastgeber-detail__teaser mb-4" itemprop="description">
+                        <f:format.html>{newsItem.teaser}</f:format.html>
+                    </div>
+                </f:if>
+
+                <f:render partial="Detail/QuickFacts" arguments="{newsItem: newsItem}" />
+
+                <div class="gastgeber-detail-hero__actions d-flex flex-column flex-sm-row gap-2 flex-wrap mt-4">
+                    <f:if condition="{newsItem.txGastgeberBookingUrl}">
+                        <f:link.typolink parameter="{newsItem.txGastgeberBookingUrl}" class="btn btn-primary btn-lg">
+                            <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:booking" />
+                        </f:link.typolink>
+                    </f:if>
+                    <f:if condition="{newsItem.txGastgeberPhone}">
+                        <a href="tel:{newsItem.txGastgeberPhone}" class="btn btn-outline-primary btn-lg">
+                            <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:phone" />
+                        </a>
+                    </f:if>
+                    <f:if condition="{newsItem.txGastgeberEmail}">
+                        <f:link.email email="{newsItem.txGastgeberEmail}" class="btn btn-outline-secondary btn-lg">
+                            <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:email" />
+                        </f:link.email>
+                    </f:if>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-6 col-xl-5">
+            <f:render partial="Detail/MediaHero" arguments="{newsItem: newsItem}" />
+        </div>
+    </div>
+</header>
+</html>

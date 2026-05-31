@@ -1,0 +1,26 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:n="http://typo3.org/ns/GeorgRinger/News/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+<div class="gastgeber-map-popup">
+    <strong class="gastgeber-map-popup__title">{newsItem.title}</strong>
+
+    <f:if condition="{newsItem.txGastgeberStreet} || {newsItem.txGastgeberCity}">
+        <div class="gastgeber-map-popup__address small mt-1">
+            <f:if condition="{newsItem.txGastgeberStreet}">{newsItem.txGastgeberStreet}<br /></f:if>
+            <f:if condition="{newsItem.txGastgeberAddressAddition}">{newsItem.txGastgeberAddressAddition}<br /></f:if>
+            <f:if condition="{newsItem.txGastgeberZip} || {newsItem.txGastgeberCity}">{newsItem.txGastgeberZip} {newsItem.txGastgeberCity}</f:if>
+        </div>
+    </f:if>
+
+    <div class="gastgeber-map-popup__actions mt-2 d-flex gap-2 flex-wrap">
+        <n:link newsItem="{newsItem}" settings="{settings}" class="btn btn-sm btn-primary">
+            <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:more" />
+        </n:link>
+        <f:if condition="{newsItem.txGastgeberBookingUrl}">
+            <f:link.typolink parameter="{newsItem.txGastgeberBookingUrl}" class="btn btn-sm btn-outline-primary">
+                <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:bookingShort" />
+            </f:link.typolink>
+        </f:if>
+    </div>
+</div>
+</html>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="de" datatype="plaintext" original="EXT:gastgeber/Resources/Private/Language/locallang.xlf" product-name="gastgeber">
+    <header/>
+    <body>
+      <trans-unit id="more"><source>Mehr erfahren</source></trans-unit>
+      <trans-unit id="booking"><source>Anfragen / Buchen</source></trans-unit>
+      <trans-unit id="website"><source>Webseite</source></trans-unit>
+      <trans-unit id="phone"><source>Telefon</source></trans-unit>
+      <trans-unit id="email"><source>E-Mail</source></trans-unit>
+      <trans-unit id="address"><source>Adresse</source></trans-unit>
+      <trans-unit id="from"><source>ab</source></trans-unit>
+      <trans-unit id="price"><source>Preis</source></trans-unit>
+      <trans-unit id="people"><source>Personen</source></trans-unit>
+      <trans-unit id="rooms"><source>Zimmer / Einheiten</source></trans-unit>
+      <trans-unit id="beds"><source>Betten</source></trans-unit>
+      <trans-unit id="equipment"><source>Ausstattung</source></trans-unit>
+      <trans-unit id="openingTimes"><source>Öffnungszeiten / Saison</source></trans-unit>
+      <trans-unit id="certifications"><source>Klassifizierung / Zertifikate</source></trans-unit>
+      <trans-unit id="noHostsFound"><source>Keine Gastgeber gefunden.</source></trans-unit>
+      <trans-unit id="allHosts"><source>Alle Gastgeber</source></trans-unit>
+      <trans-unit id="filter.headline"><source>Unterkunft filtern</source></trans-unit>
+      <trans-unit id="filter.reset"><source>Alle Merkmale zurücksetzen</source></trans-unit>
+      <trans-unit id="filter.noCategories"><source>Es sind noch keine Merkmal-Kategorien konfiguriert. Bitte im Inhaltselement eine Wurzelkategorie auswählen oder die Kategorie „Gastgeber > Merkmale“ anlegen.</source></trans-unit>
+      <trans-unit id="viewSwitch.label"><source>Ansicht</source></trans-unit>
+      <trans-unit id="viewSwitch.cards"><source>Cards</source></trans-unit>
+      <trans-unit id="viewSwitch.list"><source>Liste</source></trans-unit>
+      <trans-unit id="viewSwitch.map"><source>Karte</source></trans-unit>
+      <trans-unit id="map.headline"><source>Lage</source></trans-unit>
+      <trans-unit id="map.results"><source>Gastgeber in dieser Auswahl</source></trans-unit>
+      <trans-unit id="bookingShort"><source>Buchen</source></trans-unit>
+      <trans-unit id="filter.eyebrow"><source>Suchen &amp; Buchen</source></trans-unit>
+      <trans-unit id="filter.toggle"><source>Filter anzeigen</source></trans-unit>
+      <trans-unit id="filter.activeCount"><source>aktive Filter</source></trans-unit>
+      <trans-unit id="toolbar.resultView"><source>Darstellung der Ergebnisse</source></trans-unit>
+
+      <trans-unit id="aboutHost"><source>Über diese Unterkunft</source></trans-unit>
+      <trans-unit id="features"><source>Merkmale &amp; Ausstattung auf einen Blick</source></trans-unit>
+      <trans-unit id="noImage"><source>Noch kein Bild hinterlegt</source></trans-unit>
+      <trans-unit id="backToOverview"><source>Zurück zur Übersicht</source></trans-unit>
+      <trans-unit id="hostNotFound"><source>Der Gastgeber wurde nicht gefunden.</source></trans-unit>
+    </body>
+  </file>
+</xliff>

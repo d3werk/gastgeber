@@ -1,0 +1,38 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+<f:layout name="General" />
+
+<f:section name="content">
+    <f:if condition="{newsItem}">
+        <f:then>
+            <f:render partial="Detail/SeoMeta" arguments="{newsItem: newsItem, settings: settings}" />
+
+            <article class="gastgeber-detail" itemscope="itemscope" itemtype="https://schema.org/LodgingBusiness">
+                <f:render partial="Detail/Hero" arguments="{newsItem: newsItem, settings: settings}" />
+
+                <div class="row g-4 g-xl-5">
+                    <div class="col-12 col-lg-8">
+                        <f:render partial="Detail/MainContent" arguments="{newsItem: newsItem, settings: settings}" />
+                    </div>
+                    <aside class="col-12 col-lg-4">
+                        <f:render partial="Detail/ContactCard" arguments="{newsItem: newsItem, settings: settings}" />
+                    </aside>
+                </div>
+
+                <f:if condition="{newsItem.txGastgeberShowOnMap}">
+                    <f:if condition="{newsItem.txGastgeberLatitude}">
+                        <f:if condition="{newsItem.txGastgeberLongitude}">
+                            <f:render partial="Map/Detail" arguments="{newsItem: newsItem, settings: settings}" />
+                        </f:if>
+                    </f:if>
+                </f:if>
+
+                <f:render partial="Detail/BackLink" arguments="{settings: settings}" />
+            </article>
+        </f:then>
+        <f:else>
+            <div class="alert alert-warning"><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:hostNotFound" /></div>
+        </f:else>
+    </f:if>
+</f:section>
+</html>

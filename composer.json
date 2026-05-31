@@ -1,0 +1,21 @@
+{
+  "name": "d3werk/undeloh",
+  "type": "project",
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/d3werk/gastgeber"
+    }
+  ],
+  "require": {
+    "typo3/cms-core": "^13.4",
+    "georgringer/news": "^14.0",
+    "d3-werk/gastgeber": "^1.5"
+  },
+  "config": {
+    "allow-plugins": {
+      "typo3/cms-composer-installers": true,
+      "typo3/class-alias-loader": true
+    }
+  }
+}

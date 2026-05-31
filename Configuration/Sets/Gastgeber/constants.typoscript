@@ -1,0 +1,2 @@
+# Konstanten können projektspezifisch überschrieben werden.
+# Beispiel: plugin.tx_news.settings.gastgeber.defaultView = list

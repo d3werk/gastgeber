@@ -1,0 +1,11 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:g="http://typo3.org/ns/D3Werk/Gastgeber/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+<f:for each="{categories}" as="category">
+    <f:variable name="categoryIcon" value="{g:categoryIcon(category: category)}" />
+    <span class="badge rounded-pill text-bg-light border gastgeber-category-badge">
+        <f:render partial="Category/Icon" arguments="{iconUrl: categoryIcon.url, iconCssClass: categoryIcon.cssClass, title: category.title}" />
+        <span class="gastgeber-category-badge__label">{category.title}</span>
+    </span>
+</f:for>
+</html>

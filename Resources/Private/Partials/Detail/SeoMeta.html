@@ -1,0 +1,60 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:n="http://typo3.org/ns/GeorgRinger/News/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+<n:format.nothing>
+    <n:excludeDisplayedNews newsItem="{newsItem}" />
+
+    <f:if condition="{newsItem.txGastgeberSeoTitle}">
+        <f:then>
+            <n:titleTag><f:format.htmlentitiesDecode>{newsItem.txGastgeberSeoTitle}</f:format.htmlentitiesDecode></n:titleTag>
+            <n:metaTag property="og:title" content="{newsItem.txGastgeberSeoTitle}" replace="1" />
+        </f:then>
+        <f:else>
+            <f:if condition="{newsItem.alternativeTitle}">
+                <f:then>
+                    <n:titleTag><f:format.htmlentitiesDecode>{newsItem.alternativeTitle}</f:format.htmlentitiesDecode></n:titleTag>
+                    <n:metaTag property="og:title" content="{newsItem.alternativeTitle}" replace="1" />
+                </f:then>
+                <f:else>
+                    <n:titleTag><f:format.htmlentitiesDecode>{newsItem.title}</f:format.htmlentitiesDecode></n:titleTag>
+                    <n:metaTag property="og:title" content="{newsItem.title}" replace="1" />
+                </f:else>
+            </f:if>
+        </f:else>
+    </f:if>
+
+    <f:if condition="{newsItem.txGastgeberOgTitle}">
+        <n:metaTag property="og:title" content="{newsItem.txGastgeberOgTitle}" replace="1" />
+    </f:if>
+
+    <f:if condition="{newsItem.txGastgeberSeoDescription}">
+        <f:then>
+            <n:metaTag name="description" content="{newsItem.txGastgeberSeoDescription}" replace="1" />
+            <n:metaTag property="og:description" content="{newsItem.txGastgeberSeoDescription}" replace="1" />
+        </f:then>
+        <f:else>
+            <f:if condition="{newsItem.teaser}">
+                <n:metaTag name="description" content="{newsItem.teaser -> f:format.stripTags()}" replace="1" />
+                <n:metaTag property="og:description" content="{newsItem.teaser -> f:format.stripTags()}" replace="1" />
+            </f:if>
+        </f:else>
+    </f:if>
+
+    <f:if condition="{newsItem.txGastgeberOgDescription}">
+        <n:metaTag property="og:description" content="{newsItem.txGastgeberOgDescription}" replace="1" />
+    </f:if>
+
+    <n:metaTag property="og:type" content="business.business" replace="1" />
+    <n:metaTag property="og:url" content="" useCurrentDomain="1" replace="1" />
+
+    <f:if condition="{newsItem.mediaPreviews}">
+        <f:alias map="{mediaElement: newsItem.mediaPreviews.0}">
+            <n:metaTag property="og:image" content="{f:uri.image(image: mediaElement, absolute: 1, maxWidth: 1200, maxHeight: 630)}" replace="1" />
+        </f:alias>
+    </f:if>
+
+    <f:if condition="{newsItem.txGastgeberSeoNoindex}">
+        <n:metaTag name="robots" content="noindex,follow" replace="1" />
+    </f:if>
+</n:format.nothing>
+</html>

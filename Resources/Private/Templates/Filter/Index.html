@@ -1,0 +1,101 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="General" />
+
+<f:section name="content">
+    <div class="gastgeber-filter gastgeber-filter--menu card border-0 shadow-sm mb-4" data-gastgeber-filter="1">
+        <div class="card-body p-0">
+            <div class="gastgeber-filter__hero p-4 p-lg-5">
+                <div class="row g-4 align-items-end">
+                    <div class="col-12 col-lg">
+                        <p class="gastgeber-filter__eyebrow mb-2">
+                            <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:filter.eyebrow" />
+                        </p>
+                        <h2 class="h3 gastgeber-filter__headline mb-2">
+                            <f:if condition="{headline}">
+                                <f:then>{headline}</f:then>
+                                <f:else><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:filter.headline" /></f:else>
+                            </f:if>
+                        </h2>
+                        <f:if condition="{introText}">
+                            <p class="gastgeber-filter__intro text-body-secondary mb-0">{introText}</p>
+                        </f:if>
+                    </div>
+                    <div class="col-12 col-lg-auto">
+                        <f:render partial="View/Switch" arguments="{pageUid: targetPid, selectedView: selectedView}" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="gastgeber-filter__bar px-4 py-3 border-top border-bottom">
+                <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+                    <button class="btn btn-primary gastgeber-filter__toggle" type="button" data-bs-toggle="collapse" data-bs-target="#gastgeber-filter-panel" aria-expanded="true" aria-controls="gastgeber-filter-panel">
+                        <span aria-hidden="true">☰</span>
+                        <span class="ms-2"><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:filter.toggle" /></span>
+                        <f:if condition="{selectedCategoryCount}">
+                            <span class="badge text-bg-light ms-2">{selectedCategoryCount}</span>
+                        </f:if>
+                    </button>
+                    <div class="gastgeber-filter__actions d-flex flex-wrap gap-2 align-items-center">
+                        <f:if condition="{selectedCategoryCount}">
+                            <span class="small text-muted">
+                                {selectedCategoryCount} <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:filter.activeCount" />
+                            </span>
+                        </f:if>
+                        <f:link.page pageUid="{targetPid}" additionalParams="{tx_gastgeber_view: selectedView}" class="btn btn-outline-secondary btn-sm">
+                            <f:if condition="{resetLabel}">
+                                <f:then>{resetLabel}</f:then>
+                                <f:else><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:filter.reset" /></f:else>
+                            </f:if>
+                        </f:link.page>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapse show" id="gastgeber-filter-panel">
+                <div class="gastgeber-filter__panel p-4">
+                    <f:if condition="{categoryTree}">
+                        <f:then>
+                            <div class="gastgeber-filter__groups row g-4">
+                                <f:for each="{categoryTree}" as="rootCategory">
+                                    <f:if condition="{showRootCategories}">
+                                        <f:then>
+                                            <section class="gastgeber-filter__group col-12 col-lg-6 col-xxl-4">
+                                                <div class="gastgeber-filter__group-inner h-100">
+                                                    <h3 class="h6 gastgeber-filter__group-title mb-3">{rootCategory.title}</h3>
+                                                    <f:render partial="Filter/Items" arguments="{categories: rootCategory.selfAsList, targetPid: targetPid, categoryConjunction: categoryConjunction, selectedView: selectedView}" />
+                                                </div>
+                                            </section>
+                                        </f:then>
+                                        <f:else>
+                                            <f:for each="{rootCategory.children}" as="categoryGroup">
+                                                <section class="gastgeber-filter__group col-12 col-lg-6 col-xxl-4">
+                                                    <div class="gastgeber-filter__group-inner h-100">
+                                                        <h3 class="h6 gastgeber-filter__group-title mb-3">{categoryGroup.title}</h3>
+                                                        <f:if condition="{categoryGroup.children}">
+                                                            <f:then>
+                                                                <f:render partial="Filter/Items" arguments="{categories: categoryGroup.children, targetPid: targetPid, categoryConjunction: categoryConjunction, selectedView: selectedView}" />
+                                                            </f:then>
+                                                            <f:else>
+                                                                <f:render partial="Filter/Items" arguments="{categories: categoryGroup.selfAsList, targetPid: targetPid, categoryConjunction: categoryConjunction, selectedView: selectedView}" />
+                                                            </f:else>
+                                                        </f:if>
+                                                    </div>
+                                                </section>
+                                            </f:for>
+                                        </f:else>
+                                    </f:if>
+                                </f:for>
+                            </div>
+                        </f:then>
+                        <f:else>
+                            <div class="alert alert-warning mb-0" role="status">
+                                <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:filter.noCategories" />
+                            </div>
+                        </f:else>
+                    </f:if>
+                </div>
+            </div>
+        </div>
+    </div>
+</f:section>
+</html>

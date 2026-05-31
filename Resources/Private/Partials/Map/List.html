@@ -1,0 +1,12 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<div class="gastgeber-map-results card border-0 shadow-sm">
+    <div class="card-body">
+        <h2 class="h5 mb-3"><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:map.results" /></h2>
+        <div class="vstack gap-3">
+            <f:for each="{items}" as="newsItem" iteration="iterator">
+                <f:render partial="List/Item" arguments="{newsItem: newsItem, settings: settings, iterator: iterator, viewMode: 'map-list'}" />
+            </f:for>
+        </div>
+    </div>
+</div>
+</html>

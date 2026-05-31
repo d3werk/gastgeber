@@ -1,0 +1,23 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<section class="gastgeber-detail__map mt-5">
+    <h2 class="h4"><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:map.headline" /></h2>
+    <div class="gastgeber-map card js-gastgeber-map"
+         data-default-lat="{newsItem.txGastgeberLatitude}"
+         data-default-lng="{newsItem.txGastgeberLongitude}"
+         data-default-zoom="{settings.gastgeber.map.detailZoom}"
+         data-tile-url="{settings.gastgeber.map.tileUrl}"
+         data-attribution="{settings.gastgeber.map.attribution}">
+        <div class="card-body p-0">
+            <div class="gastgeber-map__canvas js-gastgeber-map-canvas" role="region" aria-label="Karte des Gastgebers"></div>
+        </div>
+        <div class="gastgeber-map__marker-source d-none" aria-hidden="true">
+            <div class="js-gastgeber-map-marker"
+                 data-lat="{newsItem.txGastgeberLatitude}"
+                 data-lng="{newsItem.txGastgeberLongitude}"
+                 data-title="{newsItem.title}">
+                <f:render partial="Map/Popup" arguments="{newsItem: newsItem, settings: settings}" />
+            </div>
+        </div>
+    </div>
+</section>
+</html>

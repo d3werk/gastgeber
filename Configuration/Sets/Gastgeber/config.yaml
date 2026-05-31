@@ -1,0 +1,6 @@
+name: d3-werk/gastgeber
+label: 'Gastgeberanbieter auf Basis EXT:news'
+dependencies:
+  - georgringer/news
+optionalDependencies:
+  - georgringer/news-twb5

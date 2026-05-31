@@ -1,0 +1,14 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:if condition="{iconUrl} || {iconCssClass}">
+    <span class="gastgeber-category-icon" aria-hidden="true">
+        <f:if condition="{iconUrl}">
+            <f:then>
+                <img class="gastgeber-category-icon__image" src="{iconUrl}" alt="" loading="lazy" />
+            </f:then>
+            <f:else>
+                <span class="gastgeber-category-icon__css {iconCssClass}"></span>
+            </f:else>
+        </f:if>
+    </span>
+</f:if>
+</html>

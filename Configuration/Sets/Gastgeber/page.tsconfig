@@ -1,0 +1,11 @@
+# Backend-Vorgaben für Gastgeber-Redakteure
+module.tx_news {
+  preselect.sortingField = title
+  preselect.sortingDirection = asc
+}
+
+TCEFORM.tx_news_domain_model_news {
+  istopnews.label = Gastgeber hervorheben
+  teaser.label = Kurzbeschreibung / Teaser mit Links
+  bodytext.label = Beschreibung Gastgeber
+}

@@ -1,0 +1,9 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:if condition="{settings.backPid}">
+    <div class="news-backlink-wrap gastgeber-backlink mt-5">
+        <f:link.page pageUid="{settings.backPid}" class="btn btn-outline-secondary">
+            <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:backToOverview" />
+        </f:link.page>
+    </div>
+</f:if>
+</html>

@@ -1,0 +1,46 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:if condition="{pagination.allPageNumbers -> f:count()} > 1">
+    <nav class="gastgeber-pagination mt-4" aria-label="Seitennavigation">
+        <ul class="pagination justify-content-center flex-wrap gap-1">
+            <f:if condition="{pagination.previousPageNumber}">
+                <f:if condition="{pagination.previousPageNumber} >= {pagination.firstPageNumber}">
+                    <li class="page-item">
+                        <a class="page-link" href="{f:uri.action(action:actionName, arguments:{currentPage: pagination.previousPageNumber}, addQueryString:'untrusted')}">
+                            {f:translate(key:'widget.pagination.previous', extensionName: 'fluid')}
+                        </a>
+                    </li>
+                </f:if>
+            </f:if>
+
+            <f:if condition="{pagination.hasLessPages}">
+                <li class="page-item disabled"><span class="page-link">…</span></li>
+            </f:if>
+
+            <f:for each="{pagination.allPageNumbers}" as="page">
+                <f:if condition="{page} == {paginator.currentPageNumber}">
+                    <f:then>
+                        <li class="page-item active" aria-current="page"><span class="page-link">{page}</span></li>
+                    </f:then>
+                    <f:else>
+                        <li class="page-item"><a class="page-link" href="{f:uri.action(action:actionName, arguments:{currentPage: page}, addQueryString:'untrusted')}">{page}</a></li>
+                    </f:else>
+                </f:if>
+            </f:for>
+
+            <f:if condition="{pagination.hasMorePages}">
+                <li class="page-item disabled"><span class="page-link">…</span></li>
+            </f:if>
+
+            <f:if condition="{pagination.nextPageNumber}">
+                <f:if condition="{pagination.nextPageNumber} &lt;= {pagination.lastPageNumber}">
+                    <li class="page-item">
+                        <a class="page-link" href="{f:uri.action(action:actionName, arguments:{currentPage: pagination.nextPageNumber}, addQueryString:'untrusted')}">
+                            {f:translate(key:'widget.pagination.next', extensionName: 'fluid')}
+                        </a>
+                    </li>
+                </f:if>
+            </f:if>
+        </ul>
+    </nav>
+</f:if>
+</html>

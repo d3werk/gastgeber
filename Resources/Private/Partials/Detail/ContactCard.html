@@ -1,0 +1,54 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<div class="card gastgeber-contact-card sticky-lg-top shadow-sm">
+    <div class="card-body p-4">
+        <h2 class="h4 card-title mb-3"><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:booking" /></h2>
+
+        <f:render partial="Detail/QuickFacts" arguments="{newsItem: newsItem}" />
+
+        <f:if condition="{newsItem.txGastgeberPriceNote}">
+            <div class="gastgeber-price-note mt-3 mb-3 small text-muted"><f:format.html>{newsItem.txGastgeberPriceNote}</f:format.html></div>
+        </f:if>
+
+        <div class="d-grid gap-2 mt-3">
+            <f:if condition="{newsItem.txGastgeberBookingUrl}">
+                <f:link.typolink parameter="{newsItem.txGastgeberBookingUrl}" class="btn btn-primary">
+                    <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:booking" />
+                </f:link.typolink>
+            </f:if>
+            <f:if condition="{newsItem.txGastgeberWebsite}">
+                <f:link.typolink parameter="{newsItem.txGastgeberWebsite}" class="btn btn-outline-primary">
+                    <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:website" />
+                </f:link.typolink>
+            </f:if>
+            <f:if condition="{newsItem.txGastgeberEmail}">
+                <f:link.email email="{newsItem.txGastgeberEmail}" class="btn btn-outline-secondary">
+                    <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:email" />
+                </f:link.email>
+            </f:if>
+        </div>
+
+        <hr class="my-4" />
+
+        <f:if condition="{newsItem.txGastgeberStreet} || {newsItem.txGastgeberCity}">
+            <address class="gastgeber-contact-block mb-3" itemprop="address" itemscope="itemscope" itemtype="https://schema.org/PostalAddress">
+                <strong><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:address" /></strong><br />
+                <f:if condition="{newsItem.txGastgeberStreet}"><span itemprop="streetAddress">{newsItem.txGastgeberStreet}</span><br /></f:if>
+                <f:if condition="{newsItem.txGastgeberAddressAddition}">{newsItem.txGastgeberAddressAddition}<br /></f:if>
+                <f:if condition="{newsItem.txGastgeberZip} || {newsItem.txGastgeberCity}"><span itemprop="postalCode">{newsItem.txGastgeberZip}</span> <span itemprop="addressLocality">{newsItem.txGastgeberCity}</span></f:if>
+                <f:if condition="{newsItem.txGastgeberCountry}"><br /><span itemprop="addressCountry">{newsItem.txGastgeberCountry}</span></f:if>
+            </address>
+        </f:if>
+
+        <f:if condition="{newsItem.txGastgeberPhone}">
+            <p class="gastgeber-phone mb-2"><strong><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:phone" />:</strong><br /><span itemprop="telephone">{newsItem.txGastgeberPhone}</span></p>
+        </f:if>
+
+        <f:if condition="{newsItem.txGastgeberOpeningTimes}">
+            <div class="gastgeber-opening-times mt-3">
+                <strong><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:openingTimes" /></strong>
+                <div class="small"><f:format.nl2br>{newsItem.txGastgeberOpeningTimes}</f:format.nl2br></div>
+            </div>
+        </f:if>
+    </div>
+</div>
+</html>

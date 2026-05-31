@@ -1,0 +1,607 @@
+.gastgeber-list,
+.gastgeber-filter,
+.gastgeber-detail {
+  --gastgeber-border: rgba(0, 0, 0, .12);
+  --gastgeber-border-soft: rgba(0, 0, 0, .08);
+  --gastgeber-shadow: 0 .75rem 1.75rem rgba(0, 0, 0, .08);
+  --gastgeber-radius: 1rem;
+}
+
+.gastgeber-toolbar {
+  padding: .75rem 1rem;
+  border: 1px solid var(--gastgeber-border-soft);
+  border-radius: var(--gastgeber-radius);
+  background: var(--bs-tertiary-bg, #f8f9fa);
+}
+
+.gastgeber-view-switch {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .5rem;
+}
+
+.gastgeber-view-switch .btn-group {
+  flex-wrap: wrap;
+}
+
+.gastgeber-filter {
+  border-radius: var(--gastgeber-radius);
+  overflow: hidden;
+}
+
+.gastgeber-filter--menu .gastgeber-filter__hero {
+  background: linear-gradient(135deg, var(--bs-tertiary-bg, #f8f9fa), var(--bs-body-bg, #fff));
+}
+
+.gastgeber-filter__eyebrow {
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--bs-primary, #0d6efd);
+}
+
+.gastgeber-filter__headline {
+  color: inherit;
+}
+
+.gastgeber-filter__bar {
+  background: var(--bs-body-bg, #fff);
+}
+
+.gastgeber-filter__toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+}
+
+.gastgeber-filter__group-inner {
+  padding: 1rem;
+  border: 1px solid var(--gastgeber-border-soft);
+  border-radius: var(--gastgeber-radius);
+  background: var(--bs-body-bg, #fff);
+}
+
+.gastgeber-filter__group-title {
+  color: var(--bs-secondary-color, #6c757d);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.gastgeber-filter__items {
+  align-items: flex-start;
+}
+
+.gastgeber-filter__option {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  border-radius: 999rem;
+  line-height: 1.2;
+  text-align: left;
+  white-space: normal;
+}
+
+.gastgeber-filter__check {
+  width: .9rem;
+  height: .9rem;
+  border: 1px solid currentColor;
+  border-radius: .25rem;
+  flex: 0 0 auto;
+  position: relative;
+}
+
+.gastgeber-filter__option.is-active .gastgeber-filter__check::after {
+  content: '';
+  position: absolute;
+  left: .22rem;
+  top: .05rem;
+  width: .32rem;
+  height: .58rem;
+  border: solid currentColor;
+  border-width: 0 .12rem .12rem 0;
+  transform: rotate(45deg);
+}
+
+.gastgeber-filter__children {
+  border-color: var(--gastgeber-border) !important;
+}
+
+.gastgeber-list .gastgeber-card {
+  border: 1px solid var(--gastgeber-border);
+  border-radius: var(--gastgeber-radius);
+  overflow: hidden;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+.gastgeber-list .gastgeber-card:hover,
+.gastgeber-list .gastgeber-card:focus-within {
+  transform: translateY(-.125rem);
+  box-shadow: var(--gastgeber-shadow);
+  border-color: rgba(0, 0, 0, .18);
+}
+
+.gastgeber-list .gastgeber-card.is-top {
+  border-width: 2px;
+}
+
+.gastgeber-list .gastgeber-card__media {
+  background: rgba(0, 0, 0, .04);
+}
+
+.gastgeber-list .gastgeber-card__media img,
+.gastgeber-list .gastgeber-card__media video,
+.gastgeber-list .gastgeber-card__media iframe,
+.gastgeber-detail .gastgeber-detail__figure img,
+.gastgeber-detail .gastgeber-detail__figure video,
+.gastgeber-detail .gastgeber-detail__figure iframe {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gastgeber-list .gastgeber-card__title {
+  margin-bottom: .75rem;
+}
+
+.gastgeber-list .gastgeber-card__title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.gastgeber-list .gastgeber-card__title a:hover,
+.gastgeber-list .gastgeber-card__title a:focus {
+  text-decoration: underline;
+}
+
+.gastgeber-list .gastgeber-card__address {
+  color: var(--bs-secondary-color, #6c757d);
+  font-size: .95rem;
+}
+
+.gastgeber-list .gastgeber-card__teaser p:last-child,
+.gastgeber-detail .gastgeber-detail__teaser p:last-child,
+.gastgeber-detail .gastgeber-detail__body p:last-child,
+.gastgeber-detail .gastgeber-detail__section p:last-child {
+  margin-bottom: 0;
+}
+
+@media (min-width: 768px) {
+  .gastgeber-card--list {
+    flex-direction: row;
+  }
+
+  .gastgeber-card--list .gastgeber-card__image-link {
+    flex: 0 0 18rem;
+    max-width: 18rem;
+  }
+
+  .gastgeber-card--list .gastgeber-card__media {
+    height: 100%;
+    min-height: 13rem;
+  }
+}
+
+.gastgeber-card--map-list .gastgeber-card__image-link {
+  display: none;
+}
+
+.gastgeber-card--map-list .card-body {
+  padding: 1rem;
+}
+
+.gastgeber-card--map-list .gastgeber-card__teaser {
+  display: none;
+}
+
+.gastgeber-detail .gastgeber-detail__figure {
+  overflow: hidden;
+  background: rgba(0, 0, 0, .04);
+}
+
+.gastgeber-detail .gastgeber-detail__teaser {
+  max-width: 58rem;
+}
+
+.gastgeber-contact-card,
+.gastgeber-map,
+.gastgeber-map-results {
+  border-radius: var(--gastgeber-radius);
+  border: 1px solid var(--gastgeber-border);
+}
+
+.gastgeber-contact-card.sticky-lg-top {
+  top: 1rem;
+}
+
+.gastgeber-facts {
+  display: grid;
+  gap: .5rem;
+  margin-bottom: 1rem;
+}
+
+.gastgeber-facts .gastgeber-facts__item {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: .5rem;
+  border-bottom: 1px solid var(--gastgeber-border-soft);
+}
+
+.gastgeber-facts dt {
+  font-weight: 600;
+}
+
+.gastgeber-facts dd {
+  margin-bottom: 0;
+  text-align: right;
+}
+
+.gastgeber-category-filter .btn,
+.gastgeber-category-badge {
+  border-radius: 999rem;
+}
+
+.gastgeber-category-badge {
+  margin-right: .25rem;
+  margin-bottom: .25rem;
+}
+
+.gastgeber-map-layout {
+  align-items: stretch;
+}
+
+.gastgeber-map {
+  overflow: hidden;
+}
+
+.gastgeber-map__canvas {
+  width: 100%;
+  min-height: 34rem;
+  background: var(--bs-tertiary-bg, #f8f9fa);
+}
+
+.gastgeber-map__message {
+  position: relative;
+  z-index: 2;
+}
+
+.gastgeber-map-results {
+  max-height: 40rem;
+  overflow: auto;
+}
+
+.gastgeber-map-popup {
+  max-width: 18rem;
+}
+
+.gastgeber-map-popup__title {
+  display: block;
+  line-height: 1.25;
+}
+
+.gastgeber-detail__map .gastgeber-map-layout {
+  display: block;
+}
+
+.gastgeber-detail__map .gastgeber-map-results {
+  display: none;
+}
+
+.gastgeber-detail__map .gastgeber-map__canvas {
+  min-height: 26rem;
+}
+
+@media (max-width: 767.98px) {
+  .gastgeber-filter__toggle {
+    width: 100%;
+  }
+
+  .gastgeber-map__canvas {
+    min-height: 24rem;
+  }
+}
+
+
+/* Responsive Ergänzungen: Filter, Umschalter, Kartenansicht und lange Inhalte. */
+.gastgeber-card,
+.gastgeber-map-popup,
+.gastgeber-filter {
+  overflow-wrap: anywhere;
+}
+
+.gastgeber-map-layout > [class*="col-"] {
+  min-width: 0;
+}
+
+.gastgeber-map__canvas {
+  height: clamp(24rem, 58vh, 38rem);
+}
+
+.gastgeber-filter__actions .btn,
+.gastgeber-card__actions .btn {
+  white-space: normal;
+}
+
+@media (max-width: 991.98px) {
+  .gastgeber-toolbar,
+  .gastgeber-filter__bar .d-flex,
+  .gastgeber-view-switch {
+    align-items: stretch !important;
+  }
+
+  .gastgeber-view-switch .btn-group {
+    display: flex;
+    width: 100%;
+  }
+
+  .gastgeber-view-switch .btn {
+    flex: 1 1 0;
+  }
+
+  .gastgeber-map-results {
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .gastgeber-toolbar,
+  .gastgeber-filter__hero,
+  .gastgeber-filter__panel {
+    padding: 1rem !important;
+  }
+
+  .gastgeber-filter__bar {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .gastgeber-filter__actions,
+  .gastgeber-card__actions,
+  .gastgeber-card__actions .btn {
+    width: 100%;
+  }
+
+  .gastgeber-map__canvas {
+    min-height: 20rem;
+    height: 62vh;
+  }
+
+  .gastgeber-facts .gastgeber-facts__item {
+    display: block;
+  }
+
+  .gastgeber-facts dd {
+    margin-top: .15rem;
+    text-align: left;
+  }
+}
+
+/* Merkmal-Icons in Filter, Badges und Karten. */
+.gastgeber-category-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.15rem;
+  height: 1.15rem;
+  flex: 0 0 1.15rem;
+  line-height: 1;
+}
+
+.gastgeber-category-icon__image {
+  display: block;
+  width: 1rem;
+  height: 1rem;
+  object-fit: contain;
+}
+
+.gastgeber-category-icon__css {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.gastgeber-category-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  max-width: 100%;
+  white-space: normal;
+  text-align: left;
+}
+
+.gastgeber-filter__option .gastgeber-category-icon {
+  margin-left: .05rem;
+}
+
+.gastgeber-filter__label,
+.gastgeber-category-badge__label {
+  min-width: 0;
+}
+
+/* Eingebaute einfache Fallback-Icons für die automatisch angelegten Merkmal-Kategorien. */
+.gastgeber-category-icon__css[class*="gastgeber-icon--"]::before {
+  display: inline-block;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: .9em;
+  line-height: 1;
+}
+.gastgeber-icon--hotel::before { content: "H"; font-weight: 700; }
+.gastgeber-icon--bed::before { content: "▭"; }
+.gastgeber-icon--apartment::before { content: "▦"; }
+.gastgeber-icon--house::before { content: "⌂"; }
+.gastgeber-icon--horse::before,
+.gastgeber-icon--horse-box::before,
+.gastgeber-icon--riding::before,
+.gastgeber-icon--pony::before { content: "♞"; }
+.gastgeber-icon--farm::before { content: "♧"; }
+.gastgeber-icon--camping::before { content: "△"; }
+.gastgeber-icon--bike::before,
+.gastgeber-icon--bike-charging::before { content: "☋"; }
+.gastgeber-icon--nonsmoking::before { content: "⊘"; }
+.gastgeber-icon--accessible::before { content: "♿"; }
+.gastgeber-icon--family::before { content: "👪"; }
+.gastgeber-icon--breakfast::before { content: "☕"; }
+.gastgeber-icon--restaurant::before { content: "◴"; }
+.gastgeber-icon--meeting::before { content: "□"; }
+.gastgeber-icon--safe::before { content: "◇"; }
+.gastgeber-icon--wifi::before { content: "⌁"; }
+.gastgeber-icon--bus::before { content: "▣"; }
+.gastgeber-icon--quiet::before { content: "◌"; }
+.gastgeber-icon--center::before { content: "◎"; }
+.gastgeber-icon--nature::before,
+.gastgeber-icon--garden::before { content: "♣"; }
+.gastgeber-icon--balcony::before { content: "▱"; }
+.gastgeber-icon--terrace::before { content: "▰"; }
+.gastgeber-icon--parking::before { content: "P"; font-weight: 700; }
+.gastgeber-icon--garage::before { content: "▤"; }
+.gastgeber-icon--charging::before { content: "⚡"; }
+.gastgeber-icon--pool::before { content: "≈"; }
+.gastgeber-icon--sauna::before { content: "♨"; }
+.gastgeber-icon--playground::before { content: "☆"; }
+.gastgeber-icon--dog::before,
+.gastgeber-icon--pets::before,
+.gastgeber-icon--pets-request::before { content: "🐾"; }
+.gastgeber-icon--bed-box::before { content: "▭"; }
+.gastgeber-icon--kitchen::before,
+.gastgeber-icon--kitchenette::before { content: "◧"; }
+.gastgeber-icon--living-bedroom::before { content: "◫"; }
+.gastgeber-icon--babybed::before { content: "⚑"; }
+.gastgeber-icon--washing::before { content: "◍"; }
+.gastgeber-icon--dryer::before { content: "◉"; }
+.gastgeber-icon--dishwasher::before { content: "▥"; }
+.gastgeber-icon--tv::before { content: "▭"; }
+
+/* UX-Detailansicht Gastgeber */
+.gastgeber-detail {
+  overflow-wrap: anywhere;
+}
+
+.gastgeber-detail-hero__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.gastgeber-detail-hero__figure,
+.gastgeber-detail-hero__placeholder {
+  min-height: clamp(18rem, 42vw, 34rem);
+  height: 100%;
+  box-shadow: var(--gastgeber-shadow);
+}
+
+.gastgeber-detail-hero__figure img,
+.gastgeber-detail-hero__figure video,
+.gastgeber-detail-hero__figure iframe {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gastgeber-detail-hero__location {
+  color: var(--bs-secondary-color, #6c757d);
+  font-weight: 600;
+}
+
+.gastgeber-detail-quickfacts__item {
+  display: inline-flex;
+  align-items: center;
+  gap: .25rem;
+  padding: .55rem .8rem;
+  font-size: .95rem;
+}
+
+.gastgeber-detail-main {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.gastgeber-detail__section {
+  border-radius: var(--gastgeber-radius);
+}
+
+.gastgeber-feature-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+
+.gastgeber-feature-grid .gastgeber-category-badge,
+.gastgeber-detail__categories .gastgeber-category-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .55rem .75rem;
+  font-size: .95rem;
+}
+
+.gastgeber-category-icon__image {
+  width: 1.15em;
+  height: 1.15em;
+  object-fit: contain;
+  display: block;
+}
+
+.gastgeber-category-icon__css {
+  display: inline-flex;
+  width: 1.15em;
+  height: 1.15em;
+  align-items: center;
+  justify-content: center;
+}
+
+.gastgeber-contact-card .gastgeber-detail-quickfacts {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr;
+  gap: .5rem !important;
+}
+
+.gastgeber-contact-card .gastgeber-detail-quickfacts__item {
+  justify-content: center;
+  width: 100%;
+  white-space: normal;
+  text-align: center;
+}
+
+.gastgeber-contact-block {
+  font-style: normal;
+}
+
+@media (max-width: 991.98px) {
+  .gastgeber-contact-card.sticky-lg-top {
+    position: static !important;
+  }
+
+  .gastgeber-detail-hero__content {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .gastgeber-detail-hero__content {
+    padding: 1.25rem !important;
+  }
+
+  .gastgeber-detail__title {
+    font-size: calc(1.35rem + 1.4vw);
+  }
+
+  .gastgeber-detail-hero__actions .btn {
+    width: 100%;
+  }
+
+  .gastgeber-contact-card .gastgeber-detail-quickfacts {
+    grid-template-columns: 1fr;
+  }
+
+  .gastgeber-detail__section .card-body {
+    padding: 1.25rem !important;
+  }
+}
