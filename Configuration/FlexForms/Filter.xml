@@ -1,100 +1,131 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <T3DataStructure>
   <sheets>
-    <general>
+    <sDEF>
       <ROOT>
-        <TCEforms>
-          <sheetTitle>LLL:EXT:gastgeber/Resources/Private/Language/locallang_db.xlf:flexform.filter.sheet.general</sheetTitle>
-        </TCEforms>
+        <sheetTitle>Allgemein</sheetTitle>
         <type>array</type>
         <el>
           <settings.headline>
-            <TCEforms>
-              <label>LLL:EXT:gastgeber/Resources/Private/Language/locallang_db.xlf:flexform.filter.headline</label>
-              <config>
-                <type>input</type>
-                <size>40</size>
-                <default>Unterkunft filtern</default>
-              </config>
-            </TCEforms>
+            <label>Überschrift im Filterbereich</label>
+            <description>Wird oberhalb der Filtergruppen angezeigt.</description>
+            <config>
+              <type>input</type>
+              <size>50</size>
+              <default>Unterkunft filtern</default>
+            </config>
           </settings.headline>
           <settings.introText>
-            <TCEforms>
-              <label>LLL:EXT:gastgeber/Resources/Private/Language/locallang_db.xlf:flexform.filter.introText</label>
-              <config>
-                <type>text</type>
-                <cols>40</cols>
-                <rows>3</rows>
-              </config>
-            </TCEforms>
+            <label>Kurzer Einleitungstext</label>
+            <description>Optionaler Hinweistext, z. B. „Wählen Sie passende Merkmale aus.“</description>
+            <config>
+              <type>text</type>
+              <cols>50</cols>
+              <rows>3</rows>
+            </config>
           </settings.introText>
-          <settings.rootCategoryUids>
-            <TCEforms>
-              <label>LLL:EXT:gastgeber/Resources/Private/Language/locallang_db.xlf:flexform.filter.rootCategoryUids</label>
-              <description>LLL:EXT:gastgeber/Resources/Private/Language/locallang_db.xlf:flexform.filter.rootCategoryUids.description</description>
-              <config>
-                <type>group</type>
-                <allowed>sys_category</allowed>
-                <size>5</size>
-                <maxitems>99</maxitems>
-                <minitems>0</minitems>
-              </config>
-            </TCEforms>
-          </settings.rootCategoryUids>
           <settings.targetPid>
-            <TCEforms>
-              <label>LLL:EXT:gastgeber/Resources/Private/Language/locallang_db.xlf:flexform.filter.targetPid</label>
-              <description>LLL:EXT:gastgeber/Resources/Private/Language/locallang_db.xlf:flexform.filter.targetPid.description</description>
-              <config>
-                <type>group</type>
-                <allowed>pages</allowed>
-                <size>1</size>
-                <maxitems>1</maxitems>
-                <minitems>0</minitems>
-              </config>
-            </TCEforms>
+            <label>Zielseite der Gastgeber-Übersicht</label>
+            <description>Seite auswählen, auf der „Gastgeber: Übersicht / Liste“ liegt. Leer lassen, wenn Filter und Übersicht auf derselben Seite stehen.</description>
+            <config>
+              <type>group</type>
+              <allowed>pages</allowed>
+              <relationship>manyToOne</relationship>
+              <size>1</size>
+              <maxitems>1</maxitems>
+              <minitems>0</minitems>
+            </config>
           </settings.targetPid>
+        </el>
+      </ROOT>
+    </sDEF>
+    <filter>
+      <ROOT>
+        <sheetTitle>Filtergruppen</sheetTitle>
+        <type>array</type>
+        <el>
+          <settings.rootCategoryUids>
+            <label>Wurzelkategorien für die Filtergruppen</label>
+            <description>Mehrere Kategorien möglich, z. B. „Merkmale“, „Gastgeber-Art“ oder „Zielgruppe“. Die Unterkategorien werden im Frontend als auswählbare Filter angezeigt. Leer lassen, wenn automatisch „Gastgeber &gt; Merkmale“ genutzt werden soll.</description>
+            <config>
+              <type>select</type>
+              <renderType>selectTree</renderType>
+              <foreign_table>sys_category</foreign_table>
+              <foreign_table_where>AND (sys_category.sys_language_uid = 0 OR sys_category.l10n_parent = 0) ORDER BY sys_category.sorting, sys_category.title</foreign_table_where>
+              <treeConfig>
+                <parentField>parent</parentField>
+                <appearance>
+                  <maxLevels>99</maxLevels>
+                  <expandAll>TRUE</expandAll>
+                  <showHeader>TRUE</showHeader>
+                </appearance>
+              </treeConfig>
+              <size>12</size>
+              <minitems>0</minitems>
+              <maxitems>99</maxitems>
+            </config>
+          </settings.rootCategoryUids>
           <settings.categoryConjunction>
-            <TCEforms>
-              <label>LLL:EXT:gastgeber/Resources/Private/Language/locallang_db.xlf:flexform.filter.categoryConjunction</label>
-              <config>
-                <type>select</type>
-                <renderType>selectSingle</renderType>
-                <items>
-                  <numIndex index="0">
-                    <label>LLL:EXT:gastgeber/Resources/Private/Language/locallang_db.xlf:flexform.filter.categoryConjunction.or</label>
-                    <value>2</value>
-                  </numIndex>
-                  <numIndex index="1">
-                    <label>LLL:EXT:gastgeber/Resources/Private/Language/locallang_db.xlf:flexform.filter.categoryConjunction.and</label>
-                    <value>3</value>
-                  </numIndex>
-                </items>
-                <default>2</default>
-              </config>
-            </TCEforms>
+            <label>Logik bei mehreren ausgewählten Merkmalen</label>
+            <description>ODER ist gastfreundlicher: Es werden mehr Gastgeber gefunden. UND ist strenger: Gastgeber müssen alle gewählten Merkmale besitzen.</description>
+            <config>
+              <type>select</type>
+              <renderType>selectSingle</renderType>
+              <items>
+                <numIndex index="0">
+                  <label>ODER – mindestens ein ausgewähltes Merkmal reicht</label>
+                  <value>or</value>
+                </numIndex>
+                <numIndex index="1">
+                  <label>UND – alle ausgewählten Merkmale müssen vorhanden sein</label>
+                  <value>and</value>
+                </numIndex>
+              </items>
+              <default>or</default>
+            </config>
           </settings.categoryConjunction>
           <settings.showRootCategories>
-            <TCEforms>
-              <label>LLL:EXT:gastgeber/Resources/Private/Language/locallang_db.xlf:flexform.filter.showRootCategories</label>
-              <config>
-                <type>check</type>
-                <default>0</default>
-              </config>
-            </TCEforms>
+            <label>Wurzelkategorien selbst als Filter anzeigen</label>
+            <description>Normalerweise aus lassen. Dann dienen die Wurzelkategorien nur als Gruppenüberschrift.</description>
+            <config>
+              <type>check</type>
+              <default>0</default>
+            </config>
           </settings.showRootCategories>
+        </el>
+      </ROOT>
+    </filter>
+    <display>
+      <ROOT>
+        <sheetTitle>Darstellung</sheetTitle>
+        <type>array</type>
+        <el>
+          <settings.showViewSwitch>
+            <label>Umschalter Cards / Liste / Karte anzeigen</label>
+            <description>Empfohlen, wenn der Filter direkt über der Gastgeberübersicht steht.</description>
+            <config>
+              <type>check</type>
+              <default>1</default>
+            </config>
+          </settings.showViewSwitch>
+          <settings.panelExpanded>
+            <label>Filter beim Laden geöffnet anzeigen</label>
+            <description>Auf Übersichtsseiten empfohlen. Bei kurzen Seiten kann der Filter auch eingeklappt starten.</description>
+            <config>
+              <type>check</type>
+              <default>1</default>
+            </config>
+          </settings.panelExpanded>
           <settings.resetLabel>
-            <TCEforms>
-              <label>LLL:EXT:gastgeber/Resources/Private/Language/locallang_db.xlf:flexform.filter.resetLabel</label>
-              <config>
-                <type>input</type>
-                <size>30</size>
-                <default>Alle Merkmale zurücksetzen</default>
-              </config>
-            </TCEforms>
+            <label>Beschriftung für Zurücksetzen-Link</label>
+            <config>
+              <type>input</type>
+              <size>40</size>
+              <default>Alle Merkmale zurücksetzen</default>
+            </config>
           </settings.resetLabel>
         </el>
       </ROOT>
-    </general>
+    </display>
   </sheets>
 </T3DataStructure>

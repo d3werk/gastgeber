@@ -27,9 +27,13 @@ final class FilterController extends ActionController
         }
 
         $selectedCategoryUids = $this->getSelectedNewsCategoryUids();
-        $categoryConjunction = (int)($this->settings['categoryConjunction'] ?? 2);
-        if (!in_array($categoryConjunction, [2, 3], true)) {
-            $categoryConjunction = 2;
+        $categoryConjunction = strtolower((string)($this->settings['categoryConjunction'] ?? 'or'));
+        if (!in_array($categoryConjunction, ['or', 'and'], true)) {
+            // Fallback für ältere Installationen, falls im FlexForm noch numerische Werte gespeichert sind.
+            $categoryConjunction = match ((string)($this->settings['categoryConjunction'] ?? '')) {
+                '3' => 'and',
+                default => 'or',
+            };
         }
 
         $tree = [];
@@ -50,6 +54,8 @@ final class FilterController extends ActionController
             'introText' => trim((string)($this->settings['introText'] ?? '')),
             'resetLabel' => trim((string)($this->settings['resetLabel'] ?? '')),
             'showRootCategories' => (bool)($this->settings['showRootCategories'] ?? false),
+            'showViewSwitch' => (bool)($this->settings['showViewSwitch'] ?? true),
+            'panelExpanded' => (bool)($this->settings['panelExpanded'] ?? true),
             'selectedView' => $this->getSelectedView(),
         ]);
 

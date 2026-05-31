@@ -77,6 +77,41 @@
       <trans-unit id="tx_news_domain_model_news.tx_gastgeber_og_description.description"><source>Optional abweichender Beschreibungstext für OpenGraph-Vorschauen.</source></trans-unit>
       <trans-unit id="tx_news_domain_model_news.tx_gastgeber_seo_noindex"><source>Detailseite nicht indexieren</source></trans-unit>
       <trans-unit id="tx_news_domain_model_news.tx_gastgeber_seo_noindex.description"><source>Nur aktivieren, wenn diese Gastgeber-Detailseite nicht in Suchmaschinen erscheinen soll.</source></trans-unit>
+
+
+      <trans-unit id="contentElement.group.gastgeber"><source>Gastgeber</source></trans-unit>
+      <trans-unit id="plugin.list.title"><source>Gastgeber: Übersicht / Liste</source></trans-unit>
+      <trans-unit id="plugin.list.description"><source>Zeigt Gastgeber als Cards, Liste oder Karte. Nutzt die Gastgeber-Templates auf Basis von EXT:news.</source></trans-unit>
+      <trans-unit id="plugin.detail.title"><source>Gastgeber: Detailansicht</source></trans-unit>
+      <trans-unit id="plugin.detail.description"><source>Zeigt die Detailseite eines Gastgebers mit Hero, Kontakt, Ausstattung, SEO und optionaler Karte.</source></trans-unit>
+
+      <trans-unit id="flexform.list.sheet.general"><source>Datensätze / Kategorien</source></trans-unit>
+      <trans-unit id="flexform.list.sheet.additional"><source>Ausgabe / Detailseite</source></trans-unit>
+      <trans-unit id="flexform.list.sheet.view"><source>Darstellung</source></trans-unit>
+      <trans-unit id="flexform.list.startingpoint.description"><source>Ordner oder Seite mit den Gastgeber-Datensätzen auswählen.</source></trans-unit>
+      <trans-unit id="flexform.list.categories"><source>Gastgeber-Kategorien einschränken</source></trans-unit>
+      <trans-unit id="flexform.list.categories.description"><source>Optional nur bestimmte Gastgeber-Arten, Orte, Zielgruppen oder Merkmale anzeigen. Der Frontend-Filter kann diese Auswahl weiter einschränken.</source></trans-unit>
+      <trans-unit id="flexform.list.categoryConjunction"><source>Kategorie-Verknüpfung</source></trans-unit>
+      <trans-unit id="flexform.list.categoryConjunction.all"><source>Keine Einschränkung / alle Kategorien ignorieren</source></trans-unit>
+      <trans-unit id="flexform.list.includeSubCategories"><source>Unterkategorien einbeziehen</source></trans-unit>
+      <trans-unit id="flexform.list.detailPid"><source>Detailseite</source></trans-unit>
+      <trans-unit id="flexform.list.detailPid.description"><source>Seite auswählen, auf der das Inhaltselement „Gastgeber: Detailansicht“ liegt.</source></trans-unit>
+      <trans-unit id="flexform.list.itemsPerPage"><source>Einträge pro Seite</source></trans-unit>
+      <trans-unit id="flexform.list.disableOverrideDemand"><source>Frontend-Filter deaktivieren</source></trans-unit>
+      <trans-unit id="flexform.list.disableOverrideDemand.description"><source>Nicht aktivieren, wenn der Merkmal-Filter die Liste per URL einschränken soll.</source></trans-unit>
+      <trans-unit id="flexform.list.defaultView"><source>Standard-Darstellung</source></trans-unit>
+      <trans-unit id="flexform.list.showViewSwitch"><source>Umschalter Cards / Liste / Karte anzeigen</source></trans-unit>
+
+      <trans-unit id="flexform.detail.sheet.general"><source>Detail-Datensatz</source></trans-unit>
+      <trans-unit id="flexform.detail.sheet.additional"><source>Navigation</source></trans-unit>
+      <trans-unit id="flexform.detail.singleNews"><source>Fester Gastgeber-Datensatz</source></trans-unit>
+      <trans-unit id="flexform.detail.singleNews.description"><source>Normalerweise leer lassen. Die Detailseite bekommt den Datensatz über den Link aus der Übersicht.</source></trans-unit>
+      <trans-unit id="flexform.detail.startingpoint.description"><source>Optional auf den Ordner mit Gastgeber-Datensätzen beschränken.</source></trans-unit>
+      <trans-unit id="flexform.detail.listPid"><source>Listen-/Übersichtsseite</source></trans-unit>
+      <trans-unit id="flexform.detail.listPid.description"><source>Wird für Links zurück zur Übersicht verwendet.</source></trans-unit>
+      <trans-unit id="flexform.detail.backPid"><source>Zurück-Link Zielseite</source></trans-unit>
+      <trans-unit id="flexform.detail.backPid.description"><source>Optional abweichende Seite für den Zurück-Link.</source></trans-unit>
+      <trans-unit id="flexform.detail.disableOverrideDemand"><source>URL-Parameter für Detailansicht ignorieren</source></trans-unit>
     </body>
   </file>
 </xliff>

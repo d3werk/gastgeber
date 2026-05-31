@@ -59,3 +59,37 @@ page.includeCSS.gastgeber = EXT:gastgeber/Resources/Public/Css/gastgeber.css
 page.includeCSSLibs.gastgeberLeaflet = https://unpkg.com/leaflet@1.9.4/dist/leaflet.css
 page.includeJSLibs.gastgeberLeaflet = https://unpkg.com/leaflet@1.9.4/dist/leaflet.js
 page.includeJSFooter.gastgeberMap = EXT:gastgeber/Resources/Public/JavaScript/gastgeber-map.js
+
+# Eigene Gastgeber-Content-Elemente im Backend.
+# Sie verwenden die EXT:news-Controllerlogik, aber die Gastgeber-Templates/Partials.
+plugin.tx_gastgeber_list {
+  view {
+    templateRootPaths {
+      160 = EXT:gastgeber/Resources/Private/Templates/
+    }
+    partialRootPaths {
+      160 = EXT:gastgeber/Resources/Private/Partials/
+    }
+    layoutRootPaths {
+      160 = EXT:gastgeber/Resources/Private/Layouts/
+    }
+    pluginNamespace = tx_news_pi1
+  }
+  settings < plugin.tx_news.settings
+}
+
+plugin.tx_gastgeber_detail {
+  view {
+    templateRootPaths {
+      160 = EXT:gastgeber/Resources/Private/Templates/
+    }
+    partialRootPaths {
+      160 = EXT:gastgeber/Resources/Private/Partials/
+    }
+    layoutRootPaths {
+      160 = EXT:gastgeber/Resources/Private/Layouts/
+    }
+    pluginNamespace = tx_news_pi1
+  }
+  settings < plugin.tx_news.settings
+}

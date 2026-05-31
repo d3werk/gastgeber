@@ -20,15 +20,17 @@
                             <p class="gastgeber-filter__intro text-body-secondary mb-0">{introText}</p>
                         </f:if>
                     </div>
-                    <div class="col-12 col-lg-auto">
-                        <f:render partial="View/Switch" arguments="{pageUid: targetPid, selectedView: selectedView}" />
-                    </div>
+                    <f:if condition="{showViewSwitch}">
+                        <div class="col-12 col-lg-auto">
+                            <f:render partial="View/Switch" arguments="{pageUid: targetPid, selectedView: selectedView}" />
+                        </div>
+                    </f:if>
                 </div>
             </div>
 
             <div class="gastgeber-filter__bar px-4 py-3 border-top border-bottom">
                 <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
-                    <button class="btn btn-primary gastgeber-filter__toggle" type="button" data-bs-toggle="collapse" data-bs-target="#gastgeber-filter-panel" aria-expanded="true" aria-controls="gastgeber-filter-panel">
+                    <button class="btn btn-primary gastgeber-filter__toggle" type="button" data-bs-toggle="collapse" data-bs-target="#gastgeber-filter-panel" aria-expanded="{f:if(condition: panelExpanded, then: 'true', else: 'false')}" aria-controls="gastgeber-filter-panel">
                         <span aria-hidden="true">☰</span>
                         <span class="ms-2"><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:filter.toggle" /></span>
                         <f:if condition="{selectedCategoryCount}">
@@ -51,7 +53,7 @@
                 </div>
             </div>
 
-            <div class="collapse show" id="gastgeber-filter-panel">
+            <div class="collapse{f:if(condition: panelExpanded, then: ' show')}" id="gastgeber-filter-panel">
                 <div class="gastgeber-filter__panel p-4">
                     <f:if condition="{categoryTree}">
                         <f:then>
