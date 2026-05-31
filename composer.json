@@ -39,7 +39,8 @@
     "typo3/cms-fluid": "^13.4.20 || ^14.0",
     "typo3/cms-frontend": "^13.4.20 || ^14.0",
     "typo3/cms-install": "^13.4.20 || ^14.0",
-    "georgringer/news": "^14.0"
+    "georgringer/news": "^14.0",
+    "d3-werk/gastgeber": "^1.5"
   },
   "replace": {
     "typo3-ter/gastgeber": "self.version"
