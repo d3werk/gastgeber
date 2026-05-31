@@ -112,7 +112,7 @@
 
 .gastgeber-list .gastgeber-card {
   border: 1px solid var(--gastgeber-border);
-  border-radius: var(--gastgeber-radius);
+  border-radius: 0;
   overflow: hidden;
   transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
 }
@@ -163,7 +163,6 @@
 }
 
 .gastgeber-list .gastgeber-card__teaser p:last-child,
-.gastgeber-detail .gastgeber-detail__teaser p:last-child,
 .gastgeber-detail .gastgeber-detail__body p:last-child,
 .gastgeber-detail .gastgeber-detail__section p:last-child {
   margin-bottom: 0;
@@ -202,14 +201,11 @@
   background: rgba(0, 0, 0, .04);
 }
 
-.gastgeber-detail .gastgeber-detail__teaser {
-  max-width: 58rem;
-}
 
 .gastgeber-contact-card,
 .gastgeber-map,
 .gastgeber-map-results {
-  border-radius: var(--gastgeber-radius);
+  border-radius: 0;
   border: 1px solid var(--gastgeber-border);
 }
 
@@ -493,8 +489,8 @@
 
 .gastgeber-detail-hero__figure,
 .gastgeber-detail-hero__placeholder {
-  min-height: clamp(18rem, 42vw, 34rem);
-  height: 100%;
+  min-height: clamp(16rem, 38vw, 32rem);
+  height: auto;
   box-shadow: var(--gastgeber-shadow);
 }
 
@@ -524,7 +520,7 @@
 }
 
 .gastgeber-detail__section {
-  border-radius: var(--gastgeber-radius);
+  border-radius: 0;
 }
 
 .gastgeber-feature-grid {
@@ -604,4 +600,153 @@
   .gastgeber-detail__section .card-body {
     padding: 1.25rem !important;
   }
+}
+
+
+/* Keine abgerundeten Ecken in Gastgeber-Cards und Detailansicht. */
+.gastgeber-list .gastgeber-card,
+.gastgeber-list .gastgeber-card .card-img-top,
+.gastgeber-list .gastgeber-card .badge,
+.gastgeber-list .gastgeber-card .btn,
+.gastgeber-detail .card,
+.gastgeber-detail .badge,
+.gastgeber-detail .btn,
+.gastgeber-detail .gastgeber-detail__section,
+.gastgeber-detail .gastgeber-detail-hero__content,
+.gastgeber-detail .gastgeber-detail__figure,
+.gastgeber-detail .gastgeber-detail-hero__placeholder,
+.gastgeber-detail .gastgeber-category-badge,
+.gastgeber-detail .gastgeber-map,
+.gastgeber-detail .gastgeber-map-results {
+  border-radius: 0 !important;
+}
+
+.gastgeber-list .gastgeber-card {
+  --bs-card-border-radius: 0;
+  --bs-card-inner-border-radius: 0;
+}
+
+.gastgeber-detail .card {
+  --bs-card-border-radius: 0;
+  --bs-card-inner-border-radius: 0;
+}
+
+/* Anpassung Undeloh: Lila als Akzentfarbe und saubere Sterne-Badges. */
+.gastgeber-list,
+.gastgeber-filter,
+.gastgeber-detail,
+.gastgeber-toolbar,
+.gastgeber-view-switch {
+  --gastgeber-primary: #8a3a96;
+  --gastgeber-primary-dark: #71307b;
+  --gastgeber-primary-soft: rgba(138, 58, 150, .1);
+  --gastgeber-star: #ffd43b;
+  --gastgeber-star-shadow: rgba(0, 0, 0, .25);
+  --bs-primary: var(--gastgeber-primary);
+  --bs-primary-rgb: 138, 58, 150;
+  --bs-link-color: var(--gastgeber-primary);
+  --bs-link-color-rgb: 138, 58, 150;
+  --bs-link-hover-color: var(--gastgeber-primary-dark);
+  --bs-link-hover-color-rgb: 113, 48, 123;
+}
+
+.gastgeber-list a:not(.btn),
+.gastgeber-detail a:not(.btn),
+.gastgeber-filter a:not(.btn),
+.gastgeber-card__title a,
+.gastgeber-detail__title,
+.gastgeber-view-switch__label,
+.gastgeber-toolbar__summary {
+  color: var(--gastgeber-primary) !important;
+}
+
+.gastgeber-list .btn-primary,
+.gastgeber-detail .btn-primary,
+.gastgeber-filter .btn-primary,
+.gastgeber-toolbar .btn-primary,
+.gastgeber-view-switch .btn-primary {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: var(--gastgeber-primary);
+  --bs-btn-border-color: var(--gastgeber-primary);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--gastgeber-primary-dark);
+  --bs-btn-hover-border-color: var(--gastgeber-primary-dark);
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: var(--gastgeber-primary-dark);
+  --bs-btn-active-border-color: var(--gastgeber-primary-dark);
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: var(--gastgeber-primary);
+  --bs-btn-disabled-border-color: var(--gastgeber-primary);
+}
+
+.gastgeber-list .btn-outline-primary,
+.gastgeber-detail .btn-outline-primary,
+.gastgeber-filter .btn-outline-primary,
+.gastgeber-toolbar .btn-outline-primary,
+.gastgeber-view-switch .btn-outline-primary,
+.gastgeber-detail .btn-outline-secondary {
+  --bs-btn-color: var(--gastgeber-primary);
+  --bs-btn-border-color: var(--gastgeber-primary);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--gastgeber-primary);
+  --bs-btn-hover-border-color: var(--gastgeber-primary);
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: var(--gastgeber-primary-dark);
+  --bs-btn-active-border-color: var(--gastgeber-primary-dark);
+  --bs-btn-disabled-color: var(--gastgeber-primary);
+  --bs-btn-disabled-border-color: var(--gastgeber-primary);
+}
+
+.gastgeber-view-switch .btn-outline-primary {
+  background-color: #fff;
+  color: var(--gastgeber-primary) !important;
+  opacity: 1;
+}
+
+.gastgeber-view-switch .btn-outline-primary:hover,
+.gastgeber-view-switch .btn-outline-primary:focus {
+  color: #fff !important;
+}
+
+.gastgeber-category-badge--stars {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 1.85rem;
+  padding: .35rem .65rem;
+  background-color: var(--gastgeber-primary) !important;
+  border: 1px solid var(--gastgeber-primary) !important;
+  color: #fff !important;
+  border-radius: 0 !important;
+  line-height: 1;
+}
+
+.gastgeber-star-rating {
+  color: var(--gastgeber-star);
+  letter-spacing: .08em;
+  line-height: 1;
+  text-shadow: 0 1px 0 var(--gastgeber-star-shadow);
+}
+
+.gastgeber-star-rating__none {
+  color: #fff;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.gastgeber-list .gastgeber-card .gastgeber-category-badge,
+.gastgeber-detail .gastgeber-category-badge,
+.gastgeber-list .gastgeber-card .badge,
+.gastgeber-detail .badge,
+.gastgeber-list .gastgeber-card .btn,
+.gastgeber-detail .btn,
+.gastgeber-view-switch .btn {
+  border-radius: 0 !important;
+}
+
+.gastgeber-list .text-bg-primary,
+.gastgeber-detail .text-bg-primary,
+.gastgeber-filter .text-bg-primary {
+  color: #fff !important;
+  background-color: var(--gastgeber-primary) !important;
 }

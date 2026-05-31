@@ -1,11 +1,13 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:g="http://typo3.org/ns/D3Werk/Gastgeber/ViewHelpers"
+      data-namespace-typo3-fluid="true">
 <div class="gastgeber-detail-main d-grid gap-4">
     <f:if condition="{newsItem.bodytext}">
         <section class="gastgeber-detail__section card border-0 shadow-sm">
             <div class="card-body p-4 p-lg-5">
                 <h2 class="h3 mb-3"><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:aboutHost" /></h2>
                 <div class="gastgeber-detail__body news-text-wrap" itemprop="description">
-                    <f:format.html>{newsItem.bodytext}</f:format.html>
+                    <f:format.html>{g:cleanRatingPrefix(value: newsItem.bodytext)}</f:format.html>
                 </div>
             </div>
         </section>

@@ -28,6 +28,12 @@ final class CreateCategoriesCommand extends Command
         'Pferdehof' => 'gastgeber-icon--horse',
         'Bauernhof' => 'gastgeber-icon--farm',
         'Campingstellplatz' => 'gastgeber-icon--camping',
+        'Keine Sterne' => 'gastgeber-icon--stars-none',
+        '1 Stern' => 'gastgeber-icon--stars-1',
+        '2 Sterne' => 'gastgeber-icon--stars-2',
+        '3 Sterne' => 'gastgeber-icon--stars-3',
+        '4 Sterne' => 'gastgeber-icon--stars-4',
+        '5 Sterne' => 'gastgeber-icon--stars-5',
         'Bett & Bike' => 'gastgeber-icon--bike',
         'Nichtraucher' => 'gastgeber-icon--nonsmoking',
         'Rollstuhlgerecht / barrierefrei' => 'gastgeber-icon--accessible',
@@ -107,6 +113,14 @@ final class CreateCategoriesCommand extends Command
                     'Zeltplatz',
                     'Campingplatz',
                 ],
+            ],
+            'Klassifizierung' => [
+                'Keine Sterne',
+                '1 Stern',
+                '2 Sterne',
+                '3 Sterne',
+                '4 Sterne',
+                '5 Sterne',
             ],
             'Merkmale' => [
                 'Allgemein' => [

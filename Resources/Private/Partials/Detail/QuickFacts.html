@@ -2,19 +2,19 @@
 <f:if condition="{newsItem.txGastgeberPriceFrom} || {newsItem.txGastgeberCapacityPeople} || {newsItem.txGastgeberRooms} || {newsItem.txGastgeberBeds}">
     <ul class="gastgeber-detail-quickfacts list-unstyled d-flex flex-wrap gap-2 mb-0" aria-label="Kurzinfos">
         <f:if condition="{newsItem.txGastgeberPriceFrom}">
-            <li class="gastgeber-detail-quickfacts__item badge text-bg-primary rounded-pill">
+            <li class="gastgeber-detail-quickfacts__item badge text-bg-primary">
                 <span class="gastgeber-detail-quickfacts__label"><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:from" /></span>
                 <span itemprop="priceRange"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator=".">{newsItem.txGastgeberPriceFrom}</f:format.currency></span>
             </li>
         </f:if>
         <f:if condition="{newsItem.txGastgeberCapacityPeople}">
-            <li class="gastgeber-detail-quickfacts__item badge text-bg-light border rounded-pill">{newsItem.txGastgeberCapacityPeople} <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:people" /></li>
+            <li class="gastgeber-detail-quickfacts__item badge text-bg-light border">{newsItem.txGastgeberCapacityPeople} <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:people" /></li>
         </f:if>
         <f:if condition="{newsItem.txGastgeberRooms}">
-            <li class="gastgeber-detail-quickfacts__item badge text-bg-light border rounded-pill">{newsItem.txGastgeberRooms} <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:rooms" /></li>
+            <li class="gastgeber-detail-quickfacts__item badge text-bg-light border">{newsItem.txGastgeberRooms} <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:rooms" /></li>
         </f:if>
         <f:if condition="{newsItem.txGastgeberBeds}">
-            <li class="gastgeber-detail-quickfacts__item badge text-bg-light border rounded-pill">{newsItem.txGastgeberBeds} <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:beds" /></li>
+            <li class="gastgeber-detail-quickfacts__item badge text-bg-light border">{newsItem.txGastgeberBeds} <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:beds" /></li>
         </f:if>
     </ul>
 </f:if>

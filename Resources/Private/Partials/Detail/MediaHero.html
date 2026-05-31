@@ -2,7 +2,7 @@
 <f:if condition="{newsItem.mediaPreviews}">
     <f:then>
         <f:alias map="{mediaElement: newsItem.mediaPreviews.0}">
-            <figure class="gastgeber-detail__figure gastgeber-detail-hero__figure ratio ratio-4x3 mb-0 rounded-4 overflow-hidden">
+            <figure class="gastgeber-detail__figure gastgeber-detail-hero__figure ratio ratio-21x9 mb-0 overflow-hidden">
                 <f:if condition="{mediaElement.originalResource.type} == 2">
                     <f:image image="{mediaElement}"
                              class="object-fit-cover"
@@ -28,7 +28,7 @@
         </f:alias>
     </f:then>
     <f:else>
-        <div class="gastgeber-detail-hero__placeholder rounded-4 border bg-body-tertiary d-flex align-items-center justify-content-center text-muted">
+        <div class="gastgeber-detail-hero__placeholder border bg-body-tertiary d-flex align-items-center justify-content-center text-muted">
             <span><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:noImage" /></span>
         </div>
     </f:else>
