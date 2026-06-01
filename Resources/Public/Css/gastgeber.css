@@ -1128,3 +1128,94 @@
     font-size: 1rem;
   }
 }
+
+/* Detailansicht: Sterne korrekt im Bild positionieren und Inhaltsbereiche in voller Breite stapeln. */
+.gastgeber-detail-stack {
+  width: 100%;
+}
+
+.gastgeber-detail-stack > *,
+.gastgeber-detail-stack .gastgeber-detail__section,
+.gastgeber-detail-stack .gastgeber-price-card,
+.gastgeber-detail-stack .gastgeber-contact-card {
+  width: 100%;
+  max-width: none;
+}
+
+.gastgeber-detail .gastgeber-detail__figure,
+.gastgeber-detail .gastgeber-detail-hero__placeholder {
+  position: relative;
+  overflow: hidden;
+}
+
+.gastgeber-detail .gastgeber-detail__figure.ratio > .gastgeber-detail__rating,
+.gastgeber-detail .gastgeber-detail-hero__placeholder > .gastgeber-detail__rating,
+.gastgeber-detail__rating {
+  position: absolute;
+  top: clamp(1rem, 2vw, 1.75rem);
+  right: clamp(1rem, 2vw, 1.75rem);
+  left: auto;
+  bottom: auto;
+  width: auto;
+  height: auto;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: .5rem;
+  pointer-events: none;
+}
+
+.gastgeber-detail__rating .gastgeber-category-badge--stars {
+  min-width: 0;
+  min-height: 0;
+  padding: .55rem .9rem;
+  font-size: clamp(1rem, 1.25vw, 1.2rem);
+  line-height: 1;
+}
+
+.gastgeber-detail__rating .gastgeber-star-rating {
+  letter-spacing: .14em;
+}
+
+.gastgeber-detail .gastgeber-price-card,
+.gastgeber-detail .gastgeber-contact-card {
+  border: 1px solid var(--gastgeber-border);
+  border-radius: 0 !important;
+}
+
+.gastgeber-detail .gastgeber-price-capacity-list {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.gastgeber-detail .gastgeber-price-capacity-list__row {
+  grid-template-columns: minmax(12rem, .35fr) minmax(0, 1fr);
+  align-items: baseline;
+}
+
+.gastgeber-detail .gastgeber-price-capacity-list dd {
+  text-align: left;
+}
+
+.gastgeber-detail .gastgeber-detail-feature-list {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (max-width: 575.98px) {
+  .gastgeber-detail .gastgeber-detail__figure.ratio > .gastgeber-detail__rating,
+  .gastgeber-detail .gastgeber-detail-hero__placeholder > .gastgeber-detail__rating,
+  .gastgeber-detail__rating {
+    top: .75rem;
+    right: .75rem;
+  }
+
+  .gastgeber-detail__rating .gastgeber-category-badge--stars {
+    padding: .45rem .7rem;
+    font-size: .95rem;
+  }
+
+  .gastgeber-detail .gastgeber-price-capacity-list__row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: .15rem;
+  }
+}
