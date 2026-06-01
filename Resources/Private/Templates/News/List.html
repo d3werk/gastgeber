@@ -9,11 +9,24 @@
     <f:variable name="gastgeberView" value="{g:currentView(default: settings.gastgeber.defaultView, parameterName: settings.gastgeber.viewParameter)}" />
 
     <f:if condition="{settings.gastgeber.showViewSwitch}">
-        <div class="gastgeber-toolbar d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-4">
-            <div class="gastgeber-toolbar__summary small text-muted">
-                <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:toolbar.resultView" />
+        <div class="gastgeber-toolbar gastgeber-results-header card border-0 shadow-sm mb-4">
+            <div class="card-body p-0">
+                <div class="gastgeber-results-header__hero p-4 p-lg-5">
+                    <div class="row g-4 align-items-end">
+                        <div class="col-12 col-lg">
+                            <p class="gastgeber-filter__eyebrow gastgeber-results-header__eyebrow mb-2">
+                                <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:toolbar.eyebrow" />
+                            </p>
+                            <h2 class="h3 gastgeber-filter__headline gastgeber-results-header__headline mb-0">
+                                <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:toolbar.resultView" />
+                            </h2>
+                        </div>
+                        <div class="col-12 col-lg-auto">
+                            <f:render partial="View/Switch" arguments="{pageUid: contentObjectData.pid, selectedView: gastgeberView}" />
+                        </div>
+                    </div>
+                </div>
             </div>
-            <f:render partial="View/Switch" arguments="{pageUid: contentObjectData.pid, selectedView: gastgeberView}" />
         </div>
     </f:if>
 

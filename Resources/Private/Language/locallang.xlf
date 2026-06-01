@@ -32,6 +32,7 @@
       <trans-unit id="filter.eyebrow"><source>Suchen &amp; Buchen</source></trans-unit>
       <trans-unit id="filter.toggle"><source>Filter anzeigen</source></trans-unit>
       <trans-unit id="filter.activeCount"><source>aktive Filter</source></trans-unit>
+      <trans-unit id="toolbar.eyebrow"><source>Ergebnisse</source></trans-unit>
       <trans-unit id="toolbar.resultView"><source>Darstellung der Ergebnisse</source></trans-unit>
 
       <trans-unit id="aboutHost"><source>Über diese Unterkunft</source></trans-unit>

@@ -800,3 +800,75 @@
   display: none;
 }
 
+/* UX-Korrektur: Ergebnis-Darstellung wie Filterbereich aufbauen. */
+.gastgeber-results-header {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  overflow: hidden;
+}
+
+.gastgeber-results-header .card-body {
+  background: transparent;
+}
+
+.gastgeber-results-header__hero {
+  background: linear-gradient(135deg, var(--bs-tertiary-bg, #f8f9fa), var(--bs-body-bg, #fff));
+}
+
+.gastgeber-results-header__headline {
+  color: var(--gastgeber-primary) !important;
+}
+
+.gastgeber-results-header .gastgeber-view-switch {
+  justify-content: flex-start;
+}
+
+@media (min-width: 992px) {
+  .gastgeber-results-header .gastgeber-view-switch {
+    justify-content: flex-end;
+  }
+}
+
+/* UX-Korrektur: Ansicht-Umschalter Hover gut lesbar und konsistent in Filter und Ergebnisbox. */
+.gastgeber-view-switch .btn {
+  border-radius: 0 !important;
+  transition: color .16s ease, background-color .16s ease, border-color .16s ease, box-shadow .16s ease;
+}
+
+.gastgeber-view-switch .btn-primary,
+.gastgeber-view-switch .btn-primary:visited {
+  color: #fff !important;
+  background-color: var(--gastgeber-primary) !important;
+  border-color: var(--gastgeber-primary) !important;
+}
+
+.gastgeber-view-switch .btn-primary:hover,
+.gastgeber-view-switch .btn-primary:focus {
+  color: #fff !important;
+  background-color: var(--gastgeber-primary-dark) !important;
+  border-color: var(--gastgeber-primary-dark) !important;
+}
+
+.gastgeber-view-switch .btn-outline-primary,
+.gastgeber-view-switch .btn-outline-primary:visited,
+.gastgeber-view-switch .btn-outline-primary:active {
+  color: var(--gastgeber-primary) !important;
+  background-color: #fff !important;
+  border-color: var(--gastgeber-primary) !important;
+}
+
+.gastgeber-view-switch .btn-outline-primary:hover,
+.gastgeber-view-switch .btn-outline-primary:focus {
+  color: var(--gastgeber-primary) !important;
+  background-color: var(--gastgeber-primary-soft) !important;
+  border-color: var(--gastgeber-primary-dark) !important;
+  box-shadow: 0 0 0 .12rem rgba(138, 58, 150, .15);
+}
+
+@media (max-width: 575.98px) {
+  .gastgeber-results-header__hero {
+    padding: 1rem !important;
+  }
+}
+
