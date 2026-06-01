@@ -10,11 +10,19 @@
             <article class="gastgeber-detail" itemscope="itemscope" itemtype="https://schema.org/LodgingBusiness">
                 <f:render partial="Detail/Hero" arguments="{newsItem: newsItem, settings: settings}" />
 
-                <div class="gastgeber-detail-stack d-grid gap-4 gap-lg-5">
-                    <f:render partial="Detail/MainContent" arguments="{newsItem: newsItem, settings: settings}" />
-                    <f:render partial="Detail/Features" arguments="{newsItem: newsItem, settings: settings}" />
-                    <f:render partial="Detail/PriceCapacity" arguments="{newsItem: newsItem, settings: settings}" />
-                    <f:render partial="Detail/ContactCard" arguments="{newsItem: newsItem, settings: settings}" />
+                <div class="gastgeber-detail-layout row g-4 g-xl-5 align-items-start">
+                    <div class="col-12 col-lg-8">
+                        <div class="gastgeber-detail-content-stack d-grid gap-4 gap-lg-5">
+                            <f:render partial="Detail/MainContent" arguments="{newsItem: newsItem, settings: settings}" />
+                            <f:render partial="Detail/Features" arguments="{newsItem: newsItem, settings: settings}" />
+                            <f:render partial="Detail/PriceCapacity" arguments="{newsItem: newsItem, settings: settings}" />
+                        </div>
+                    </div>
+                    <aside class="col-12 col-lg-4">
+                        <div class="gastgeber-detail-sidebar">
+                            <f:render partial="Detail/ContactCard" arguments="{newsItem: newsItem, settings: settings}" />
+                        </div>
+                    </aside>
                 </div>
 
                 <f:if condition="{newsItem.txGastgeberShowOnMap}">

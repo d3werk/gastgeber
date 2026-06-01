@@ -1219,3 +1219,31 @@
     gap: .15rem;
   }
 }
+
+/* Detailansicht: Buchungsbox rechts unterhalb des Hero-Bildes. */
+.gastgeber-detail-layout {
+  margin-top: 0;
+}
+
+.gastgeber-detail-content-stack,
+.gastgeber-detail-content-stack > *,
+.gastgeber-detail-content-stack .gastgeber-detail__section,
+.gastgeber-detail-content-stack .gastgeber-price-card {
+  width: 100%;
+  max-width: none;
+}
+
+.gastgeber-detail-layout .gastgeber-detail-sidebar {
+  position: sticky;
+  top: 1.5rem;
+}
+
+.gastgeber-detail-layout .gastgeber-contact-card {
+  width: 100%;
+}
+
+@media (max-width: 991.98px) {
+  .gastgeber-detail-layout .gastgeber-detail-sidebar {
+    position: static;
+  }
+}
