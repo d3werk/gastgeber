@@ -8,28 +8,35 @@
     <!--TYPO3SEARCH_end-->
     <f:variable name="gastgeberView" value="{g:currentView(default: settings.gastgeber.defaultView, parameterName: settings.gastgeber.viewParameter)}" />
 
-    <f:if condition="{settings.gastgeber.showViewSwitch}">
-        <div class="gastgeber-toolbar gastgeber-results-header card border-0 shadow-sm mb-4">
-            <div class="card-body p-0">
-                <div class="gastgeber-results-header__hero p-4 p-lg-5">
-                    <div class="row g-4 align-items-end">
-                        <div class="col-12 col-lg">
-                            <p class="gastgeber-filter__eyebrow gastgeber-results-header__eyebrow mb-2">
-                                <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:toolbar.eyebrow" />
-                            </p>
-                            <h2 class="h3 gastgeber-filter__headline gastgeber-results-header__headline mb-0">
-                                <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:toolbar.resultView" />
-                            </h2>
-                        </div>
-                        <div class="col-12 col-lg-auto">
-                            <f:render partial="View/Switch" arguments="{pageUid: contentObjectData.pid, selectedView: gastgeberView}" />
+    <f:if condition="{settings.gastgeber.showIntegratedFilter}">
+        <f:then>
+            <f:variable name="gastgeberFilter" value="{g:filterData(rootCategoryUids: settings.gastgeber.filterRootCategoryUids, categoryConjunction: settings.gastgeber.filterCategoryConjunction, targetPid: contentObjectData.pid, showRootCategories: settings.gastgeber.filterShowRootCategories)}" />
+            <f:render partial="Filter/Combined" arguments="{categoryTree: gastgeberFilter.categoryTree, selectedCategoryCount: gastgeberFilter.selectedCategoryCount, targetPid: gastgeberFilter.targetPid, categoryConjunction: gastgeberFilter.categoryConjunction, headline: settings.gastgeber.filterHeadline, introText: settings.gastgeber.filterIntroText, resetLabel: settings.gastgeber.filterResetLabel, showRootCategories: gastgeberFilter.showRootCategories, showViewSwitch: settings.gastgeber.showViewSwitch, panelExpanded: settings.gastgeber.filterPanelExpanded, selectedView: gastgeberView, contentUid: contentObjectData.uid}" />
+        </f:then>
+        <f:else>
+            <f:if condition="{settings.gastgeber.showViewSwitch}">
+                <div class="gastgeber-toolbar gastgeber-results-header card border-0 shadow-sm mb-4">
+                    <div class="card-body p-0">
+                        <div class="gastgeber-results-header__hero p-4 p-lg-5">
+                            <div class="row g-4 align-items-end">
+                                <div class="col-12 col-lg">
+                                    <p class="gastgeber-filter__eyebrow gastgeber-results-header__eyebrow mb-2">
+                                        <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:toolbar.eyebrow" />
+                                    </p>
+                                    <h2 class="h3 gastgeber-filter__headline gastgeber-results-header__headline mb-0">
+                                        <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:toolbar.resultView" />
+                                    </h2>
+                                </div>
+                                <div class="col-12 col-lg-auto">
+                                    <f:render partial="View/Switch" arguments="{pageUid: contentObjectData.pid, selectedView: gastgeberView}" />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </f:if>
+        </f:else>
     </f:if>
-
     <f:if condition="{news}">
         <f:then>
             <div class="gastgeber-list news-list-view is-view-{gastgeberView}" id="news-container-{contentObjectData.uid}">

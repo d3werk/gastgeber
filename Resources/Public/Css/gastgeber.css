@@ -1247,3 +1247,59 @@
     position: static;
   }
 }
+
+/* Kombinierte Gastgeber-Liste mit integriertem Filter. */
+.gastgeber-filter--combined {
+  margin-bottom: 1.5rem;
+}
+
+.gastgeber-filter--combined + .gastgeber-list,
+.gastgeber-filter--combined ~ .gastgeber-list {
+  margin-top: 1.5rem;
+}
+
+.gastgeber-filter__group-inner {
+  border-radius: 0;
+}
+
+.gastgeber-filter__option,
+.gastgeber-filter__reset,
+.gastgeber-filter__toggle,
+.gastgeber-view-switch .btn {
+  border-radius: 0;
+}
+
+.gastgeber-filter__option:not(.is-active):hover,
+.gastgeber-filter__option:not(.is-active):focus,
+.gastgeber-filter__reset:hover,
+.gastgeber-filter__reset:focus,
+.gastgeber-view-switch .btn:not(.active):hover,
+.gastgeber-view-switch .btn:not(.active):focus {
+  color: var(--bs-primary, #8b3a96);
+  background-color: rgba(139, 58, 150, .08);
+  border-color: var(--bs-primary, #8b3a96);
+}
+
+.gastgeber-filter__option.is-active,
+.gastgeber-filter__toggle,
+.gastgeber-view-switch .btn.active {
+  color: #fff;
+  background-color: var(--bs-primary, #8b3a96);
+  border-color: var(--bs-primary, #8b3a96);
+}
+
+.gastgeber-filter__items {
+  gap: .5rem;
+}
+
+.gastgeber-filter__children {
+  margin-top: .65rem !important;
+  margin-left: .4rem !important;
+  padding-left: .85rem !important;
+}
+
+@media (min-width: 1200px) {
+  .gastgeber-filter--combined .gastgeber-filter__group.col-xxl-4 {
+    width: 25%;
+  }
+}

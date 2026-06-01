@@ -62,6 +62,14 @@ plugin.tx_news {
             defaultView = cards
             viewParameter = tx_gastgeber_view
             showViewSwitch = 1
+            showIntegratedFilter = 1
+            filterHeadline = Unterkunft filtern
+            filterIntroText =
+            filterRootCategoryUids =
+            filterCategoryConjunction = or
+            filterPanelExpanded = 1
+            filterShowRootCategories = 0
+            filterResetLabel = Alle Merkmale zurücksetzen
             map {
                 defaultLatitude = 53.1966
                 defaultLongitude = 9.9762

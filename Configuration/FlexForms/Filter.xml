@@ -46,7 +46,7 @@
         <el>
           <settings.rootCategoryUids>
             <label>Wurzelkategorien für die Filtergruppen</label>
-            <description>Mehrere Kategorien möglich, z. B. „Merkmale“, „Gastgeber-Art“ oder „Zielgruppe“. Die Unterkategorien werden im Frontend als auswählbare Filter angezeigt. Leer lassen, wenn automatisch „Gastgeber &gt; Merkmale“ genutzt werden soll.</description>
+            <description>Mehrere Kategorien möglich, z. B. „Merkmale“, „Gastgeber-Art“ oder „Zielgruppe“. Die Unterkategorien werden im Frontend als auswählbare Filter angezeigt. Leer lassen, wenn automatisch der komplette Baum „Gastgeber“ mit Gastgeber-Art, Klassifizierung, Merkmalen und Zielgruppen genutzt werden soll. Wichtig: Elternkategorien auswählen, nicht einzelne Merkmale.</description>
             <config>
               <type>select</type>
               <renderType>selectTree</renderType>

@@ -1,0 +1,60 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<div class="gastgeber-filter gastgeber-filter--menu gastgeber-filter--combined card border-0 shadow-sm mb-4" data-gastgeber-filter="1">
+    <div class="card-body p-0">
+        <div class="gastgeber-filter__hero p-4 p-lg-5">
+            <div class="row g-4 align-items-end">
+                <div class="col-12 col-lg">
+                    <p class="gastgeber-filter__eyebrow mb-2">
+                        <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:filter.eyebrow" />
+                    </p>
+                    <h2 class="h3 gastgeber-filter__headline mb-2">
+                        <f:if condition="{headline}">
+                            <f:then>{headline}</f:then>
+                            <f:else><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:filter.headline" /></f:else>
+                        </f:if>
+                    </h2>
+                    <f:if condition="{introText}">
+                        <p class="gastgeber-filter__intro text-body-secondary mb-0">{introText}</p>
+                    </f:if>
+                </div>
+                <f:if condition="{showViewSwitch}">
+                    <div class="col-12 col-lg-auto">
+                        <f:render partial="View/Switch" arguments="{pageUid: targetPid, selectedView: selectedView}" />
+                    </div>
+                </f:if>
+            </div>
+        </div>
+
+        <div class="gastgeber-filter__bar px-4 py-3 border-top border-bottom">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+                <button class="btn btn-primary gastgeber-filter__toggle" type="button" data-bs-toggle="collapse" data-bs-target="#gastgeber-filter-panel-{contentUid}" aria-expanded="{f:if(condition: panelExpanded, then: 'true', else: 'false')}" aria-controls="gastgeber-filter-panel-{contentUid}">
+                    <span aria-hidden="true">☰</span>
+                    <span class="ms-2"><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:filter.toggle" /></span>
+                    <f:if condition="{selectedCategoryCount}">
+                        <span class="badge text-bg-light ms-2">{selectedCategoryCount}</span>
+                    </f:if>
+                </button>
+                <div class="gastgeber-filter__actions d-flex flex-wrap gap-2 align-items-center">
+                    <f:if condition="{selectedCategoryCount}">
+                        <span class="small text-muted">
+                            {selectedCategoryCount} <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:filter.activeCount" />
+                        </span>
+                    </f:if>
+                    <f:link.page pageUid="{targetPid}" additionalParams="{tx_gastgeber_view: selectedView}" class="btn btn-outline-secondary btn-sm gastgeber-filter__reset">
+                        <f:if condition="{resetLabel}">
+                            <f:then>{resetLabel}</f:then>
+                            <f:else><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:filter.reset" /></f:else>
+                        </f:if>
+                    </f:link.page>
+                </div>
+            </div>
+        </div>
+
+        <div class="collapse{f:if(condition: panelExpanded, then: ' show')}" id="gastgeber-filter-panel-{contentUid}">
+            <div class="gastgeber-filter__panel p-4">
+                <f:render partial="Filter/Groups" arguments="{categoryTree: categoryTree, showRootCategories: showRootCategories, targetPid: targetPid, categoryConjunction: categoryConjunction, selectedView: selectedView}" />
+            </div>
+        </div>
+    </div>
+</div>
+</html>

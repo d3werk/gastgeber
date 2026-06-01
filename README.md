@@ -357,3 +357,16 @@ Im Backend gibt es zusätzlich den Reiter **SEO / Suchmaschinen** mit folgenden 
 - Detailseite nicht indexieren
 
 Die Fluid-Partial `Detail/SeoMeta.html` setzt daraus Seitentitel, Meta-Description, OpenGraph-Tags und optional `robots=noindex,follow`.
+
+## UX-Hinweis: kombinierte Gastgeber-Liste mit Filter
+
+Ab dieser Version kann das Inhaltselement **„Gastgeber: Übersicht / Liste“** den Filter direkt oberhalb der Ergebnisliste ausgeben. Das ist die empfohlene Variante für Übersichtsseiten, weil Filter, Ansichtsauswahl und Trefferliste logisch zusammengehören.
+
+Empfohlener Aufbau der Übersichtsseite:
+
+1. **Gastgeber: Übersicht / Liste** einfügen
+2. Im Reiter **Filter & Suche** die Option **„Filter direkt in dieser Listenansicht anzeigen“** aktiv lassen
+3. **Filter-Wurzelkategorien** leer lassen oder eine Elternkategorie wie **Gastgeber** bzw. **Merkmale** auswählen
+4. Keine einzelnen Blatt-Merkmale als Wurzel auswählen, sonst werden nur diese wenigen Merkmale angezeigt
+
+Das separate Element **„Gastgeber: Merkmal-Filter“** bleibt für Spezialfälle erhalten, wird für normale Übersichtsseiten aber nicht mehr benötigt.
