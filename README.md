@@ -370,3 +370,19 @@ Empfohlener Aufbau der Übersichtsseite:
 4. Keine einzelnen Blatt-Merkmale als Wurzel auswählen, sonst werden nur diese wenigen Merkmale angezeigt
 
 Das separate Element **„Gastgeber: Merkmal-Filter“** bleibt für Spezialfälle erhalten, wird für normale Übersichtsseiten aber nicht mehr benötigt.
+
+## Backend-Kategorieauswahl im Listen-/Filterelement
+
+Die Kategorieauswahl in den FlexForms von **Gastgeber: Übersicht / Liste** und **Gastgeber: Merkmal-Filter** zeigt bewusst nicht mehr den kompletten globalen TYPO3-Kategoriebaum. Stattdessen wird nur der Kategoriebaum unter der Kategorie **Gastgeber** angeboten. Dadurch erscheinen dort keine fremden Kategorien wie **Aktuelles**, **Veranstaltungen** oder allgemeine News-Kategorien.
+
+Wichtig:
+
+1. Der Gastgeber-Kategoriebaum muss vorhanden sein, z. B. über:
+
+   ```bash
+   vendor/bin/typo3 gastgeber:categories:create --pid=123
+   ```
+
+2. Die oberste Kategorie muss **Gastgeber** heißen.
+3. Im Reiter **Filter & Suche** kann das Feld **Filter-Wurzelkategorien** leer bleiben. Dann verwendet das Frontend automatisch den kompletten Gastgeber-Baum.
+4. Sollen nur bestimmte Gruppen angezeigt werden, z. B. nur **Merkmale**, **Gastgeber-Art** oder **Zielgruppen**, dann diese Elternkategorien auswählen, nicht einzelne Blatt-Merkmale.

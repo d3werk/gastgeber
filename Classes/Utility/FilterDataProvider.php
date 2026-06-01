@@ -121,7 +121,12 @@ final class FilterDataProvider
      */
     private function findDefaultGastgeberRootUids(): array
     {
-        $uids = $this->findCategoryUidsByTitle('Gastgeber');
+        $uids = $this->findCategoryUidsByTitle('Gastgeber', true);
+        if ($uids !== []) {
+            return $uids;
+        }
+
+        $uids = $this->findCategoryUidsByTitle('Gastgeber', false);
         if ($uids !== []) {
             return $uids;
         }
@@ -134,22 +139,26 @@ final class FilterDataProvider
      */
     private function findDefaultMerkmaleRootUids(): array
     {
-        $uids = $this->findCategoryUidsByTitle('Merkmale');
+        $uids = $this->findCategoryUidsByTitle('Merkmale', false);
         return $uids !== [] ? $uids : [];
     }
 
     /**
      * @return list<int>
      */
-    private function findCategoryUidsByTitle(string $title): array
+    private function findCategoryUidsByTitle(string $title, bool $onlyRootLevel): array
     {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_category');
+        $constraints = [
+            $queryBuilder->expr()->eq('title', $queryBuilder->createNamedParameter($title)),
+        ];
+        if ($onlyRootLevel) {
+            $constraints[] = $queryBuilder->expr()->eq('parent', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT));
+        }
         $result = $queryBuilder
             ->select('uid')
             ->from('sys_category')
-            ->where(
-                $queryBuilder->expr()->eq('title', $queryBuilder->createNamedParameter($title))
-            )
+            ->where(...$constraints)
             ->orderBy('parent', 'ASC')
             ->addOrderBy('sorting', 'ASC')
             ->executeQuery();
