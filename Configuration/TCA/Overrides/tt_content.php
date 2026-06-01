@@ -64,7 +64,9 @@ defined('TYPO3') or die();
             'rowDescription',
         ]);
 
-        $GLOBALS['TCA']['tt_content']['types'][$pluginKey]['columnsOverrides']['pi_flexform']['config']['ds'] = $configuration['flexForm'];
+        $GLOBALS['TCA']['tt_content']['types'][$pluginKey]['columnsOverrides']['pi_flexform']['config']['ds'] = [
+            'default' => $configuration['flexForm'],
+        ];
         $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes'][$pluginKey] = 'content-plugin';
     }
 })();
