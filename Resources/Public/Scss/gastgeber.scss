@@ -750,3 +750,53 @@
   color: #fff !important;
   background-color: var(--gastgeber-primary) !important;
 }
+
+/* Korrektur: Ansicht-Umschalter – inaktive Buttons bleiben lila statt weiß auf weiß. */
+.gastgeber-view-switch .btn-outline-primary,
+.gastgeber-view-switch .btn-outline-primary:visited,
+.gastgeber-view-switch .btn-outline-primary:hover,
+.gastgeber-view-switch .btn-outline-primary:focus,
+.gastgeber-view-switch .btn-outline-primary:active {
+  --bs-btn-color: var(--gastgeber-primary);
+  --bs-btn-bg: #fff;
+  --bs-btn-border-color: var(--gastgeber-primary);
+  --bs-btn-hover-color: var(--gastgeber-primary);
+  --bs-btn-hover-bg: #fff;
+  --bs-btn-hover-border-color: var(--gastgeber-primary-dark);
+  --bs-btn-active-color: var(--gastgeber-primary);
+  --bs-btn-active-bg: #fff;
+  --bs-btn-active-border-color: var(--gastgeber-primary-dark);
+  color: var(--gastgeber-primary) !important;
+  background-color: #fff !important;
+}
+
+/* Korrektur: Sterne-Badge als Bild-Overlay oben rechts platzieren. */
+.gastgeber-list .gastgeber-card__media {
+  position: relative;
+}
+
+.gastgeber-list .gastgeber-card__rating {
+  position: absolute !important;
+  top: .9rem !important;
+  right: .9rem !important;
+  left: auto !important;
+  bottom: auto !important;
+  z-index: 5;
+  display: flex;
+  width: auto !important;
+  height: auto !important;
+  align-items: center;
+  justify-content: flex-end;
+  gap: .35rem;
+  pointer-events: none;
+}
+
+.gastgeber-list .gastgeber-card__rating .gastgeber-category-badge {
+  margin: 0;
+  box-shadow: 0 .25rem .8rem rgba(0, 0, 0, .18);
+}
+
+.gastgeber-list .gastgeber-card__type .gastgeber-category-badge--stars {
+  display: none;
+}
+

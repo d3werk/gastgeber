@@ -3,6 +3,7 @@
       xmlns:g="http://typo3.org/ns/D3Werk/Gastgeber/ViewHelpers"
       data-namespace-typo3-fluid="true">
 <n:excludeDisplayedNews newsItem="{newsItem}" />
+<f:variable name="cardCategories" value="{g:categoryGroup(categories: newsItem.categories, fallback: newsItem.firstCategory)}" />
 
 <article class="card gastgeber-card gastgeber-card--{viewMode} h-100 articletype-{newsItem.type}{f:if(condition: newsItem.istopnews, then: ' is-top')}" itemscope="itemscope" itemtype="https://schema.org/LodgingBusiness">
     <f:if condition="{newsItem.mediaPreviews}">
@@ -10,6 +11,13 @@
             <n:link newsItem="{newsItem}" settings="{settings}" title="{newsItem.title}" class="gastgeber-card__image-link">
                 <f:alias map="{mediaElement: newsItem.mediaPreviews.0}">
                     <div class="ratio ratio-4x3 gastgeber-card__media">
+                        <f:if condition="{cardCategories.starCategories}">
+                            <div class="gastgeber-card__rating">
+                                <f:for each="{cardCategories.starCategories}" as="category">
+                                    <f:render partial="Category/Badge" arguments="{category: category}" />
+                                </f:for>
+                            </div>
+                        </f:if>
                         <f:if condition="{mediaElement.originalResource.type} == 2">
                             <f:image image="{mediaElement}"
                                      class="card-img-top object-fit-cover"
@@ -38,15 +46,11 @@
     </f:if>
 
     <div class="card-body d-flex flex-column">
-        <f:variable name="cardCategories" value="{g:categoryGroup(categories: newsItem.categories, fallback: newsItem.firstCategory)}" />
-        <f:if condition="{cardCategories.primaryCategory} || {cardCategories.starCategories}">
+        <f:if condition="{cardCategories.primaryCategory}">
             <div class="gastgeber-card__type d-flex flex-wrap gap-2 mb-2">
                 <f:if condition="{cardCategories.primaryCategory}">
                     <f:render partial="Category/Badge" arguments="{category: cardCategories.primaryCategory}" />
                 </f:if>
-                <f:for each="{cardCategories.starCategories}" as="category">
-                    <f:render partial="Category/Badge" arguments="{category: category}" />
-                </f:for>
             </div>
         </f:if>
 
