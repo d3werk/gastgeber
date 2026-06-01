@@ -9,6 +9,13 @@ use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
 defined('TYPO3') or die();
 
+
+// Automatische Koordinaten-Ermittlung beim Speichern von Gastgeber/News-Datensätzen.
+// Bestehender DataHandler-Hook wird genutzt, damit neue und bestehende Datensätze
+// in TYPO3 13/14 ohne separates Backend-Modul verarbeitet werden.
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] =
+    \D3Werk\Gastgeber\Hooks\NewsGeocodeDataHandlerHook::class;
+
 // EXT:news ProxyClassGenerator: erweitert das News-Domain-Model um Gastgeber-Felder.
 $GLOBALS['TYPO3_CONF_VARS']['EXT']['news']['classes']['Domain/Model/News']['gastgeber'] = 'gastgeber';
 

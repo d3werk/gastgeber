@@ -167,9 +167,10 @@ Ein Gastgeber wird als News-Datensatz angelegt. Zusätzlich zu Titel, Teaser, Te
    - PLZ
    - Ort
    - Land
+   - Auf Karte anzeigen
+   - Koordinaten aus Anschrift ermitteln
    - Breitengrad
    - Längengrad
-   - Auf Karte anzeigen
 
 2. **Kontakt / Buchung**
    - Telefon
@@ -245,9 +246,18 @@ page.includeJSFooter.gastgeberMap = EXT:gastgeber/Resources/Public/JavaScript/ga
 
 Für produktive Projekte mit strengen Datenschutzanforderungen kann Leaflet lokal ins Sitepackage gelegt und die TypoScript-Einbindung überschrieben werden. Die OpenStreetMap-Attribution darf nicht entfernt werden.
 
-### Koordinaten
+### Koordinaten / automatische Geocodierung
 
-Für Kartenmarker müssen pro Gastgeber **Breitengrad** und **Längengrad** als Dezimalwerte gepflegt werden. Die Adresse allein wird bewusst nicht automatisch geokodiert, damit keine externen Geocoding-Anfragen aus dem Backend ausgelöst werden.
+Die Koordinatenfelder sind bewusst als normale Eingabefelder mit sieben Nachkommastellen umgesetzt. `type=number` mit `format=decimal` ist für Koordinaten ungeeignet, weil TYPO3 diesen Feldtyp für Dezimalzahlen mit zwei Nachkommastellen rendert.
+
+Für Redakteure ist die Pflege jetzt einfacher:
+
+1. Straße, PLZ, Ort und Land eintragen.
+2. **Koordinaten aus Anschrift ermitteln** aktiviert lassen.
+3. Datensatz speichern.
+4. Breitengrad und Längengrad werden automatisch gesetzt.
+
+Neue Datensätze sind einmalig für die automatische Ermittlung aktiviert. Nach erfolgreicher Ermittlung wird die Option deaktiviert, damit manuell korrigierte Koordinaten später nicht unbemerkt überschrieben werden. Wenn die Adresse nachträglich geändert wird, kann die Option erneut aktiviert und der Datensatz gespeichert werden.
 
 Beispiel Undeloh:
 
@@ -256,13 +266,17 @@ Breitengrad: 53.1966000
 Längengrad: 9.9762000
 ```
 
+Die automatische Geocodierung nutzt den öffentlichen OpenStreetMap-Nominatim-Dienst für einzelne redaktionelle Speichervorgänge. Für große Datenimporte sollte ein eigener Geocoder oder eine eigene Nominatim-Instanz verwendet werden.
+
 ## Wichtige Dateien
 
 ```text
 Classes/Command/CreateCategoriesCommand.php
 Classes/Controller/FilterController.php
+Classes/Hooks/NewsGeocodeDataHandlerHook.php
 Classes/Domain/Model/News.php
 Classes/Utility/CategoryIconResolver.php
+Classes/Utility/Geocoder.php
 Classes/ViewHelpers/CategoryIconViewHelper.php
 Classes/ViewHelpers/CurrentViewViewHelper.php
 Configuration/FlexForms/Filter.xml

@@ -19,3 +19,6 @@ services:
 
   D3Werk\Gastgeber\Utility\FilterDataProvider:
     public: true
+
+  D3Werk\Gastgeber\Utility\Geocoder:
+    public: true

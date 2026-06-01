@@ -23,6 +23,7 @@ class News extends \GeorgRinger\News\Domain\Model\News
     protected int $txGastgeberBeds = 0;
     protected float $txGastgeberLatitude = 0.0;
     protected float $txGastgeberLongitude = 0.0;
+    protected bool $txGastgeberGeocodeOnSave = true;
     protected bool $txGastgeberShowOnMap = true;
     protected string $txGastgeberOpeningTimes = '';
     protected string $txGastgeberEquipment = '';
@@ -202,6 +203,16 @@ class News extends \GeorgRinger\News\Domain\Model\News
     public function setTxGastgeberLongitude(float $txGastgeberLongitude): void
     {
         $this->txGastgeberLongitude = $txGastgeberLongitude;
+    }
+
+    public function getTxGastgeberGeocodeOnSave(): bool
+    {
+        return $this->txGastgeberGeocodeOnSave;
+    }
+
+    public function setTxGastgeberGeocodeOnSave(bool $txGastgeberGeocodeOnSave): void
+    {
+        $this->txGastgeberGeocodeOnSave = $txGastgeberGeocodeOnSave;
     }
 
     public function getTxGastgeberShowOnMap(): bool

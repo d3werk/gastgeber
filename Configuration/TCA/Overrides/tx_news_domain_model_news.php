@@ -180,8 +180,12 @@ $additionalColumns = [
         'label' => $ll . 'tx_news_domain_model_news.tx_gastgeber_latitude',
         'description' => $ll . 'tx_news_domain_model_news.tx_gastgeber_latitude.description',
         'config' => [
-            'type' => 'number',
-            'format' => 'decimal',
+            // Coordinates need more than two decimals. type=number with format=decimal
+            // is optimized for price-like values and rounds/display-formats to two decimals.
+            'type' => 'input',
+            'size' => 20,
+            'max' => 20,
+            'eval' => 'trim,double',
             'placeholder' => '53.1966000',
         ],
     ],
@@ -190,9 +194,25 @@ $additionalColumns = [
         'label' => $ll . 'tx_news_domain_model_news.tx_gastgeber_longitude',
         'description' => $ll . 'tx_news_domain_model_news.tx_gastgeber_longitude.description',
         'config' => [
-            'type' => 'number',
-            'format' => 'decimal',
+            // Coordinates need more than two decimals. type=number with format=decimal
+            // is optimized for price-like values and rounds/display-formats to two decimals.
+            'type' => 'input',
+            'size' => 20,
+            'max' => 20,
+            'eval' => 'trim,double',
             'placeholder' => '9.9762000',
+        ],
+    ],
+    'tx_gastgeber_geocode_on_save' => [
+        'exclude' => true,
+        'label' => $ll . 'tx_news_domain_model_news.tx_gastgeber_geocode_on_save',
+        'description' => $ll . 'tx_news_domain_model_news.tx_gastgeber_geocode_on_save.description',
+        'config' => [
+            'type' => 'check',
+            'renderType' => 'checkboxToggle',
+            // New records should be geocoded once from the entered address.
+            // After successful lookup this flag is reset by the DataHandler hook.
+            'default' => 1,
         ],
     ],
     'tx_gastgeber_show_on_map' => [
@@ -319,7 +339,7 @@ $GLOBALS['TCA']['tx_news_domain_model_news']['palettes']['gastgeberAddress'] = [
 ];
 $GLOBALS['TCA']['tx_news_domain_model_news']['palettes']['gastgeberGeo'] = [
     'label' => $ll . 'palettes.gastgeberGeo',
-    'showitem' => 'tx_gastgeber_show_on_map, --linebreak--, tx_gastgeber_latitude, tx_gastgeber_longitude',
+    'showitem' => 'tx_gastgeber_show_on_map, tx_gastgeber_geocode_on_save, --linebreak--, tx_gastgeber_latitude, --linebreak--, tx_gastgeber_longitude',
 ];
 $GLOBALS['TCA']['tx_news_domain_model_news']['palettes']['gastgeberContact'] = [
     'label' => $ll . 'palettes.gastgeberContact',

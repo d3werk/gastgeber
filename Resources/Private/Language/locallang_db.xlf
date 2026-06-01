@@ -4,6 +4,7 @@
     <header/>
     <body>
       <trans-unit id="tabs.gastgeber"><source>Gastgeberdaten</source></trans-unit>
+      <trans-unit id="flexform.tab.configuration"><source>Konfiguration</source></trans-unit>
       <trans-unit id="palettes.gastgeberAddress"><source>Adresse und Geo-Daten</source></trans-unit>
       <trans-unit id="palettes.gastgeberContact"><source>Kontakt und Buchung</source></trans-unit>
 <trans-unit id="palettes.gastgeberGeo"><source>Karte / Koordinaten</source></trans-unit>
@@ -11,6 +12,8 @@
       <trans-unit id="tx_news_domain_model_news.tx_gastgeber_country"><source>Land</source></trans-unit>
       <trans-unit id="tx_news_domain_model_news.tx_gastgeber_latitude.description"><source>Für die Kartenansicht erforderlich. Dezimalzahl, z. B. 53.1966000.</source></trans-unit>
       <trans-unit id="tx_news_domain_model_news.tx_gastgeber_longitude.description"><source>Für die Kartenansicht erforderlich. Dezimalzahl, z. B. 9.9762000.</source></trans-unit>
+      <trans-unit id="tx_news_domain_model_news.tx_gastgeber_geocode_on_save"><source>Koordinaten aus Anschrift ermitteln</source></trans-unit>
+      <trans-unit id="tx_news_domain_model_news.tx_gastgeber_geocode_on_save.description"><source>Beim Speichern werden Breitengrad und Längengrad automatisch aus Straße, PLZ, Ort und Land ermittelt. Neue Datensätze sind einmalig aktiviert. Bei manuellen Koordinaten deaktivieren.</source></trans-unit>
       <trans-unit id="tx_news_domain_model_news.tx_gastgeber_show_on_map"><source>Auf Karte anzeigen</source></trans-unit>
       <trans-unit id="tx_news_domain_model_news.tx_gastgeber_show_on_map.description"><source>Nur aktivieren, wenn Breitengrad und Längengrad korrekt gepflegt sind.</source></trans-unit>
       <trans-unit id="palettes.gastgeberCapacity"><source>Preise und Kapazität</source></trans-unit>

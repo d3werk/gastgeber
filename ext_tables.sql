@@ -17,6 +17,7 @@ CREATE TABLE tx_news_domain_model_news (
   tx_gastgeber_beds int(11) DEFAULT '0' NOT NULL,
   tx_gastgeber_latitude decimal(10,7) DEFAULT '0.0000000' NOT NULL,
   tx_gastgeber_longitude decimal(10,7) DEFAULT '0.0000000' NOT NULL,
+  tx_gastgeber_geocode_on_save tinyint(1) unsigned DEFAULT '0' NOT NULL,
   tx_gastgeber_show_on_map tinyint(1) unsigned DEFAULT '1' NOT NULL,
   tx_gastgeber_opening_times text,
   tx_gastgeber_equipment text,
