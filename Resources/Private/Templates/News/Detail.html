@@ -10,12 +10,15 @@
             <article class="gastgeber-detail" itemscope="itemscope" itemtype="https://schema.org/LodgingBusiness">
                 <f:render partial="Detail/Hero" arguments="{newsItem: newsItem, settings: settings}" />
 
-                <div class="row g-4 g-xl-5">
+                <div class="row g-4 g-xl-5 align-items-start">
                     <div class="col-12 col-lg-8">
                         <f:render partial="Detail/MainContent" arguments="{newsItem: newsItem, settings: settings}" />
                     </div>
                     <aside class="col-12 col-lg-4">
-                        <f:render partial="Detail/ContactCard" arguments="{newsItem: newsItem, settings: settings}" />
+                        <div class="gastgeber-detail-sidebar d-grid gap-4">
+                            <f:render partial="Detail/ContactCard" arguments="{newsItem: newsItem, settings: settings}" />
+                            <f:render partial="Detail/PriceCapacity" arguments="{newsItem: newsItem, settings: settings}" />
+                        </div>
                     </aside>
                 </div>
 

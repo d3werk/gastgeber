@@ -1,0 +1,40 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:if condition="{newsItem.txGastgeberPriceFrom} || {newsItem.txGastgeberPriceNote} || {newsItem.txGastgeberCapacityPeople} || {newsItem.txGastgeberRooms} || {newsItem.txGastgeberBeds}">
+    <div class="card gastgeber-price-card shadow-sm">
+        <div class="card-body p-4">
+            <h2 class="h4 card-title mb-3"><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:priceCapacity" /></h2>
+
+            <dl class="gastgeber-price-capacity-list mb-0">
+                <f:if condition="{newsItem.txGastgeberPriceFrom}">
+                    <div class="gastgeber-price-capacity-list__row">
+                        <dt><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:from" /></dt>
+                        <dd itemprop="priceRange"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator=".">{newsItem.txGastgeberPriceFrom}</f:format.currency></dd>
+                    </div>
+                </f:if>
+                <f:if condition="{newsItem.txGastgeberCapacityPeople}">
+                    <div class="gastgeber-price-capacity-list__row">
+                        <dt><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:people" /></dt>
+                        <dd>{newsItem.txGastgeberCapacityPeople}</dd>
+                    </div>
+                </f:if>
+                <f:if condition="{newsItem.txGastgeberRooms}">
+                    <div class="gastgeber-price-capacity-list__row">
+                        <dt><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:rooms" /></dt>
+                        <dd>{newsItem.txGastgeberRooms}</dd>
+                    </div>
+                </f:if>
+                <f:if condition="{newsItem.txGastgeberBeds}">
+                    <div class="gastgeber-price-capacity-list__row">
+                        <dt><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:beds" /></dt>
+                        <dd>{newsItem.txGastgeberBeds}</dd>
+                    </div>
+                </f:if>
+            </dl>
+
+            <f:if condition="{newsItem.txGastgeberPriceNote}">
+                <div class="gastgeber-price-note mt-3 small text-muted"><f:format.html>{newsItem.txGastgeberPriceNote}</f:format.html></div>
+            </f:if>
+        </div>
+    </div>
+</f:if>
+</html>

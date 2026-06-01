@@ -11,6 +11,8 @@
       <trans-unit id="address"><source>Adresse</source></trans-unit>
       <trans-unit id="from"><source>ab</source></trans-unit>
       <trans-unit id="price"><source>Preis</source></trans-unit>
+      <trans-unit id="priceCapacity"><source>Preise &amp; Kapazität</source></trans-unit>
+
       <trans-unit id="people"><source>Personen</source></trans-unit>
       <trans-unit id="rooms"><source>Zimmer / Einheiten</source></trans-unit>
       <trans-unit id="beds"><source>Betten</source></trans-unit>

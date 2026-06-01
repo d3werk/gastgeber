@@ -20,12 +20,13 @@ final class CategoryGroupViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @return array{primaryCategory:mixed,starCategories:array<int,mixed>}
+     * @return array{primaryCategory:mixed,starCategories:array<int,mixed>,featureCategories:array<int,mixed>}
      */
     public function render(): array
     {
         $primaryCategory = null;
         $starCategories = [];
+        $featureCategories = [];
 
         foreach ($this->toArray($this->arguments['categories'] ?? []) as $category) {
             if ($this->isStarRatingCategory($category)) {
@@ -35,7 +36,10 @@ final class CategoryGroupViewHelper extends AbstractViewHelper
 
             if ($primaryCategory === null) {
                 $primaryCategory = $category;
+                continue;
             }
+
+            $featureCategories[] = $category;
         }
 
         $fallback = $this->arguments['fallback'] ?? null;
@@ -49,6 +53,7 @@ final class CategoryGroupViewHelper extends AbstractViewHelper
         return [
             'primaryCategory' => $primaryCategory,
             'starCategories' => $starCategories,
+            'featureCategories' => $featureCategories,
         ];
     }
 

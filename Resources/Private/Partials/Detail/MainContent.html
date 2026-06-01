@@ -13,25 +13,7 @@
         </section>
     </f:if>
 
-    <f:if condition="{newsItem.categories}">
-        <section class="gastgeber-detail__section card border-0 shadow-sm">
-            <div class="card-body p-4 p-lg-5">
-                <h2 class="h3 mb-3"><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:features" /></h2>
-                <div class="gastgeber-feature-grid">
-                    <f:render partial="Category/Items" arguments="{categories: newsItem.categories, settings: settings}" />
-                </div>
-            </div>
-        </section>
-    </f:if>
-
-    <f:if condition="{newsItem.txGastgeberEquipment}">
-        <section class="gastgeber-detail__section card border-0 shadow-sm">
-            <div class="card-body p-4 p-lg-5">
-                <h2 class="h3 mb-3"><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:equipment" /></h2>
-                <f:format.html>{newsItem.txGastgeberEquipment}</f:format.html>
-            </div>
-        </section>
-    </f:if>
+    <f:render partial="Detail/Features" arguments="{newsItem: newsItem, settings: settings}" />
 
     <f:if condition="{newsItem.txGastgeberCertifications}">
         <section class="gastgeber-detail__section card border-0 shadow-sm">

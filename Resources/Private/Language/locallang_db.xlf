@@ -21,6 +21,8 @@
       <trans-unit id="tx_news_domain_model_news.tx_gastgeber_email"><source>E-Mail</source></trans-unit>
       <trans-unit id="tx_news_domain_model_news.tx_gastgeber_website"><source>Webseite</source></trans-unit>
       <trans-unit id="tx_news_domain_model_news.tx_gastgeber_booking_url"><source>Buchungslink / Anfrage</source></trans-unit>
+      <trans-unit id="tx_news_domain_model_news.tx_gastgeber_booking_note"><source>Text für Anfragen / Buchen</source></trans-unit>
+      <trans-unit id="tx_news_domain_model_news.tx_gastgeber_booking_note.description"><source>Eigener Text für die Anfrage-/Buchungsbox in der Detailansicht. Preis- und Kapazitätsangaben werden separat unter „Preise / Kapazität“ gepflegt und dort ausgegeben.</source></trans-unit>
       <trans-unit id="tx_news_domain_model_news.tx_gastgeber_price_from"><source>Preis ab</source></trans-unit>
       <trans-unit id="tx_news_domain_model_news.tx_gastgeber_price_note"><source>Preis-Hinweis</source></trans-unit>
       <trans-unit id="tx_news_domain_model_news.tx_gastgeber_capacity_people"><source>Personen</source></trans-unit>

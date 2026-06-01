@@ -9,6 +9,7 @@ CREATE TABLE tx_news_domain_model_news (
   tx_gastgeber_email varchar(255) DEFAULT '' NOT NULL,
   tx_gastgeber_website varchar(2048) DEFAULT '' NOT NULL,
   tx_gastgeber_booking_url varchar(2048) DEFAULT '' NOT NULL,
+  tx_gastgeber_booking_note text,
   tx_gastgeber_price_from decimal(10,2) DEFAULT '0.00' NOT NULL,
   tx_gastgeber_price_note text,
   tx_gastgeber_capacity_people int(11) DEFAULT '0' NOT NULL,

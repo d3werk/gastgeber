@@ -1,0 +1,35 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:g="http://typo3.org/ns/D3Werk/Gastgeber/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+<f:variable name="categoryGroups" value="{g:categoryGroup(categories: newsItem.categories, fallback: newsItem.firstCategory)}" />
+<f:if condition="{categoryGroups.featureCategories} || {newsItem.txGastgeberEquipment}">
+    <section class="gastgeber-detail__section card border-0 shadow-sm">
+        <div class="card-body p-4 p-lg-5">
+            <h2 class="h3 mb-4"><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:features" /></h2>
+
+            <f:if condition="{categoryGroups.featureCategories}">
+                <ul class="gastgeber-detail-feature-list list-unstyled mb-4">
+                    <f:for each="{categoryGroups.featureCategories}" as="category">
+                        <li class="gastgeber-detail-feature-list__item">
+                            <f:variable name="categoryIcon" value="{g:categoryIcon(category: category)}" />
+                            <span class="gastgeber-detail-feature-list__icon" aria-hidden="true">
+                                <f:render partial="Category/Icon" arguments="{iconUrl: categoryIcon.url, iconCssClass: categoryIcon.cssClass, title: category.title}" />
+                            </span>
+                            <span class="gastgeber-detail-feature-list__label">{category.title}</span>
+                        </li>
+                    </f:for>
+                </ul>
+            </f:if>
+
+            <f:if condition="{newsItem.txGastgeberEquipment}">
+                <div class="gastgeber-detail-equipment">
+                    <h3 class="h5 mb-3"><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:equipment" /></h3>
+                    <div class="gastgeber-detail-equipment__text">
+                        <f:format.html>{newsItem.txGastgeberEquipment}</f:format.html>
+                    </div>
+                </div>
+            </f:if>
+        </div>
+    </section>
+</f:if>
+</html>

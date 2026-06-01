@@ -15,6 +15,7 @@ class News extends \GeorgRinger\News\Domain\Model\News
     protected string $txGastgeberEmail = '';
     protected string $txGastgeberWebsite = '';
     protected string $txGastgeberBookingUrl = '';
+    protected string $txGastgeberBookingNote = '';
     protected float $txGastgeberPriceFrom = 0.0;
     protected string $txGastgeberPriceNote = '';
     protected int $txGastgeberCapacityPeople = 0;
@@ -121,6 +122,16 @@ class News extends \GeorgRinger\News\Domain\Model\News
     public function setTxGastgeberBookingUrl(string $txGastgeberBookingUrl): void
     {
         $this->txGastgeberBookingUrl = $txGastgeberBookingUrl;
+    }
+
+    public function getTxGastgeberBookingNote(): string
+    {
+        return $this->txGastgeberBookingNote;
+    }
+
+    public function setTxGastgeberBookingNote(string $txGastgeberBookingNote): void
+    {
+        $this->txGastgeberBookingNote = $txGastgeberBookingNote;
     }
 
     public function getTxGastgeberPriceFrom(): float

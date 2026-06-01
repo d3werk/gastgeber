@@ -1,47 +1,31 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-      xmlns:n="http://typo3.org/ns/GeorgRinger/News/ViewHelpers"
+      xmlns:g="http://typo3.org/ns/D3Werk/Gastgeber/ViewHelpers"
       data-namespace-typo3-fluid="true">
+<f:variable name="categoryGroups" value="{g:categoryGroup(categories: newsItem.categories, fallback: newsItem.firstCategory)}" />
 <header class="gastgeber-detail-hero mb-5">
-    <div class="gastgeber-detail-hero__media mb-4">
-        <f:render partial="Detail/MediaHero" arguments="{newsItem: newsItem}" />
-    </div>
-
-    <div class="gastgeber-detail-hero__content p-4 p-lg-5 border bg-body-tertiary">
-        <f:if condition="{newsItem.categories}">
-            <div class="gastgeber-detail__categories mb-3">
-                <f:render partial="Category/Items" arguments="{categories: newsItem.categories, settings: settings}" />
-            </div>
-        </f:if>
+    <div class="gastgeber-detail-hero__intro p-4 p-lg-5 border bg-body-tertiary mb-4">
+        <div class="gastgeber-detail-hero__meta d-flex flex-wrap gap-2 mb-3">
+            <f:if condition="{categoryGroups.primaryCategory}">
+                <f:render partial="Category/Badge" arguments="{category: categoryGroups.primaryCategory}" />
+            </f:if>
+            <f:for each="{categoryGroups.starCategories}" as="category">
+                <f:render partial="Category/Badge" arguments="{category: category}" />
+            </f:for>
+        </div>
 
         <h1 class="gastgeber-detail__title display-6 mb-3" itemprop="name">{newsItem.title}</h1>
 
         <f:if condition="{newsItem.txGastgeberStreet} || {newsItem.txGastgeberCity}">
-            <p class="gastgeber-detail-hero__location mb-3" itemprop="address" itemscope="itemscope" itemtype="https://schema.org/PostalAddress">
-                <span aria-hidden="true">📍</span>
+            <p class="gastgeber-detail-hero__location mb-0" itemprop="address" itemscope="itemscope" itemtype="https://schema.org/PostalAddress">
+                <span class="gastgeber-detail-hero__location-icon" aria-hidden="true">📍</span>
                 <f:if condition="{newsItem.txGastgeberStreet}"><span itemprop="streetAddress">{newsItem.txGastgeberStreet}</span><f:if condition="{newsItem.txGastgeberCity}">, </f:if></f:if>
                 <f:if condition="{newsItem.txGastgeberZip} || {newsItem.txGastgeberCity}"><span itemprop="postalCode">{newsItem.txGastgeberZip}</span> <span itemprop="addressLocality">{newsItem.txGastgeberCity}</span></f:if>
             </p>
         </f:if>
+    </div>
 
-        <f:render partial="Detail/QuickFacts" arguments="{newsItem: newsItem}" />
-
-        <div class="gastgeber-detail-hero__actions d-flex flex-column flex-sm-row gap-2 flex-wrap mt-4">
-            <f:if condition="{newsItem.txGastgeberBookingUrl}">
-                <f:link.typolink parameter="{newsItem.txGastgeberBookingUrl}" class="btn btn-primary btn-lg">
-                    <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:booking" />
-                </f:link.typolink>
-            </f:if>
-            <f:if condition="{newsItem.txGastgeberPhone}">
-                <a href="tel:{newsItem.txGastgeberPhone}" class="btn btn-outline-primary btn-lg">
-                    <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:phone" />
-                </a>
-            </f:if>
-            <f:if condition="{newsItem.txGastgeberEmail}">
-                <f:link.email email="{newsItem.txGastgeberEmail}" class="btn btn-outline-secondary btn-lg">
-                    <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:email" />
-                </f:link.email>
-            </f:if>
-        </div>
+    <div class="gastgeber-detail-hero__media">
+        <f:render partial="Detail/MediaHero" arguments="{newsItem: newsItem}" />
     </div>
 </header>
 </html>

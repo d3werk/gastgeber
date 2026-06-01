@@ -107,6 +107,18 @@ $additionalColumns = [
             'placeholder' => 'https://www.example.de/anfrage',
         ],
     ],
+    'tx_gastgeber_booking_note' => [
+        'exclude' => true,
+        'label' => $ll . 'tx_news_domain_model_news.tx_gastgeber_booking_note',
+        'description' => $ll . 'tx_news_domain_model_news.tx_gastgeber_booking_note.description',
+        'config' => [
+            'type' => 'text',
+            'cols' => 40,
+            'rows' => 4,
+            'enableRichtext' => true,
+            'placeholder' => 'Kurzer Hinweis für die Anfrage- oder Buchungsbox, z. B. „Wir erstellen Ihnen gern ein persönliches Angebot.“',
+        ],
+    ],
     'tx_gastgeber_price_from' => [
         'exclude' => true,
         'label' => $ll . 'tx_news_domain_model_news.tx_gastgeber_price_from',
@@ -311,7 +323,7 @@ $GLOBALS['TCA']['tx_news_domain_model_news']['palettes']['gastgeberGeo'] = [
 ];
 $GLOBALS['TCA']['tx_news_domain_model_news']['palettes']['gastgeberContact'] = [
     'label' => $ll . 'palettes.gastgeberContact',
-    'showitem' => 'tx_gastgeber_phone, tx_gastgeber_email, --linebreak--, tx_gastgeber_website, tx_gastgeber_booking_url',
+    'showitem' => 'tx_gastgeber_phone, tx_gastgeber_email, --linebreak--, tx_gastgeber_website, tx_gastgeber_booking_url, --linebreak--, tx_gastgeber_booking_note',
 ];
 $GLOBALS['TCA']['tx_news_domain_model_news']['palettes']['gastgeberCapacity'] = [
     'label' => $ll . 'palettes.gastgeberCapacity',
