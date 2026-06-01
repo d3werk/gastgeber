@@ -2,7 +2,7 @@
 <f:if condition="{newsItem.mediaPreviews}">
     <f:then>
         <f:alias map="{mediaElement: newsItem.mediaPreviews.0}">
-            <figure class="gastgeber-detail__figure gastgeber-detail-hero__figure ratio ratio-16x9 mb-0 overflow-hidden">
+            <figure class="gastgeber-detail__figure gastgeber-detail-hero__figure ratio ratio-16x9 mb-0 overflow-hidden position-relative">
                 <f:if condition="{mediaElement.originalResource.type} == 2">
                     <f:image image="{mediaElement}"
                              class="object-fit-cover"
@@ -24,12 +24,27 @@
                              maxWidth="1600"
                              maxHeight="1100" />
                 </f:if>
+
+                <f:if condition="{starCategories}">
+                    <div class="gastgeber-detail__rating" aria-label="Klassifizierung">
+                        <f:for each="{starCategories}" as="category">
+                            <f:render partial="Category/Badge" arguments="{category: category}" />
+                        </f:for>
+                    </div>
+                </f:if>
             </figure>
         </f:alias>
     </f:then>
     <f:else>
-        <div class="gastgeber-detail-hero__placeholder border bg-body-tertiary d-flex align-items-center justify-content-center text-muted">
+        <div class="gastgeber-detail-hero__placeholder border bg-body-tertiary d-flex align-items-center justify-content-center text-muted position-relative">
             <span><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:noImage" /></span>
+            <f:if condition="{starCategories}">
+                <div class="gastgeber-detail__rating" aria-label="Klassifizierung">
+                    <f:for each="{starCategories}" as="category">
+                        <f:render partial="Category/Badge" arguments="{category: category}" />
+                    </f:for>
+                </div>
+            </f:if>
         </div>
     </f:else>
 </f:if>

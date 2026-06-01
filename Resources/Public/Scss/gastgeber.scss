@@ -1063,3 +1063,68 @@
     text-align: left;
   }
 }
+
+/* Detailansicht: Überschrift ohne grauen Kasten, Sterne als Overlay im Bild. */
+.gastgeber-detail-hero__heading {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.gastgeber-detail-hero__heading .gastgeber-detail-hero__meta {
+  margin-bottom: .65rem;
+}
+
+.gastgeber-detail-hero__heading .gastgeber-category-badge--stars {
+  display: none !important;
+}
+
+.gastgeber-detail .gastgeber-detail__title.h2 {
+  margin: 0;
+  color: var(--gastgeber-primary) !important;
+  font-size: clamp(1.75rem, 2.4vw, 2.35rem);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.gastgeber-detail__rating {
+  position: absolute;
+  top: clamp(1rem, 2vw, 2rem);
+  right: clamp(1rem, 2vw, 2rem);
+  z-index: 8;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: .5rem;
+  pointer-events: none;
+}
+
+.gastgeber-detail__rating .gastgeber-category-badge {
+  margin: 0;
+  box-shadow: 0 .35rem 1rem rgba(0, 0, 0, .22);
+}
+
+.gastgeber-detail__rating .gastgeber-category-badge--stars {
+  min-width: clamp(7rem, 12vw, 9.75rem);
+  min-height: clamp(2.35rem, 4vw, 3rem);
+  padding: .65rem 1rem;
+  font-size: clamp(1.05rem, 1.45vw, 1.35rem);
+}
+
+.gastgeber-detail__rating .gastgeber-star-rating {
+  letter-spacing: .12em;
+}
+
+@media (max-width: 575.98px) {
+  .gastgeber-detail__rating {
+    top: .75rem;
+    right: .75rem;
+  }
+
+  .gastgeber-detail__rating .gastgeber-category-badge--stars {
+    min-width: 6.25rem;
+    min-height: 2.15rem;
+    padding: .5rem .75rem;
+    font-size: 1rem;
+  }
+}
