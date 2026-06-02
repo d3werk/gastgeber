@@ -1,3 +1,0 @@
-mod.web_layout.tt_content.preview.gastgeber_list = EXT:gastgeber/Resources/Private/Backend/Preview.html
-mod.web_layout.tt_content.preview.gastgeber_detail = EXT:gastgeber/Resources/Private/Backend/Preview.html
-mod.web_layout.tt_content.preview.gastgeber_filter = EXT:gastgeber/Resources/Private/Backend/Preview.html
