@@ -22,10 +22,12 @@
         </section>
     </f:if>
 
-    <f:if condition="{newsItem.contentElements}">
-        <section class="gastgeber-detail__content-elements">
-            <f:cObject typoscriptObjectPath="lib.tx_news.contentElementRendering">{newsItem.contentElementIdList}</f:cObject>
-        </section>
+    <f:if condition="{settings.gastgeber.detailRenderContentElements}">
+        <f:if condition="{newsItem.contentElements}">
+            <section class="gastgeber-detail__content-elements">
+                <f:cObject typoscriptObjectPath="lib.tx_news.contentElementRendering">{newsItem.contentElementIdList}</f:cObject>
+            </section>
+        </f:if>
     </f:if>
 </div>
 </html>

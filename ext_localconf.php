@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use D3Werk\Gastgeber\Controller\FilterController;
-use GeorgRinger\News\Controller\NewsController;
+use D3Werk\Gastgeber\Controller\NewsController as GastgeberNewsController;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
@@ -26,7 +26,7 @@ ExtensionUtility::configurePlugin(
     'Gastgeber',
     'List',
     [
-        NewsController::class => 'list',
+        GastgeberNewsController::class => 'list,detail',
     ],
     [],
     ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
@@ -36,7 +36,7 @@ ExtensionUtility::configurePlugin(
     'Gastgeber',
     'Detail',
     [
-        NewsController::class => 'detail',
+        GastgeberNewsController::class => 'detail',
     ],
     [],
     ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
@@ -77,6 +77,7 @@ plugin.tx_news {
             filterPanelExpanded = 1
             filterShowRootCategories = 0
             filterResetLabel = Alle Merkmale zurücksetzen
+            detailRenderContentElements = 0
             map {
                 defaultLatitude = 53.1966
                 defaultLongitude = 9.9762

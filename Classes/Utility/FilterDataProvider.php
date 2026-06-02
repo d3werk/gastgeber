@@ -237,15 +237,63 @@ final class FilterDataProvider
      */
     private function fetchCategory(int $categoryUid): ?array
     {
-        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_category');
-        $row = $queryBuilder
-            ->select('uid', 'title', 'description', 'tx_gastgeber_filter_hidden')
-            ->from('sys_category')
-            ->where(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($categoryUid, Connection::PARAM_INT))
-            )
-            ->executeQuery()
-            ->fetchAssociative();
+        $row = $this->fetchCategoryWithGastgeberFields($categoryUid);
+        if ($row === null) {
+            $row = $this->fetchCategoryWithCoreFields($categoryUid);
+        }
+
+        if ($row === null) {
+            return null;
+        }
+
+        $row['tx_gastgeber_filter_hidden'] = (int)($row['tx_gastgeber_filter_hidden'] ?? 0);
+        return $row;
+    }
+
+    /**
+     * @return array<string,mixed>|null
+     */
+    private function fetchCategoryWithGastgeberFields(int $categoryUid): ?array
+    {
+        try {
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_category');
+            $row = $queryBuilder
+                ->select('uid', 'title', 'description', 'tx_gastgeber_filter_hidden')
+                ->from('sys_category')
+                ->where(
+                    $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($categoryUid, Connection::PARAM_INT))
+                )
+                ->executeQuery()
+                ->fetchAssociative();
+        } catch (\Throwable) {
+            return null;
+        }
+
+        return is_array($row) ? $row : null;
+    }
+
+    /**
+     * Fallback for installations where the database analyzer has not yet added
+     * the optional Gastgeber category columns. This keeps the frontend alive and
+     * still renders the filter with TYPO3's core category fields.
+     *
+     * @return array<string,mixed>|null
+     */
+    private function fetchCategoryWithCoreFields(int $categoryUid): ?array
+    {
+        try {
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_category');
+            $row = $queryBuilder
+                ->select('uid', 'title', 'description')
+                ->from('sys_category')
+                ->where(
+                    $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($categoryUid, Connection::PARAM_INT))
+                )
+                ->executeQuery()
+                ->fetchAssociative();
+        } catch (\Throwable) {
+            return null;
+        }
 
         return is_array($row) ? $row : null;
     }

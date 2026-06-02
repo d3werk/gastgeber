@@ -29,6 +29,7 @@ plugin.tx_news {
       filterPanelExpanded = 1
       filterShowRootCategories = 0
       filterResetLabel = Alle Merkmale zurücksetzen
+      detailRenderContentElements = 0
       map {
         defaultLatitude = 53.1966
         defaultLongitude = 9.9762

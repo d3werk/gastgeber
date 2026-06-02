@@ -9,7 +9,7 @@
                         <f:for each="{newsItem.mediaPreviews}" as="mediaElement" iteration="mediaIterator">
                             <f:if condition="{mediaIterator.index} == 0">
                                 <figure class="gastgeber-detail-gallery__main mb-0 overflow-hidden position-relative">
-                                    <f:render section="media" arguments="{mediaElement: mediaElement, newsItem: newsItem, loading: 'eager'}" />
+                                    <f:render partial="Detail/MediaItem" arguments="{mediaElement: mediaElement, newsItem: newsItem, loading: 'eager'}" />
                                     <f:if condition="{starCategories}">
                                         <div class="gastgeber-detail__rating" aria-label="Klassifizierung">
                                             <f:for each="{starCategories}" as="category">
@@ -22,7 +22,7 @@
                             <f:if condition="{mediaIterator.index}">
                                 <f:if condition="{mediaIterator.index} &lt; 5">
                                     <figure class="gastgeber-detail-gallery__thumb mb-0 overflow-hidden">
-                                        <f:render section="media" arguments="{mediaElement: mediaElement, newsItem: newsItem, loading: 'lazy'}" />
+                                        <f:render partial="Detail/MediaItem" arguments="{mediaElement: mediaElement, newsItem: newsItem, loading: 'lazy'}" />
                                     </figure>
                                 </f:if>
                             </f:if>
@@ -37,7 +37,7 @@
                 <f:else>
                     <f:alias map="{mediaElement: newsItem.mediaPreviews.0}">
                         <figure class="gastgeber-detail__figure gastgeber-detail-hero__figure mb-0 overflow-hidden position-relative">
-                            <f:render section="media" arguments="{mediaElement: mediaElement, newsItem: newsItem, loading: 'eager'}" />
+                            <f:render partial="Detail/MediaItem" arguments="{mediaElement: mediaElement, newsItem: newsItem, loading: 'eager'}" />
                             <f:if condition="{starCategories}">
                                 <div class="gastgeber-detail__rating" aria-label="Klassifizierung">
                                     <f:for each="{starCategories}" as="category">
@@ -65,27 +65,4 @@
     </f:else>
 </f:if>
 
-<f:section name="media">
-    <f:if condition="{mediaElement.originalResource.type} == 2">
-        <f:image image="{mediaElement}"
-                 class="gastgeber-detail-gallery__image"
-                 title="{mediaElement.originalResource.title}"
-                 alt="{f:if(condition: mediaElement.originalResource.alternative, then: mediaElement.originalResource.alternative, else: newsItem.title)}"
-                 loading="{loading}"
-                 maxWidth="1600"
-                 maxHeight="1100" />
-    </f:if>
-    <f:if condition="{mediaElement.originalResource.type} == 4">
-        <f:render partial="Detail/MediaVideo" arguments="{mediaElement: mediaElement}" />
-    </f:if>
-    <f:if condition="{mediaElement.originalResource.type} == 5">
-        <f:image image="{mediaElement}"
-                 class="gastgeber-detail-gallery__image"
-                 title="{mediaElement.originalResource.title}"
-                 alt="{f:if(condition: mediaElement.originalResource.alternative, then: mediaElement.originalResource.alternative, else: newsItem.title)}"
-                 loading="{loading}"
-                 maxWidth="1600"
-                 maxHeight="1100" />
-    </f:if>
-</f:section>
 </html>
