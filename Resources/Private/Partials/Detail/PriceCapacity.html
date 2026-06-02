@@ -1,0 +1,16 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<section class="gastgeber-detail-section gastgeber-detail-section--full">
+    <h3>Preise &amp; Kapazität</h3>
+    <div class="gastgeber-facts">
+        <f:if condition="{host.priceFrom}"><div><strong>ab {host.priceFrom -> f:format.currency(currencySign: '€')}</strong><span>Preis</span></div></f:if>
+        <f:if condition="{host.persons}"><div><strong>{host.persons}</strong><span>Personen</span></div></f:if>
+        <f:if condition="{host.bedrooms}"><div><strong>{host.bedrooms}</strong><span>Schlafzimmer</span></div></f:if>
+        <f:if condition="{host.beds}"><div><strong>{host.beds}</strong><span>Betten</span></div></f:if>
+        <f:if condition="{host.bathrooms}"><div><strong>{host.bathrooms}</strong><span>Badezimmer</span></div></f:if>
+        <f:if condition="{host.sizeSqm}"><div><strong>{host.sizeSqm} m²</strong><span>Größe</span></div></f:if>
+    </div>
+    <f:if condition="{host.priceInfo}"><div class="gastgeber-richtext mt-4"><f:format.html>{host.priceInfo}</f:format.html></div></f:if>
+    <f:if condition="{host.seasonInfo}"><p class="gastgeber-note">{host.seasonInfo}</p></f:if>
+    <f:if condition="{host.capacityNote}"><p class="gastgeber-note">{host.capacityNote}</p></f:if>
+</section>
+</html>

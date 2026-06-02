@@ -1,0 +1,22 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:g="http://typo3.org/ns/D3Werk/Gastgeber/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:variable name="ratings" value="{g:categoryGroup(categories: host.categories, mode: 'ratings', limit: 1)}" />
+<div class="gastgeber-gallery-hero">
+    <div class="gastgeber-gallery-hero__main">
+        <f:if condition="{host.firstMedia}">
+            <f:then><f:image image="{host.firstMedia}" width="1400c" height="760c" alt="{host.title}" /></f:then>
+            <f:else><div class="gastgeber-gallery-hero__placeholder"></div></f:else>
+        </f:if>
+        <f:if condition="{ratings.0}"><div class="gastgeber-gallery-hero__rating"><f:render partial="Category/Badge" arguments="{category: ratings.0.category}" /></div></f:if>
+    </div>
+    <f:if condition="{host.media -> f:count()} &gt; 1">
+        <div class="gastgeber-gallery-hero__side">
+            <f:for each="{host.media}" as="image" iteration="iterator">
+                <f:if condition="{iterator.index} &gt; 0 &amp;&amp; {iterator.index} &lt; 5">
+                    <div class="gastgeber-gallery-hero__side-image"><f:image image="{image}" width="600c" height="360c" alt="{host.title}" /></div>
+                </f:if>
+            </f:for>
+        </div>
+        <button type="button" class="gastgeber-gallery-hero__button" data-bs-toggle="modal" data-bs-target="#gastgeberGalleryModal-{host.uid}">Alle Bilder anzeigen</button>
+    </f:if>
+</div>
+</html>

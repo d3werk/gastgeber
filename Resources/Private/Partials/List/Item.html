@@ -1,0 +1,26 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:g="http://typo3.org/ns/D3Werk/Gastgeber/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:variable name="ratings" value="{g:categoryGroup(categories: host.categories, mode: 'ratings', limit: 1)}" />
+<f:variable name="types" value="{g:categoryGroup(categories: host.categories, mode: 'types', limit: 1)}" />
+<article class="gastgeber-card gastgeber-card--{viewMode}">
+    <div class="gastgeber-card__media">
+        <f:if condition="{host.firstMedia}">
+            <f:then>
+                <f:image image="{host.firstMedia}" width="800c" height="520c" alt="{host.title}" loading="lazy" />
+            </f:then>
+            <f:else><div class="gastgeber-card__placeholder"></div></f:else>
+        </f:if>
+        <f:if condition="{ratings.0}"><f:render partial="Category/Badge" arguments="{category: ratings.0.category}" /></f:if>
+    </div>
+    <div class="gastgeber-card__body">
+        <f:if condition="{types.0}"><f:render partial="Category/Badge" arguments="{category: types.0.category}" /></f:if>
+        <h3 class="gastgeber-card__title">{host.title}</h3>
+        <f:if condition="{host.addressLine}"><p class="gastgeber-card__address">{host.addressLine}</p></f:if>
+        <f:render partial="List/FeatureStrip" arguments="{host: host}" />
+        <f:if condition="{host.teaser}"><p class="gastgeber-card__text"><f:format.crop maxCharacters="220" append="…"><f:format.stripTags>{host.teaser}</f:format.stripTags></f:format.crop></p></f:if>
+        <div class="gastgeber-card__actions">
+            <f:if condition="{host.website}"><f:link.typolink parameter="{host.website}" class="btn btn-primary gastgeber-button">Direkt zur Webseite</f:link.typolink></f:if>
+            <f:link.page pageUid="{settings.detailPid}" additionalParams="{tx_gastgeber_detail: {host: host.uid, action: 'detail', controller: 'Host'}}" class="btn btn-outline-primary gastgeber-button gastgeber-button--outline">Mehr erfahren</f:link.page>
+        </div>
+    </div>
+</article>
+</html>

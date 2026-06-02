@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2">
+  <file source-language="de" datatype="plaintext" original="messages" date="2026-06-02T00:00:00Z">
+    <body>
+      <trans-unit id="tx_gastgeber_domain_model_host"><source>Gastgeber</source></trans-unit>
+      <trans-unit id="tab.general"><source>Allgemein</source></trans-unit>
+      <trans-unit id="tab.address"><source>Adresse / Karte</source></trans-unit>
+      <trans-unit id="tab.contact"><source>Kontakt / Buchung</source></trans-unit>
+      <trans-unit id="tab.prices"><source>Preise / Kapazität</source></trans-unit>
+      <trans-unit id="tab.equipment"><source>Ausstattung / Hinweise</source></trans-unit>
+      <trans-unit id="tab.seo"><source>SEO / Suchmaschinen</source></trans-unit>
+      <trans-unit id="tab.gastgeber_filter"><source>Gastgeber-Filter</source></trans-unit>
+      <trans-unit id="palette.address"><source>Adresse</source></trans-unit>
+      <trans-unit id="palette.map"><source>Karte / Koordinaten</source></trans-unit>
+      <trans-unit id="palette.contact"><source>Kontakt</source></trans-unit>
+      <trans-unit id="palette.capacity"><source>Kapazität</source></trans-unit>
+      <trans-unit id="plugin.list.title"><source>Gastgeber: Übersicht / Liste</source></trans-unit>
+      <trans-unit id="plugin.list.description"><source>Zeigt Gastgeber als Cards, Liste oder Karte inklusive Filterspalte.</source></trans-unit>
+      <trans-unit id="plugin.detail.title"><source>Gastgeber: Detailansicht</source></trans-unit>
+      <trans-unit id="plugin.detail.description"><source>Zeigt die Detailseite eines Gastgebers mit Galerie, Top-Merkmalen, Buchungsbox und Karte.</source></trans-unit>
+      <trans-unit id="plugin.filter.title"><source>Gastgeber: Merkmal-Filter</source></trans-unit>
+      <trans-unit id="plugin.filter.description"><source>Separater Filter für Spezialfälle. Normalerweise die integrierte Listenansicht verwenden.</source></trans-unit>
+      <trans-unit id="host.title"><source>Name des Gastgebers / Unterkunft</source></trans-unit>
+      <trans-unit id="host.slug"><source>URL-Segment</source></trans-unit>
+      <trans-unit id="host.teaser"><source>Kurzbeschreibung für Listen</source></trans-unit>
+      <trans-unit id="host.description"><source>Beschreibung für Detailansicht</source></trans-unit>
+      <trans-unit id="host.media"><source>Bilder / Galerie</source></trans-unit>
+      <trans-unit id="host.media.add"><source>Bild hinzufügen</source></trans-unit>
+      <trans-unit id="host.categories"><source>Kategorien, Merkmale und Zielgruppen</source></trans-unit>
+      <trans-unit id="host.featured"><source>Gastgeber hervorheben</source></trans-unit>
+      <trans-unit id="host.street"><source>Straße / Hausnummer</source></trans-unit>
+      <trans-unit id="host.address_addition"><source>Adresszusatz</source></trans-unit>
+      <trans-unit id="host.zip"><source>PLZ</source></trans-unit>
+      <trans-unit id="host.city"><source>Ort</source></trans-unit>
+      <trans-unit id="host.country"><source>Land</source></trans-unit>
+      <trans-unit id="host.show_on_map"><source>Auf Karte anzeigen</source></trans-unit>
+      <trans-unit id="host.show_on_map.description"><source>Nur aktivieren, wenn gültige Koordinaten vorhanden sind.</source></trans-unit>
+      <trans-unit id="host.geocode_on_save"><source>Koordinaten aus Anschrift ermitteln</source></trans-unit>
+      <trans-unit id="host.geocode_on_save.description"><source>Beim Speichern wird aus Straße, PLZ, Ort und Land eine Koordinate ermittelt. Danach wird die Option deaktiviert.</source></trans-unit>
+      <trans-unit id="host.latitude"><source>Breitengrad</source></trans-unit>
+      <trans-unit id="host.longitude"><source>Längengrad</source></trans-unit>
+      <trans-unit id="host.contact_name"><source>Ansprechpartner</source></trans-unit>
+      <trans-unit id="host.phone"><source>Telefon</source></trans-unit>
+      <trans-unit id="host.email"><source>E-Mail</source></trans-unit>
+      <trans-unit id="host.website"><source>Webseite</source></trans-unit>
+      <trans-unit id="host.booking_url"><source>Buchungs-/Anfragelink</source></trans-unit>
+      <trans-unit id="host.booking_text"><source>Text für Anfragen / Buchen</source></trans-unit>
+      <trans-unit id="host.opening_times"><source>Öffnungszeiten / Saison</source></trans-unit>
+      <trans-unit id="host.price_from"><source>Preis ab</source></trans-unit>
+      <trans-unit id="host.price_info"><source>Preistext</source></trans-unit>
+      <trans-unit id="host.persons"><source>Personen</source></trans-unit>
+      <trans-unit id="host.bedrooms"><source>Schlafzimmer</source></trans-unit>
+      <trans-unit id="host.beds"><source>Betten</source></trans-unit>
+      <trans-unit id="host.bathrooms"><source>Badezimmer</source></trans-unit>
+      <trans-unit id="host.size_sqm"><source>Wohnfläche in m²</source></trans-unit>
+      <trans-unit id="host.units"><source>Anzahl Einheiten / Zimmer</source></trans-unit>
+      <trans-unit id="host.season_info"><source>Saisonhinweis</source></trans-unit>
+      <trans-unit id="host.capacity_note"><source>Kapazitätshinweis</source></trans-unit>
+      <trans-unit id="host.classification_text"><source>Klassifizierung / Zertifikat</source></trans-unit>
+      <trans-unit id="host.equipment_text"><source>Ausstattungstext</source></trans-unit>
+      <trans-unit id="host.seo_title"><source>SEO-Titel</source></trans-unit>
+      <trans-unit id="host.meta_description"><source>Meta-Beschreibung</source></trans-unit>
+      <trans-unit id="host.og_title"><source>Social-Media-Titel</source></trans-unit>
+      <trans-unit id="host.og_description"><source>Social-Media-Beschreibung</source></trans-unit>
+      <trans-unit id="host.noindex"><source>Detailseite nicht indexieren</source></trans-unit>
+      <trans-unit id="category.icon"><source>Merkmal-Icon</source></trans-unit>
+      <trans-unit id="category.icon_class"><source>Icon-CSS-Klasse</source></trans-unit>
+      <trans-unit id="category.icon_class.description"><source>Optional: Bootstrap Icons, Font Awesome oder eigene Sitepackage-Klasse.</source></trans-unit>
+      <trans-unit id="category.top_feature"><source>Als Top-Merkmal anzeigen</source></trans-unit>
+      <trans-unit id="category.top_feature.description"><source>Wird in der Detailansicht direkt unter dem Bild-Hero prominent angezeigt.</source></trans-unit>
+      <trans-unit id="category.hide_filter"><source>Im Filter ausblenden</source></trans-unit>
+      <trans-unit id="category.hide_filter.description"><source>Kategorie bleibt am Gastgeber nutzbar, wird aber nicht als Filter angezeigt.</source></trans-unit>
+      <trans-unit id="category.is_filter_group"><source>Als Filtergruppe behandeln</source></trans-unit>
+      <trans-unit id="category.is_filter_group.description"><source>Nur für Organisationskategorien wie Merkmale, Gastgeber-Art oder Zielgruppen.</source></trans-unit>
+    </body>
+  </file>
+</xliff>

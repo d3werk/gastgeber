@@ -1,0 +1,18 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<div class="gastgeber-filter-sidebar">
+    <div class="gastgeber-filter-sidebar__head">
+        <div class="gastgeber-kicker">Suchen &amp; Buchen</div>
+        <h2>{settings.filterHeadline -> f:or(alternative: settings.headline) -> f:or(alternative: 'Unterkunft filtern')}</h2>
+        <f:if condition="{settings.filterIntroText}"><p>{settings.filterIntroText}</p></f:if>
+    </div>
+    <f:if condition="{activeCategories}">
+        <f:link.action action="list" arguments="{view: viewMode}" class="gastgeber-filter-sidebar__reset">{settings.resetLabel -> f:or(alternative: 'Alle Filter zurücksetzen')}</f:link.action>
+    </f:if>
+    <f:for each="{filterGroups}" as="group">
+        <div class="gastgeber-filter-group">
+            <h3>{group.title}</h3>
+            <f:render partial="Filter/SidebarItems" arguments="{items: group.items, viewMode: viewMode}" />
+        </div>
+    </f:for>
+</div>
+</html>

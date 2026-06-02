@@ -1,0 +1,27 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:g="http://typo3.org/ns/D3Werk/Gastgeber/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="Default" />
+<f:section name="Main">
+    <section class="gastgeber-list">
+        <div class="gastgeber-list__hero">
+            <div>
+                <div class="gastgeber-kicker">Ergebnisse</div>
+                <h2 class="gastgeber-list__headline">Darstellung der Ergebnisse</h2>
+            </div>
+            <f:if condition="{settings.showViewSwitch}">
+                <f:render partial="List/ViewSwitch" arguments="{viewMode: viewMode, activeCategories: activeCategories}" />
+            </f:if>
+        </div>
+
+        <div class="gastgeber-layout">
+            <f:if condition="{settings.showFilter}">
+                <aside class="gastgeber-layout__filter">
+                    <f:render partial="Filter/Sidebar" arguments="{filterGroups: filterGroups, activeCategories: activeCategories, settings: settings, viewMode: viewMode}" />
+                </aside>
+            </f:if>
+            <main class="gastgeber-layout__results">
+                <f:render partial="List/Results" arguments="{hosts: hosts, viewMode: viewMode, settings: settings}" />
+            </main>
+        </div>
+    </section>
+</f:section>
+</html>

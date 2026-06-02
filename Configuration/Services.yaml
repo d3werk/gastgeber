@@ -1,0 +1,14 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  D3Werk\Gastgeber\:
+    resource: '../Classes/*'
+
+  D3Werk\Gastgeber\Command\CreateCategoriesCommand:
+    tags:
+      - name: 'console.command'
+        command: 'gastgeber:categories:create'
+        description: 'Legt den Gastgeber-Kategoriebaum mit Unterkunftsarten, Klassifizierung, Merkmalen und Zielgruppen an.'

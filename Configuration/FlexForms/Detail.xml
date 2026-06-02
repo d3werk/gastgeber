@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<T3DataStructure>
+    <sheets>
+        <sDEF>
+            <ROOT>
+                <type>array</type>
+                <el>
+                    <settings.storagePid>
+                        <label>Datensatz-Ordner der Gastgeber</label>
+                        <config><type>group</type><allowed>pages</allowed><size>1</size><maxitems>99</maxitems></config>
+                    </settings.storagePid>
+                    <settings.listPid>
+                        <label>Übersichtsseite für Zurück-Link</label>
+                        <config><type>group</type><allowed>pages</allowed><size>1</size><maxitems>1</maxitems></config>
+                    </settings.listPid>
+                </el>
+            </ROOT>
+        </sDEF>
+        <display>
+            <ROOT>
+                <type>array</type>
+                <el>
+                    <settings.topFeaturesLimit>
+                        <label>Anzahl Top-Merkmale unter dem Hero</label>
+                        <config><type>number</type><default>8</default></config>
+                    </settings.topFeaturesLimit>
+                    <settings.visibleFeaturesLimit>
+                        <label>Sichtbare Ausstattungsmerkmale vor Modal</label>
+                        <config><type>number</type><default>6</default></config>
+                    </settings.visibleFeaturesLimit>
+                </el>
+            </ROOT>
+        </display>
+    </sheets>
+</T3DataStructure>

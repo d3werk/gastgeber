@@ -1,0 +1,9 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<section class="gastgeber-detail-section">
+    <h3>Über diese Unterkunft</h3>
+    <f:if condition="{host.description}">
+        <f:then><div class="gastgeber-richtext" itemprop="description"><f:format.html>{host.description}</f:format.html></div></f:then>
+        <f:else><f:if condition="{host.teaser}"><div class="gastgeber-richtext"><f:format.html>{host.teaser}</f:format.html></div></f:if></f:else>
+    </f:if>
+</section>
+</html>

@@ -1,0 +1,9 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:g="http://typo3.org/ns/D3Werk/Gastgeber/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:if condition="{host.showOnMap} &amp;&amp; {host.hasCoordinates}">
+    <section class="gastgeber-detail-section gastgeber-detail-section--full">
+        <h3>Lage</h3>
+        <div class="gastgeber-map" data-gastgeber-map="1" data-zoom="{settings.map.zoom}" data-lat="{host.latitude}" data-lng="{host.longitude}" data-tile-url="{settings.map.tileUrl}" data-attribution="{settings.map.attribution}"></div>
+        <script type="application/json" class="gastgeber-map-markers">{g:mapMarkers(host: host)}</script>
+    </section>
+</f:if>
+</html>

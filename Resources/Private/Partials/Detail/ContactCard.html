@@ -1,0 +1,15 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<div class="gastgeber-contact-card">
+    <h3>Anfragen / Buchen</h3>
+    <f:if condition="{host.bookingText}"><div class="gastgeber-contact-card__text"><f:format.html>{host.bookingText}</f:format.html></div></f:if>
+    <div class="gastgeber-contact-card__actions">
+        <f:if condition="{host.bookingUrl}"><f:link.typolink parameter="{host.bookingUrl}" class="btn btn-primary gastgeber-button">Jetzt anfragen</f:link.typolink></f:if>
+        <f:if condition="{host.website}"><f:link.typolink parameter="{host.website}" class="btn btn-outline-primary gastgeber-button gastgeber-button--outline">Webseite öffnen</f:link.typolink></f:if>
+    </div>
+    <dl class="gastgeber-contact-list">
+        <f:if condition="{host.phone}"><div><dt>Telefon</dt><dd><a href="tel:{host.phone}">{host.phone}</a></dd></div></f:if>
+        <f:if condition="{host.email}"><div><dt>E-Mail</dt><dd><a href="mailto:{host.email}">{host.email}</a></dd></div></f:if>
+        <f:if condition="{host.addressLine}"><div><dt>Adresse</dt><dd itemprop="address">{host.addressLine}</dd></div></f:if>
+    </dl>
+</div>
+</html>
