@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+defined('TYPO3') or die();
 
-ExtensionManagementUtility::allowTableOnStandardPages('tx_gastgeber_domain_model_host');
+// Intentionally left blank for TYPO3 13/14.
+// Custom records are allowed on standard pages via TCA ctrl option
+// 'ignorePageTypeRestriction' in Configuration/TCA/tx_gastgeber_domain_model_host.php.

@@ -22,6 +22,7 @@ return [
         'searchFields' => 'title,teaser,description,street,zip,city,email,phone',
         'iconfile' => 'EXT:gastgeber/Resources/Public/Icons/Extension.svg',
         'sortby' => 'sorting',
+        'ignorePageTypeRestriction' => true,
     ],
     'types' => [
         '1' => [
