@@ -9,12 +9,13 @@
                 <f:render partial="Category/Badge" arguments="{category: categoryGroups.primaryCategory}" />
             </div>
         </f:if>
-
         <h2 class="gastgeber-detail__title h2 mb-0" itemprop="name">{newsItem.title}</h2>
     </div>
 
     <div class="gastgeber-detail-hero__media">
         <f:render partial="Detail/MediaHero" arguments="{newsItem: newsItem, starCategories: categoryGroups.starCategories}" />
     </div>
+
+    <f:render partial="Detail/TopFeatures" arguments="{categories: categoryGroups.topFeatureCategories}" />
 </header>
 </html>

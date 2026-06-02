@@ -75,6 +75,21 @@ final class CreateCategoriesCommand extends Command
         'TV im Zimmer / FW / FH' => 'gastgeber-icon--tv',
     ];
 
+    private const TOP_FEATURE_BY_TITLE = [
+        'WLAN' => true,
+        'Parkplatz' => true,
+        'Balkon' => true,
+        'Terrasse' => true,
+        'Garten / Wiese' => true,
+        'Sauna' => true,
+        'Hunde erlaubt' => true,
+        'Haustiere erlaubt' => true,
+        'Küche' => true,
+        'Geschirrspüler' => true,
+        'Rollstuhlgerecht / barrierefrei' => true,
+        'Familienfreundlich' => true,
+    ];
+
     private const CATEGORY_TREE = [
         'Gastgeber' => [
             'Gastgeber-Art' => [
@@ -235,6 +250,7 @@ final class CreateCategoriesCommand extends Command
         }
 
         $this->applyDefaultIconClass($uid, $title);
+        $this->applyDefaultTopFeatureFlag($uid, $title);
 
         $sorting = 10;
         foreach ($children as $childTitle => $grandChildren) {
@@ -269,6 +285,32 @@ final class CreateCategoriesCommand extends Command
                 $connection->update(
                     'sys_category',
                     ['tx_gastgeber_icon_css_class' => $iconClass, 'tstamp' => time()],
+                    ['uid' => $uid]
+                );
+            }
+        } catch (\Throwable) {
+            // Die Kategorieanlage soll auch funktionieren, falls die Datenbankspalten noch nicht aktualisiert wurden.
+        }
+    }
+
+    private function applyDefaultTopFeatureFlag(int $uid, string $title): void
+    {
+        if ($uid <= 0 || !isset(self::TOP_FEATURE_BY_TITLE[$title])) {
+            return;
+        }
+
+        try {
+            $connection = $this->connectionPool->getConnectionForTable('sys_category');
+            $currentValue = $connection->select(
+                ['tx_gastgeber_top_feature'],
+                'sys_category',
+                ['uid' => $uid]
+            )->fetchOne();
+
+            if ((int)($currentValue ?: 0) === 0) {
+                $connection->update(
+                    'sys_category',
+                    ['tx_gastgeber_top_feature' => 1, 'tstamp' => time()],
                     ['uid' => $uid]
                 );
             }
@@ -313,11 +355,14 @@ final class CreateCategoriesCommand extends Command
         if (isset(self::ICON_CLASS_BY_TITLE[$title])) {
             $data['tx_gastgeber_icon_css_class'] = self::ICON_CLASS_BY_TITLE[$title];
         }
+        if (isset(self::TOP_FEATURE_BY_TITLE[$title])) {
+            $data['tx_gastgeber_top_feature'] = 1;
+        }
 
         try {
             $connection->insert('sys_category', $data);
         } catch (\Throwable) {
-            unset($data['tx_gastgeber_icon_css_class']);
+            unset($data['tx_gastgeber_icon_css_class'], $data['tx_gastgeber_top_feature']);
             $connection->insert('sys_category', $data);
         }
 

@@ -1,39 +1,55 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 <f:if condition="{newsItem.mediaPreviews}">
     <f:then>
-        <f:alias map="{mediaElement: newsItem.mediaPreviews.0}">
-            <figure class="gastgeber-detail__figure gastgeber-detail-hero__figure ratio ratio-16x9 mb-0 overflow-hidden position-relative">
-                <f:if condition="{mediaElement.originalResource.type} == 2">
-                    <f:image image="{mediaElement}"
-                             class="object-fit-cover"
-                             title="{mediaElement.originalResource.title}"
-                             alt="{f:if(condition: mediaElement.originalResource.alternative, then: mediaElement.originalResource.alternative, else: newsItem.title)}"
-                             loading="eager"
-                             maxWidth="1600"
-                             maxHeight="1100" />
-                </f:if>
-                <f:if condition="{mediaElement.originalResource.type} == 4">
-                    <f:render partial="Detail/MediaVideo" arguments="{mediaElement: mediaElement}" />
-                </f:if>
-                <f:if condition="{mediaElement.originalResource.type} == 5">
-                    <f:image image="{mediaElement}"
-                             class="object-fit-cover"
-                             title="{mediaElement.originalResource.title}"
-                             alt="{f:if(condition: mediaElement.originalResource.alternative, then: mediaElement.originalResource.alternative, else: newsItem.title)}"
-                             loading="eager"
-                             maxWidth="1600"
-                             maxHeight="1100" />
-                </f:if>
-
-                <f:if condition="{starCategories}">
-                    <div class="gastgeber-detail__rating" aria-label="Klassifizierung">
-                        <f:for each="{starCategories}" as="category">
-                            <f:render partial="Category/Badge" arguments="{category: category}" />
+        <f:variable name="imageCount" value="{f:count(subject: newsItem.mediaPreviews)}" />
+        <div class="gastgeber-detail-gallery position-relative">
+            <f:if condition="{imageCount} > 1">
+                <f:then>
+                    <div class="gastgeber-detail-gallery__grid">
+                        <f:for each="{newsItem.mediaPreviews}" as="mediaElement" iteration="mediaIterator">
+                            <f:if condition="{mediaIterator.index} == 0">
+                                <figure class="gastgeber-detail-gallery__main mb-0 overflow-hidden position-relative">
+                                    <f:render section="media" arguments="{mediaElement: mediaElement, newsItem: newsItem, loading: 'eager'}" />
+                                    <f:if condition="{starCategories}">
+                                        <div class="gastgeber-detail__rating" aria-label="Klassifizierung">
+                                            <f:for each="{starCategories}" as="category">
+                                                <f:render partial="Category/Badge" arguments="{category: category}" />
+                                            </f:for>
+                                        </div>
+                                    </f:if>
+                                </figure>
+                            </f:if>
+                            <f:if condition="{mediaIterator.index}">
+                                <f:if condition="{mediaIterator.index} &lt; 5">
+                                    <figure class="gastgeber-detail-gallery__thumb mb-0 overflow-hidden">
+                                        <f:render section="media" arguments="{mediaElement: mediaElement, newsItem: newsItem, loading: 'lazy'}" />
+                                    </figure>
+                                </f:if>
+                            </f:if>
                         </f:for>
                     </div>
-                </f:if>
-            </figure>
-        </f:alias>
+                    <button type="button" class="btn btn-light gastgeber-detail-gallery__button" data-bs-toggle="modal" data-bs-target="#gastgeber-gallery-modal-{newsItem.uid}">
+                        <span aria-hidden="true">▦</span>
+                        <span class="ms-2"><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:gallery.showAll" arguments="{0: imageCount}" /></span>
+                    </button>
+                    <f:render partial="Detail/GalleryModal" arguments="{newsItem: newsItem, mediaItems: newsItem.mediaPreviews}" />
+                </f:then>
+                <f:else>
+                    <f:alias map="{mediaElement: newsItem.mediaPreviews.0}">
+                        <figure class="gastgeber-detail__figure gastgeber-detail-hero__figure mb-0 overflow-hidden position-relative">
+                            <f:render section="media" arguments="{mediaElement: mediaElement, newsItem: newsItem, loading: 'eager'}" />
+                            <f:if condition="{starCategories}">
+                                <div class="gastgeber-detail__rating" aria-label="Klassifizierung">
+                                    <f:for each="{starCategories}" as="category">
+                                        <f:render partial="Category/Badge" arguments="{category: category}" />
+                                    </f:for>
+                                </div>
+                            </f:if>
+                        </figure>
+                    </f:alias>
+                </f:else>
+            </f:if>
+        </div>
     </f:then>
     <f:else>
         <div class="gastgeber-detail-hero__placeholder border bg-body-tertiary d-flex align-items-center justify-content-center text-muted position-relative">
@@ -48,4 +64,28 @@
         </div>
     </f:else>
 </f:if>
+
+<f:section name="media">
+    <f:if condition="{mediaElement.originalResource.type} == 2">
+        <f:image image="{mediaElement}"
+                 class="gastgeber-detail-gallery__image"
+                 title="{mediaElement.originalResource.title}"
+                 alt="{f:if(condition: mediaElement.originalResource.alternative, then: mediaElement.originalResource.alternative, else: newsItem.title)}"
+                 loading="{loading}"
+                 maxWidth="1600"
+                 maxHeight="1100" />
+    </f:if>
+    <f:if condition="{mediaElement.originalResource.type} == 4">
+        <f:render partial="Detail/MediaVideo" arguments="{mediaElement: mediaElement}" />
+    </f:if>
+    <f:if condition="{mediaElement.originalResource.type} == 5">
+        <f:image image="{mediaElement}"
+                 class="gastgeber-detail-gallery__image"
+                 title="{mediaElement.originalResource.title}"
+                 alt="{f:if(condition: mediaElement.originalResource.alternative, then: mediaElement.originalResource.alternative, else: newsItem.title)}"
+                 loading="{loading}"
+                 maxWidth="1600"
+                 maxHeight="1100" />
+    </f:if>
+</f:section>
 </html>

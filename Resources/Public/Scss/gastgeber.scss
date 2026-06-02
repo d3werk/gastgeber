@@ -1303,3 +1303,271 @@
     width: 25%;
   }
 }
+
+/* Professionelles Listing mit linker Filterspalte. */
+.gastgeber-directory {
+  align-items: flex-start;
+}
+
+.gastgeber-filter-sidebar {
+  border-radius: 0;
+  position: sticky;
+  top: 1.5rem;
+}
+
+.gastgeber-filter-sidebar__headline {
+  color: var(--bs-primary, #8b3a96);
+}
+
+.gastgeber-filter-sidebar__group + .gastgeber-filter-sidebar__group {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(0, 0, 0, .08);
+}
+
+.gastgeber-filter-sidebar__group-title {
+  color: var(--bs-primary, #8b3a96);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-size: .78rem;
+  margin-bottom: .65rem;
+}
+
+.gastgeber-filter-sidebar__item + .gastgeber-filter-sidebar__item {
+  margin-top: .35rem;
+}
+
+.gastgeber-filter-sidebar__link {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  color: #2b2b2b;
+  text-decoration: none;
+  line-height: 1.25;
+  padding: .4rem .45rem;
+  border: 1px solid transparent;
+  border-radius: 0;
+}
+
+.gastgeber-filter-sidebar__link:hover,
+.gastgeber-filter-sidebar__link:focus,
+.gastgeber-filter-sidebar__link.is-active {
+  color: var(--bs-primary, #8b3a96);
+  border-color: rgba(139, 58, 150, .25);
+  background-color: rgba(139, 58, 150, .08);
+}
+
+.gastgeber-filter-sidebar__box {
+  width: 1.05rem;
+  height: 1.05rem;
+  border: 1px solid currentColor;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.gastgeber-filter-sidebar__link.is-active .gastgeber-filter-sidebar__box::after {
+  content: "✓";
+  font-size: .8rem;
+  line-height: 1;
+}
+
+.gastgeber-filter-sidebar__children {
+  margin-top: .35rem;
+  margin-left: 1.3rem;
+  padding-left: .75rem;
+  border-left: 1px solid rgba(0, 0, 0, .08);
+}
+
+.gastgeber-filter-sidebar .gastgeber-category-icon,
+.gastgeber-card-feature-list .gastgeber-category-icon,
+.gastgeber-detail-top-features .gastgeber-category-icon,
+.gastgeber-feature-modal-list .gastgeber-category-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex: 0 0 1.25rem;
+}
+
+@media (max-width: 991.98px) {
+  .gastgeber-filter-sidebar {
+    position: static;
+  }
+}
+
+/* Icons und Merkmale in Cards und Listen. */
+.gastgeber-card-feature-list {
+  color: #2f2f2f;
+}
+
+.gastgeber-card-feature-list__item {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .25rem .45rem;
+  border: 1px solid rgba(0, 0, 0, .1);
+  background: #fff;
+  font-size: .875rem;
+  line-height: 1.2;
+}
+
+.gastgeber-card-feature-list__icon {
+  display: inline-flex;
+  color: var(--bs-primary, #8b3a96);
+}
+
+.gastgeber-card--list .gastgeber-card-feature-list {
+  margin-bottom: .75rem !important;
+}
+
+/* Bild-Hero als Galerie mit Button und Modal. */
+.gastgeber-detail-gallery__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(18rem, .9fr) minmax(18rem, .9fr);
+  grid-auto-rows: minmax(11rem, 16rem);
+  gap: .5rem;
+}
+
+.gastgeber-detail-gallery__main {
+  grid-row: span 2;
+}
+
+.gastgeber-detail-gallery__main,
+.gastgeber-detail-gallery__thumb,
+.gastgeber-detail__figure,
+.gastgeber-detail-hero__placeholder {
+  min-height: 18rem;
+  background: #f5f5f5;
+}
+
+.gastgeber-detail-gallery__image,
+.gastgeber-gallery-modal__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gastgeber-detail-gallery__thumb .gastgeber-detail-gallery__image {
+  min-height: 100%;
+}
+
+.gastgeber-detail-gallery__button {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 3;
+  border-radius: 0;
+  box-shadow: 0 .35rem 1rem rgba(0, 0, 0, .18);
+}
+
+.gastgeber-detail__rating {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 4;
+}
+
+.gastgeber-detail__rating .gastgeber-category-badge--stars {
+  font-size: 1rem;
+  padding: .5rem .8rem;
+  box-shadow: 0 .35rem 1rem rgba(0, 0, 0, .18);
+}
+
+.gastgeber-gallery-modal__figure {
+  background: #f5f5f5;
+}
+
+.gastgeber-gallery-modal__image {
+  height: auto;
+  max-height: 70vh;
+  object-fit: contain;
+}
+
+/* Top-Merkmale unter dem Hero. */
+.gastgeber-detail-top-features__item {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  padding: .7rem .9rem;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, .1);
+  box-shadow: 0 .15rem .6rem rgba(0, 0, 0, .04);
+}
+
+.gastgeber-detail-top-features__icon {
+  color: var(--bs-primary, #8b3a96);
+  display: inline-flex;
+}
+
+.gastgeber-detail-top-features__label {
+  font-weight: 600;
+}
+
+/* Detail-Merkmale, Preview und Modal. */
+.gastgeber-detail-feature-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .9rem 1.4rem;
+}
+
+.gastgeber-detail-feature-list__item,
+.gastgeber-feature-modal-list__item {
+  display: flex;
+  align-items: flex-start;
+  gap: .75rem;
+  color: #2f2f2f;
+}
+
+.gastgeber-detail-feature-list__icon,
+.gastgeber-feature-modal-list__icon {
+  color: var(--bs-primary, #8b3a96);
+  display: inline-flex;
+  margin-top: .1rem;
+}
+
+.gastgeber-detail-feature-list__label,
+.gastgeber-feature-modal-list__label {
+  font-weight: 600;
+}
+
+.gastgeber-detail-feature-list__more {
+  border-radius: 0;
+}
+
+.gastgeber-modal .modal-content,
+.gastgeber-modal .btn-close {
+  border-radius: 0;
+}
+
+@media (max-width: 1199.98px) {
+  .gastgeber-detail-gallery__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(14rem, .7fr);
+    grid-auto-rows: minmax(9rem, 13rem);
+  }
+}
+
+@media (max-width: 767.98px) {
+  .gastgeber-detail-gallery__grid {
+    display: block;
+  }
+
+  .gastgeber-detail-gallery__main,
+  .gastgeber-detail__figure,
+  .gastgeber-detail-hero__placeholder {
+    min-height: 15rem;
+  }
+
+  .gastgeber-detail-gallery__thumb {
+    display: none;
+  }
+
+  .gastgeber-detail-gallery__button {
+    right: .75rem;
+    bottom: .75rem;
+  }
+
+  .gastgeber-detail-feature-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

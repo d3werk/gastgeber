@@ -1,15 +1,15 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
       xmlns:g="http://typo3.org/ns/D3Werk/Gastgeber/ViewHelpers"
       data-namespace-typo3-fluid="true">
-<f:variable name="categoryGroups" value="{g:categoryGroup(categories: newsItem.categories, fallback: newsItem.firstCategory)}" />
+<f:variable name="categoryGroups" value="{g:categoryGroup(categories: newsItem.categories, fallback: newsItem.firstCategory, limit: 6)}" />
 <f:if condition="{categoryGroups.featureCategories} || {newsItem.txGastgeberEquipment}">
-    <section class="gastgeber-detail__section card border-0 shadow-sm">
+    <section class="gastgeber-detail__section gastgeber-detail__section--features card border-0 shadow-sm">
         <div class="card-body p-4 p-lg-5">
             <h2 class="h3 mb-4"><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:features" /></h2>
 
-            <f:if condition="{categoryGroups.featureCategories}">
+            <f:if condition="{categoryGroups.visibleFeatureCategories}">
                 <ul class="gastgeber-detail-feature-list list-unstyled mb-4">
-                    <f:for each="{categoryGroups.featureCategories}" as="category">
+                    <f:for each="{categoryGroups.visibleFeatureCategories}" as="category">
                         <li class="gastgeber-detail-feature-list__item">
                             <f:variable name="categoryIcon" value="{g:categoryIcon(category: category)}" />
                             <span class="gastgeber-detail-feature-list__icon" aria-hidden="true">
@@ -19,6 +19,14 @@
                         </li>
                     </f:for>
                 </ul>
+            </f:if>
+
+            <f:if condition="{categoryGroups.hasFeatureModal}">
+                <button type="button" class="btn btn-outline-primary gastgeber-detail-feature-list__more mb-4" data-bs-toggle="modal" data-bs-target="#gastgeber-features-modal-{newsItem.uid}">
+                    <span class="gastgeber-detail-feature-list__more-icon" aria-hidden="true">▦</span>
+                    <span class="ms-2"><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:features.showAll" arguments="{0: categoryGroups.featureCount}" /></span>
+                </button>
+                <f:render partial="Detail/FeatureModal" arguments="{newsItem: newsItem, categories: categoryGroups.featureCategories}" />
             </f:if>
 
             <f:if condition="{newsItem.txGastgeberEquipment}">

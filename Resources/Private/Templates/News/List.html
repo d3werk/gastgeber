@@ -11,7 +11,34 @@
     <f:if condition="{settings.gastgeber.showIntegratedFilter}">
         <f:then>
             <f:variable name="gastgeberFilter" value="{g:filterData(rootCategoryUids: settings.gastgeber.filterRootCategoryUids, categoryConjunction: settings.gastgeber.filterCategoryConjunction, targetPid: contentObjectData.pid, showRootCategories: settings.gastgeber.filterShowRootCategories)}" />
-            <f:render partial="Filter/Combined" arguments="{categoryTree: gastgeberFilter.categoryTree, selectedCategoryCount: gastgeberFilter.selectedCategoryCount, targetPid: gastgeberFilter.targetPid, categoryConjunction: gastgeberFilter.categoryConjunction, headline: settings.gastgeber.filterHeadline, introText: settings.gastgeber.filterIntroText, resetLabel: settings.gastgeber.filterResetLabel, showRootCategories: gastgeberFilter.showRootCategories, showViewSwitch: settings.gastgeber.showViewSwitch, panelExpanded: settings.gastgeber.filterPanelExpanded, selectedView: gastgeberView, contentUid: contentObjectData.uid}" />
+
+            <div class="gastgeber-directory row g-4 g-xl-5 align-items-start">
+                <div class="col-12 col-lg-4 col-xl-3">
+                    <f:render partial="Filter/Sidebar" arguments="{categoryTree: gastgeberFilter.categoryTree, selectedCategoryCount: gastgeberFilter.selectedCategoryCount, targetPid: gastgeberFilter.targetPid, categoryConjunction: gastgeberFilter.categoryConjunction, headline: settings.gastgeber.filterHeadline, introText: settings.gastgeber.filterIntroText, resetLabel: settings.gastgeber.filterResetLabel, showRootCategories: gastgeberFilter.showRootCategories, selectedView: gastgeberView}" />
+                </div>
+
+                <div class="col-12 col-lg-8 col-xl-9">
+                    <f:if condition="{settings.gastgeber.showViewSwitch}">
+                        <div class="gastgeber-toolbar gastgeber-results-header card border-0 shadow-sm mb-4">
+                            <div class="card-body p-4">
+                                <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                                    <div>
+                                        <p class="gastgeber-filter__eyebrow gastgeber-results-header__eyebrow mb-2">
+                                            <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:toolbar.eyebrow" />
+                                        </p>
+                                        <h2 class="h3 gastgeber-filter__headline gastgeber-results-header__headline mb-0">
+                                            <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:toolbar.resultView" />
+                                        </h2>
+                                    </div>
+                                    <f:render partial="View/Switch" arguments="{pageUid: contentObjectData.pid, selectedView: gastgeberView}" />
+                                </div>
+                            </div>
+                        </div>
+                    </f:if>
+
+                    <f:render partial="List/Results" arguments="{news: news, pagination: pagination, settings: settings, gastgeberView: gastgeberView, contentObjectData: contentObjectData}" />
+                </div>
+            </div>
         </f:then>
         <f:else>
             <f:if condition="{settings.gastgeber.showViewSwitch}">
@@ -35,75 +62,7 @@
                     </div>
                 </div>
             </f:if>
-        </f:else>
-    </f:if>
-    <f:if condition="{news}">
-        <f:then>
-            <div class="gastgeber-list news-list-view is-view-{gastgeberView}" id="news-container-{contentObjectData.uid}">
-                <f:if condition="{gastgeberView} == 'map'">
-                    <f:then>
-                        <f:if condition="{settings.hidePagination}">
-                            <f:then>
-                                <f:render partial="Map/View" arguments="{items: news, settings: settings}" />
-                            </f:then>
-                            <f:else>
-                                <f:render partial="Map/View" arguments="{items: pagination.paginator.paginatedItems, settings: settings}" />
-                            </f:else>
-                        </f:if>
-                    </f:then>
-                    <f:else>
-                        <div class="row g-4 gastgeber-list__items">
-                            <f:if condition="{settings.hidePagination}">
-                                <f:then>
-                                    <f:for each="{news}" as="newsItem" iteration="iterator">
-                                        <f:if condition="{gastgeberView} == 'list'">
-                                            <f:then>
-                                                <div class="col-12">
-                                                    <f:render partial="List/Item" arguments="{newsItem: newsItem, settings: settings, iterator: iterator, viewMode: 'list'}" />
-                                                </div>
-                                            </f:then>
-                                            <f:else>
-                                                <div class="col-12 col-md-6 col-xl-4">
-                                                    <f:render partial="List/Item" arguments="{newsItem: newsItem, settings: settings, iterator: iterator, viewMode: 'cards'}" />
-                                                </div>
-                                            </f:else>
-                                        </f:if>
-                                    </f:for>
-                                </f:then>
-                                <f:else>
-                                    <f:for each="{pagination.paginator.paginatedItems}" as="newsItem" iteration="iterator">
-                                        <f:if condition="{gastgeberView} == 'list'">
-                                            <f:then>
-                                                <div class="col-12">
-                                                    <f:render partial="List/Item" arguments="{newsItem: newsItem, settings: settings, iterator: iterator, viewMode: 'list'}" />
-                                                </div>
-                                            </f:then>
-                                            <f:else>
-                                                <div class="col-12 col-md-6 col-xl-4">
-                                                    <f:render partial="List/Item" arguments="{newsItem: newsItem, settings: settings, iterator: iterator, viewMode: 'cards'}" />
-                                                </div>
-                                            </f:else>
-                                        </f:if>
-                                    </f:for>
-                                </f:else>
-                            </f:if>
-                        </div>
-                    </f:else>
-                </f:if>
-
-                <f:if condition="{settings.hidePagination}">
-                    <f:else>
-                        <f:if condition="{settings.list.paginate.insertBelow}">
-                            <f:render partial="List/Pagination" arguments="{pagination: pagination.pagination, paginator: pagination.paginator}" />
-                        </f:if>
-                    </f:else>
-                </f:if>
-            </div>
-        </f:then>
-        <f:else>
-            <div class="alert alert-info gastgeber-empty" role="status">
-                <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:noHostsFound" />
-            </div>
+            <f:render partial="List/Results" arguments="{news: news, pagination: pagination, settings: settings, gastgeberView: gastgeberView, contentObjectData: contentObjectData}" />
         </f:else>
     </f:if>
     <!--TYPO3SEARCH_begin-->

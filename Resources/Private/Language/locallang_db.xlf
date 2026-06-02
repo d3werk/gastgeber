@@ -64,6 +64,8 @@
       <trans-unit id="sys_category.tx_gastgeber_icon.add"><source>Icon auswählen oder hochladen</source></trans-unit>
       <trans-unit id="sys_category.tx_gastgeber_icon_css_class"><source>Icon-CSS-Klasse</source></trans-unit>
       <trans-unit id="sys_category.tx_gastgeber_icon_css_class.description"><source>Optional als Alternative zum Upload, z. B. Bootstrap Icons, Font Awesome oder eigene Sitepackage-Klasse. Wird nur sichtbar, wenn die passende Icon-Bibliothek/CSS geladen ist.</source></trans-unit>
+      <trans-unit id="sys_category.tx_gastgeber_top_feature"><source>Als Top-Merkmal in Detailansicht anzeigen</source></trans-unit>
+      <trans-unit id="sys_category.tx_gastgeber_top_feature.description"><source>Aktivieren, wenn dieses Merkmal prominent direkt unter dem Bild-Hero der Gastgeber-Detailseite erscheinen soll.</source></trans-unit>
       <trans-unit id="sys_category.tx_gastgeber_filter_hidden"><source>Im Gastgeber-Filter ausblenden</source></trans-unit>
       <trans-unit id="sys_category.tx_gastgeber_filter_hidden.description"><source>Die Kategorie bleibt für Datensätze nutzbar, wird aber im Frontend-Filtermenü nicht angezeigt.</source></trans-unit>
 

@@ -1,0 +1,31 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:g="http://typo3.org/ns/D3Werk/Gastgeber/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+<div class="modal fade gastgeber-modal" id="gastgeber-features-modal-{newsItem.uid}" tabindex="-1" aria-labelledby="gastgeber-features-modal-title-{newsItem.uid}" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title h4" id="gastgeber-features-modal-title-{newsItem.uid}">
+                    <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:features.all" />
+                </h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="gastgeber-feature-modal-list list-unstyled row g-3 mb-0">
+                    <f:for each="{categories}" as="category">
+                        <li class="col-12 col-md-6">
+                            <div class="gastgeber-feature-modal-list__item">
+                                <f:variable name="categoryIcon" value="{g:categoryIcon(category: category)}" />
+                                <span class="gastgeber-feature-modal-list__icon" aria-hidden="true">
+                                    <f:render partial="Category/Icon" arguments="{iconUrl: categoryIcon.url, iconCssClass: categoryIcon.cssClass, title: category.title}" />
+                                </span>
+                                <span class="gastgeber-feature-modal-list__label">{category.title}</span>
+                            </div>
+                        </li>
+                    </f:for>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

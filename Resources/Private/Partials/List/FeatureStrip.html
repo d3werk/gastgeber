@@ -1,0 +1,17 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:g="http://typo3.org/ns/D3Werk/Gastgeber/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+<f:if condition="{categories}">
+    <ul class="gastgeber-card-feature-list list-unstyled d-flex flex-wrap gap-2 mb-3" aria-label="Merkmale">
+        <f:for each="{categories}" as="category">
+            <li class="gastgeber-card-feature-list__item">
+                <f:variable name="categoryIcon" value="{g:categoryIcon(category: category)}" />
+                <span class="gastgeber-card-feature-list__icon" aria-hidden="true">
+                    <f:render partial="Category/Icon" arguments="{iconUrl: categoryIcon.url, iconCssClass: categoryIcon.cssClass, title: category.title}" />
+                </span>
+                <span class="gastgeber-card-feature-list__label">{category.title}</span>
+            </li>
+        </f:for>
+    </ul>
+</f:if>
+</html>

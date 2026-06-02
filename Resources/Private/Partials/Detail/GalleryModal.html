@@ -1,0 +1,48 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<div class="modal fade gastgeber-modal gastgeber-gallery-modal" id="gastgeber-gallery-modal-{newsItem.uid}" tabindex="-1" aria-labelledby="gastgeber-gallery-modal-title-{newsItem.uid}" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title h4" id="gastgeber-gallery-modal-title-{newsItem.uid}">
+                    <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:gallery.allImages" />
+                </h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-3">
+                    <f:for each="{mediaItems}" as="mediaElement">
+                        <div class="col-12 col-md-6">
+                            <figure class="gastgeber-gallery-modal__figure mb-0">
+                                <f:if condition="{mediaElement.originalResource.type} == 2">
+                                    <f:image image="{mediaElement}"
+                                             class="gastgeber-gallery-modal__image"
+                                             title="{mediaElement.originalResource.title}"
+                                             alt="{f:if(condition: mediaElement.originalResource.alternative, then: mediaElement.originalResource.alternative, else: newsItem.title)}"
+                                             loading="lazy"
+                                             maxWidth="1200"
+                                             maxHeight="900" />
+                                </f:if>
+                                <f:if condition="{mediaElement.originalResource.type} == 4">
+                                    <f:render partial="Detail/MediaVideo" arguments="{mediaElement: mediaElement}" />
+                                </f:if>
+                                <f:if condition="{mediaElement.originalResource.type} == 5">
+                                    <f:image image="{mediaElement}"
+                                             class="gastgeber-gallery-modal__image"
+                                             title="{mediaElement.originalResource.title}"
+                                             alt="{f:if(condition: mediaElement.originalResource.alternative, then: mediaElement.originalResource.alternative, else: newsItem.title)}"
+                                             loading="lazy"
+                                             maxWidth="1200"
+                                             maxHeight="900" />
+                                </f:if>
+                                <f:if condition="{mediaElement.originalResource.description}">
+                                    <figcaption class="gastgeber-gallery-modal__caption small text-body-secondary mt-2">{mediaElement.originalResource.description}</figcaption>
+                                </f:if>
+                            </figure>
+                        </div>
+                    </f:for>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

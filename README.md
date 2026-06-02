@@ -400,3 +400,11 @@ Wichtig:
 2. Die oberste Kategorie muss **Gastgeber** heißen.
 3. Im Reiter **Filter & Suche** kann das Feld **Filter-Wurzelkategorien** leer bleiben. Dann verwendet das Frontend automatisch den kompletten Gastgeber-Baum.
 4. Sollen nur bestimmte Gruppen angezeigt werden, z. B. nur **Merkmale**, **Gastgeber-Art** oder **Zielgruppen**, dann diese Elternkategorien auswählen, nicht einzelne Blatt-Merkmale.
+
+## UX-Erweiterung: Galerie, Merkmale und Filterspalte
+
+Die Detailansicht nutzt einen bildstarken Hero-Bereich. Bei mehreren Bildern wird ein Galerie-Layout erzeugt und über den Button „Alle Bilder anzeigen“ ein Bootstrap-Modal mit allen Bildern geöffnet. Die Bilder werden weiterhin über den Medien-Tab des News-/Gastgeber-Datensatzes gepflegt.
+
+Merkmale werden über `sys_category` gepflegt. Jede Kategorie kann im Reiter „Gastgeber-Filter“ ein eigenes Icon, eine Icon-CSS-Klasse und die Option „Als Top-Merkmal in Detailansicht anzeigen“ erhalten. Aktivierte Top-Merkmale erscheinen direkt unter dem Bild-Hero. In der Detailansicht werden zunächst sechs Merkmale angezeigt; bei mehr Merkmalen öffnet der Button „Alle Ausstattungsmerkmale anzeigen“ ein Modal mit der vollständigen Liste.
+
+Für die empfohlene Übersichtsseite sollte nur das Inhaltselement „Gastgeber: Übersicht / Liste“ verwendet werden. Dort kann der integrierte Filter aktiviert werden. Der Filter erscheint dann links neben der Ergebnisliste und arbeitet weiterhin mit `tx_news_pi1[overwriteDemand][categories]`.

@@ -34,5 +34,6 @@ CREATE TABLE tx_news_domain_model_news (
 CREATE TABLE sys_category (
   tx_gastgeber_icon int(11) unsigned DEFAULT '0' NOT NULL,
   tx_gastgeber_icon_css_class varchar(120) DEFAULT '' NOT NULL,
+  tx_gastgeber_top_feature tinyint(1) unsigned DEFAULT '0' NOT NULL,
   tx_gastgeber_filter_hidden tinyint(1) unsigned DEFAULT '0' NOT NULL
 );

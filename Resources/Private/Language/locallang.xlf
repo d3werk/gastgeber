@@ -41,6 +41,11 @@
       <trans-unit id="features"><source>Merkmale &amp; Ausstattung auf einen Blick</source></trans-unit>
       <trans-unit id="noImage"><source>Noch kein Bild hinterlegt</source></trans-unit>
       <trans-unit id="backToOverview"><source>Zurück zur Übersicht</source></trans-unit>
+      <trans-unit id="features.showAll"><source>Alle {0} Ausstattungsmerkmale anzeigen</source></trans-unit>
+      <trans-unit id="features.all"><source>Alle Ausstattungsmerkmale</source></trans-unit>
+      <trans-unit id="gallery.showAll"><source>Alle {0} Bilder anzeigen</source></trans-unit>
+      <trans-unit id="gallery.allImages"><source>Alle Bilder</source></trans-unit>
+      <trans-unit id="filter.sidebar.map"><source>Karte ansehen</source></trans-unit>
       <trans-unit id="hostNotFound"><source>Der Gastgeber wurde nicht gefunden.</source></trans-unit>
     </body>
   </file>

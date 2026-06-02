@@ -35,6 +35,16 @@ $additionalColumns = [
             'placeholder' => 'bi bi-wifi oder fa-solid fa-dog',
         ],
     ],
+    'tx_gastgeber_top_feature' => [
+        'exclude' => true,
+        'label' => $ll . 'sys_category.tx_gastgeber_top_feature',
+        'description' => $ll . 'sys_category.tx_gastgeber_top_feature.description',
+        'config' => [
+            'type' => 'check',
+            'renderType' => 'checkboxToggle',
+            'default' => 0,
+        ],
+    ],
     'tx_gastgeber_filter_hidden' => [
         'exclude' => true,
         'label' => $ll . 'sys_category.tx_gastgeber_filter_hidden',
@@ -51,7 +61,7 @@ ExtensionManagementUtility::addTCAcolumns('sys_category', $additionalColumns);
 
 $GLOBALS['TCA']['sys_category']['palettes']['gastgeberFeatureIcon'] = [
     'label' => $ll . 'palettes.gastgeberFeatureIcon',
-    'showitem' => 'tx_gastgeber_icon, --linebreak--, tx_gastgeber_icon_css_class, --linebreak--, tx_gastgeber_filter_hidden',
+    'showitem' => 'tx_gastgeber_icon, --linebreak--, tx_gastgeber_icon_css_class, --linebreak--, tx_gastgeber_top_feature, --linebreak--, tx_gastgeber_filter_hidden',
 ];
 
 ExtensionManagementUtility::addToAllTCAtypes(

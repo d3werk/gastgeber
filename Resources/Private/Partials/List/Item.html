@@ -75,6 +75,8 @@
             </p>
         </f:if>
 
+        <f:render partial="List/FeatureStrip" arguments="{categories: cardCategories.listPreviewCategories}" />
+
         <div class="gastgeber-card__facts d-flex flex-wrap gap-2 mb-3">
             <f:if condition="{newsItem.txGastgeberPriceFrom}">
                 <span class="badge text-bg-primary"><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:from" /> <f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator=".">{newsItem.txGastgeberPriceFrom}</f:format.currency></span>
