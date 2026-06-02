@@ -1,21 +1,6 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-      xmlns:g="http://typo3.org/ns/D3Werk/Gastgeber/ViewHelpers"
-      data-namespace-typo3-fluid="true">
-<f:variable name="categoryGroups" value="{g:categoryGroup(categories: newsItem.categories, fallback: newsItem.firstCategory)}" />
-<header class="gastgeber-detail-hero mb-5">
-    <div class="gastgeber-detail-hero__heading mb-3 mb-lg-4">
-        <f:if condition="{categoryGroups.primaryCategory}">
-            <div class="gastgeber-detail-hero__meta d-flex flex-wrap gap-2 mb-2">
-                <f:render partial="Category/Badge" arguments="{category: categoryGroups.primaryCategory}" />
-            </div>
-        </f:if>
-        <h2 class="gastgeber-detail__title h2 mb-0" itemprop="name">{newsItem.title}</h2>
-    </div>
-
-    <div class="gastgeber-detail-hero__media">
-        <f:render partial="Detail/MediaHero" arguments="{newsItem: newsItem, starCategories: categoryGroups.starCategories}" />
-    </div>
-
-    <f:render partial="Detail/TopFeatures" arguments="{categories: categoryGroups.topFeatureCategories}" />
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:g="http://typo3.org/ns/D3Werk/Gastgeber/ViewHelpers" data-namespace-typo3-fluid="true">
+<header class="gastgeber-detail-hero">
+    <h2 class="gastgeber-detail-hero__title" itemprop="name">{host.title}</h2>
+    <f:render partial="Detail/MediaHero" arguments="{host: host}" />
 </header>
 </html>

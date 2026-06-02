@@ -1,34 +1,27 @@
 {
   "name": "d3-werk/gastgeber",
-  "description": "Gastgeberanbieter mit Backend-pflegbaren Merkmal-Icons, Filtermenü, Listen-/Card-Ansicht und OpenStreetMap-Karte auf Basis von EXT:news für TYPO3 CMS.",
+  "description": "Eigenständige TYPO3-Erweiterung für Gastgeber, Unterkünfte, Filter, Karten, Galerien und Buchungs-/Anfrageansichten.",
   "license": "GPL-2.0-or-later",
   "type": "typo3-cms-extension",
   "keywords": [
     "TYPO3",
     "extension",
-    "news",
     "gastgeber",
-    "unterkunft",
-    "tourismus",
-    "filter",
-    "merkmale",
-    "sys-category",
-    "openstreetmap",
-    "leaflet",
-    "bootstrap"
+    "unterkuenfte",
+    "hotels",
+    "ferienwohnungen",
+    "openstreetmap"
   ],
   "authors": [
     {
-      "name": "d3-werk GmbH",
-      "homepage": "https://d3-werk.de",
+      "name": "d3-werk",
+      "homepage": "https://www.d3-werk.de",
       "role": "Developer"
     }
   ],
-  "homepage": "https://github.com/d3werk/gastgeber",
   "support": {
-    "issues": "https://github.com/d3werk/gastgeber/issues",
     "source": "https://github.com/d3werk/gastgeber",
-    "docs": "https://github.com/d3werk/gastgeber#readme"
+    "issues": "https://github.com/d3werk/gastgeber/issues"
   },
   "require": {
     "php": ">= 8.2 < 8.6",
@@ -38,27 +31,30 @@
     "typo3/cms-extbase": "^13.4.20 || ^14.0",
     "typo3/cms-fluid": "^13.4.20 || ^14.0",
     "typo3/cms-frontend": "^13.4.20 || ^14.0",
-    "typo3/cms-install": "^13.4.20 || ^14.0",
-    "georgringer/news": "^14.0"
-  },
-  "replace": {
-    "typo3-ter/gastgeber": "self.version"
+    "typo3/cms-install": "^13.4.20 || ^14.0"
   },
   "suggest": {
-    "bk2k/bootstrap-package": "Empfohlen für Bootstrap-5-Markup und die Nutzung im Bootstrap Package Sitepackage.",
-    "typo3/cms-seo": "Empfohlen für SEO-Funktionen und Sitemap-Unterstützung im TYPO3-Projekt."
+    "typo3/cms-seo": "SEO-Unterstützung für Seitentitel und Metadaten.",
+    "friendsoftypo3/content-blocks": "Für zusätzliche redaktionelle Inhaltsbausteine im Sitepackage."
   },
   "autoload": {
     "psr-4": {
       "D3Werk\\Gastgeber\\": "Classes/"
     }
   },
-  "config": {
-    "sort-packages": true
+  "replace": {
+    "typo3-ter/gastgeber": "self.version"
   },
   "extra": {
     "typo3/cms": {
       "extension-key": "gastgeber"
     }
+  },
+  "config": {
+    "allow-plugins": {
+      "typo3/class-alias-loader": true,
+      "typo3/cms-composer-installers": true
+    },
+    "sort-packages": true
   }
 }

@@ -1,19 +1,10 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-      xmlns:g="http://typo3.org/ns/D3Werk/Gastgeber/ViewHelpers"
-      data-namespace-typo3-fluid="true">
-<f:if condition="{categories}">
-    <section class="gastgeber-detail-top-features mt-4" aria-label="Top-Merkmale">
-        <ul class="gastgeber-detail-top-features__list list-unstyled d-flex flex-wrap gap-3 mb-0">
-            <f:for each="{categories}" as="category">
-                <li class="gastgeber-detail-top-features__item">
-                    <f:variable name="categoryIcon" value="{g:categoryIcon(category: category)}" />
-                    <span class="gastgeber-detail-top-features__icon" aria-hidden="true">
-                        <f:render partial="Category/Icon" arguments="{iconUrl: categoryIcon.url, iconCssClass: categoryIcon.cssClass, title: category.title}" />
-                    </span>
-                    <span class="gastgeber-detail-top-features__label">{category.title}</span>
-                </li>
-            </f:for>
-        </ul>
-    </section>
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:g="http://typo3.org/ns/D3Werk/Gastgeber/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:variable name="topFeatures" value="{g:categoryGroup(categories: host.categories, mode: 'topFeatures', limit: settings.topFeaturesLimit)}" />
+<f:if condition="{topFeatures}">
+    <ul class="gastgeber-top-features">
+        <f:for each="{topFeatures}" as="item">
+            <li><f:render partial="Category/Icon" arguments="{presentation: item.presentation}" /><span>{item.presentation.title}</span></li>
+        </f:for>
+    </ul>
 </f:if>
 </html>

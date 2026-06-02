@@ -1,105 +1,25 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-      xmlns:n="http://typo3.org/ns/GeorgRinger/News/ViewHelpers"
-      xmlns:g="http://typo3.org/ns/D3Werk/Gastgeber/ViewHelpers"
-      data-namespace-typo3-fluid="true">
-<n:excludeDisplayedNews newsItem="{newsItem}" />
-<f:variable name="cardCategories" value="{g:categoryGroup(categories: newsItem.categories, fallback: newsItem.firstCategory)}" />
-
-<article class="card gastgeber-card gastgeber-card--{viewMode} h-100 articletype-{newsItem.type}{f:if(condition: newsItem.istopnews, then: ' is-top')}" itemscope="itemscope" itemtype="https://schema.org/LodgingBusiness">
-    <f:if condition="{newsItem.mediaPreviews}">
-        <f:then>
-            <n:link newsItem="{newsItem}" settings="{settings}" title="{newsItem.title}" class="gastgeber-card__image-link">
-                <f:alias map="{mediaElement: newsItem.mediaPreviews.0}">
-                    <div class="ratio ratio-4x3 gastgeber-card__media">
-                        <f:if condition="{cardCategories.starCategories}">
-                            <div class="gastgeber-card__rating">
-                                <f:for each="{cardCategories.starCategories}" as="category">
-                                    <f:render partial="Category/Badge" arguments="{category: category}" />
-                                </f:for>
-                            </div>
-                        </f:if>
-                        <f:if condition="{mediaElement.originalResource.type} == 2">
-                            <f:image image="{mediaElement}"
-                                     class="card-img-top object-fit-cover"
-                                     title="{mediaElement.originalResource.title}"
-                                     alt="{f:if(condition: mediaElement.originalResource.alternative, then: mediaElement.originalResource.alternative, else: newsItem.title)}"
-                                     loading="{settings.list.media.image.lazyLoading}"
-                                     maxWidth="{f:if(condition: settings.media.maxWidth, then: settings.media.maxWidth, else: settings.list.media.image.maxWidth)}"
-                                     maxHeight="{f:if(condition: settings.media.maxHeight, then: settings.media.maxHeight, else: settings.list.media.image.maxHeight)}" />
-                        </f:if>
-                        <f:if condition="{mediaElement.originalResource.type} == 4">
-                            <f:render partial="Detail/MediaVideo" arguments="{mediaElement: mediaElement}" />
-                        </f:if>
-                        <f:if condition="{mediaElement.originalResource.type} == 5">
-                            <f:image image="{mediaElement}"
-                                     class="card-img-top object-fit-cover"
-                                     title="{mediaElement.originalResource.title}"
-                                     alt="{f:if(condition: mediaElement.originalResource.alternative, then: mediaElement.originalResource.alternative, else: newsItem.title)}"
-                                     loading="{settings.list.media.image.lazyLoading}"
-                                     maxWidth="{f:if(condition: settings.media.maxWidth, then: settings.media.maxWidth, else: settings.list.media.image.maxWidth)}"
-                                     maxHeight="{f:if(condition: settings.media.maxHeight, then: settings.media.maxHeight, else: settings.list.media.image.maxHeight)}" />
-                        </f:if>
-                    </div>
-                </f:alias>
-            </n:link>
-        </f:then>
-    </f:if>
-
-    <div class="card-body d-flex flex-column">
-        <f:if condition="{cardCategories.primaryCategory}">
-            <div class="gastgeber-card__type d-flex flex-wrap gap-2 mb-2">
-                <f:if condition="{cardCategories.primaryCategory}">
-                    <f:render partial="Category/Badge" arguments="{category: cardCategories.primaryCategory}" />
-                </f:if>
-            </div>
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:g="http://typo3.org/ns/D3Werk/Gastgeber/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:variable name="ratings" value="{g:categoryGroup(categories: host.categories, mode: 'ratings', limit: 1)}" />
+<f:variable name="types" value="{g:categoryGroup(categories: host.categories, mode: 'types', limit: 1)}" />
+<article class="gastgeber-card gastgeber-card--{viewMode}">
+    <div class="gastgeber-card__media">
+        <f:if condition="{host.firstMedia}">
+            <f:then>
+                <f:image image="{host.firstMedia}" width="800c" height="520c" alt="{host.title}" loading="lazy" />
+            </f:then>
+            <f:else><div class="gastgeber-card__placeholder"></div></f:else>
         </f:if>
-
-        <h3 class="h5 card-title gastgeber-card__title" itemprop="name">
-            <n:link newsItem="{newsItem}" settings="{settings}" title="{newsItem.title}" itemprop="url">
-                {newsItem.title}
-            </n:link>
-        </h3>
-
-        <f:if condition="{newsItem.txGastgeberCity} || {newsItem.txGastgeberStreet}">
-            <p class="gastgeber-card__address mb-2" itemprop="address" itemscope="itemscope" itemtype="https://schema.org/PostalAddress">
-                <f:if condition="{newsItem.txGastgeberStreet}">
-                    <span itemprop="streetAddress">{newsItem.txGastgeberStreet}</span><br />
-                </f:if>
-                <f:if condition="{newsItem.txGastgeberAddressAddition}">
-                    {newsItem.txGastgeberAddressAddition}<br />
-                </f:if>
-                <f:if condition="{newsItem.txGastgeberZip} || {newsItem.txGastgeberCity}">
-                    <span itemprop="postalCode">{newsItem.txGastgeberZip}</span>
-                    <span itemprop="addressLocality">{newsItem.txGastgeberCity}</span>
-                </f:if>
-            </p>
-        </f:if>
-
-        <f:render partial="List/FeatureStrip" arguments="{categories: cardCategories.listPreviewCategories}" />
-
-        <div class="gastgeber-card__facts d-flex flex-wrap gap-2 mb-3">
-            <f:if condition="{newsItem.txGastgeberPriceFrom}">
-                <span class="badge text-bg-primary"><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:from" /> <f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator=".">{newsItem.txGastgeberPriceFrom}</f:format.currency></span>
-            </f:if>
-            <f:if condition="{newsItem.txGastgeberCapacityPeople}"><span class="badge text-bg-secondary">{newsItem.txGastgeberCapacityPeople} <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:people" /></span></f:if>
-            <f:if condition="{newsItem.txGastgeberBeds}"><span class="badge text-bg-secondary">{newsItem.txGastgeberBeds} <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:beds" /></span></f:if>
-        </div>
-
-        <f:if condition="{newsItem.teaser}">
-            <div class="card-text gastgeber-card__teaser" itemprop="description">
-                <f:format.html>{g:cleanRatingPrefix(value: newsItem.teaser)}</f:format.html>
-            </div>
-        </f:if>
-
-        <div class="gastgeber-card__actions mt-auto pt-3 d-flex gap-2 flex-wrap">
-            <n:link newsItem="{newsItem}" settings="{settings}" class="btn btn-primary" title="{newsItem.title}">
-                <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:more" />
-            </n:link>
-            <f:if condition="{newsItem.txGastgeberBookingUrl}">
-                <f:link.typolink parameter="{newsItem.txGastgeberBookingUrl}" class="btn btn-outline-primary">
-                    <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:booking" />
-                </f:link.typolink>
-            </f:if>
+        <f:if condition="{ratings.0}"><f:render partial="Category/Badge" arguments="{category: ratings.0.category}" /></f:if>
+    </div>
+    <div class="gastgeber-card__body">
+        <f:if condition="{types.0}"><f:render partial="Category/Badge" arguments="{category: types.0.category}" /></f:if>
+        <h3 class="gastgeber-card__title">{host.title}</h3>
+        <f:if condition="{host.addressLine}"><p class="gastgeber-card__address">{host.addressLine}</p></f:if>
+        <f:render partial="List/FeatureStrip" arguments="{host: host}" />
+        <f:if condition="{host.teaser}"><p class="gastgeber-card__text"><f:format.crop maxCharacters="220" append="…"><f:format.stripTags>{host.teaser}</f:format.stripTags></f:format.crop></p></f:if>
+        <div class="gastgeber-card__actions">
+            <f:if condition="{host.website}"><f:link.typolink parameter="{host.website}" class="btn btn-primary gastgeber-button">Direkt zur Webseite</f:link.typolink></f:if>
+            <f:link.page pageUid="{settings.detailPid}" additionalParams="{tx_gastgeber_detail: {host: host.uid, action: 'detail', controller: 'Host'}}" class="btn btn-outline-primary gastgeber-button gastgeber-button--outline">Mehr erfahren</f:link.page>
         </div>
     </div>
 </article>

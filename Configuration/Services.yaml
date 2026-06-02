@@ -6,19 +6,9 @@ services:
 
   D3Werk\Gastgeber\:
     resource: '../Classes/*'
-    exclude: '../Classes/Domain/Model/*'
 
   D3Werk\Gastgeber\Command\CreateCategoriesCommand:
     tags:
       - name: 'console.command'
         command: 'gastgeber:categories:create'
-        description: 'Legt die empfohlenen Gastgeber- und Merkmal-Kategorien als sys_category-Baum an.'
-
-  D3Werk\Gastgeber\Utility\CategoryIconResolver:
-    public: true
-
-  D3Werk\Gastgeber\Utility\FilterDataProvider:
-    public: true
-
-  D3Werk\Gastgeber\Utility\Geocoder:
-    public: true
+        description: 'Legt den Gastgeber-Kategoriebaum mit Unterkunftsarten, Klassifizierung, Merkmalen und Zielgruppen an.'

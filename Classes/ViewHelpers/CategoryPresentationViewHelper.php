@@ -4,82 +4,38 @@ declare(strict_types=1);
 
 namespace D3Werk\Gastgeber\ViewHelpers;
 
+use D3Werk\Gastgeber\Utility\CategoryIconResolver;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
-/**
- * Returns display information for a category badge.
- * Especially detects rating categories like "4 Sterne" or "Keine Sterne".
- */
-final class CategoryPresentationViewHelper extends AbstractViewHelper
+class CategoryPresentationViewHelper extends AbstractViewHelper
 {
-    protected $escapeOutput = false;
+    use CompileWithRenderStatic;
 
     public function initializeArguments(): void
     {
-        $this->registerArgument('category', 'mixed', 'Category object/array/string.', false, null);
-        $this->registerArgument('title', 'string', 'Category title. Takes precedence over category title.', false, '');
+        $this->registerArgument('category', 'object|array|int', 'Category object, array or uid', true);
     }
 
-    /**
-     * @return array{title:string,isStarRating:bool,stars:int,starItems:array<int,int>,badgeClass:string,ariaLabel:string}
-     */
-    public function render(): array
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): array
     {
-        $title = trim((string)$this->arguments['title']);
-        if ($title === '') {
-            $title = $this->resolveTitleFromCategory($this->arguments['category'] ?? null);
+        $category = $arguments['category'];
+        $uid = 0;
+        $title = '';
+        if (is_object($category) && method_exists($category, 'getUid')) {
+            $uid = (int)$category->getUid();
+            $title = method_exists($category, 'getTitle') ? (string)$category->getTitle() : '';
+        } elseif (is_array($category)) {
+            $uid = (int)($category['uid'] ?? 0);
+            $title = (string)($category['title'] ?? '');
+        } else {
+            $uid = (int)$category;
         }
-
-        $stars = $this->resolveStars($title);
-        $isStarRating = $stars !== null;
-        $starCount = $stars ?? 0;
-
-        return [
-            'title' => $title,
-            'isStarRating' => $isStarRating,
-            'stars' => $starCount,
-            'starItems' => $starCount > 0 ? range(1, $starCount) : [],
-            'badgeClass' => $isStarRating ? 'gastgeber-category-badge--stars gastgeber-category-badge--stars-' . $starCount : 'text-bg-light border',
-            'ariaLabel' => $title,
-        ];
-    }
-
-    private function resolveTitleFromCategory(mixed $category): string
-    {
-        if (is_string($category)) {
-            return trim($category);
+        if ($uid <= 0) {
+            return [];
         }
-
-        if (is_array($category)) {
-            return trim((string)($category['title'] ?? ''));
-        }
-
-        if (is_object($category) && method_exists($category, 'getTitle')) {
-            return trim((string)$category->getTitle());
-        }
-
-        return '';
-    }
-
-    private function resolveStars(string $title): ?int
-    {
-        $normalized = trim(preg_replace('/\s+/u', ' ', $title) ?: $title);
-        if ($normalized === '') {
-            return null;
-        }
-
-        if (preg_match('/^keine\s+sterne?$/iu', $normalized) === 1) {
-            return 0;
-        }
-
-        if (preg_match('/^([1-5])\s*(?:stern|sterne)(?:\s+superior)?$/iu', $normalized, $matches) === 1) {
-            return (int)$matches[1];
-        }
-
-        if (preg_match('/^([1-5])\s*[\*★☆]+$/u', $normalized, $matches) === 1) {
-            return (int)$matches[1];
-        }
-
-        return null;
+        return GeneralUtility::makeInstance(CategoryIconResolver::class)->getPresentation($uid, $title);
     }
 }

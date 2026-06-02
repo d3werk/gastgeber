@@ -1,3 +1,4 @@
-news.view.templateRootPath: 'EXT:gastgeber/Resources/Private/Templates/'
-news.view.partialRootPath: 'EXT:gastgeber/Resources/Private/Partials/'
-news.view.layoutRootPath: 'EXT:gastgeber/Resources/Private/Layouts/'
+plugin:
+  tx_gastgeber:
+    persistence:
+      storagePid: ''

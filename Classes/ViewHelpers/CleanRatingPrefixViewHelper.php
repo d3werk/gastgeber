@@ -4,52 +4,21 @@ declare(strict_types=1);
 
 namespace D3Werk\Gastgeber\ViewHelpers;
 
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
-/**
- * Removes leading standalone star/classification markers from RTE text.
- * Keeps the remaining HTML intact so RTE links continue to work.
- */
-final class CleanRatingPrefixViewHelper extends AbstractViewHelper
+class CleanRatingPrefixViewHelper extends AbstractViewHelper
 {
-    protected $escapeOutput = false;
+    use CompileWithRenderStatic;
 
     public function initializeArguments(): void
     {
-        $this->registerArgument('value', 'string', 'HTML/text to clean.', false, '');
+        $this->registerArgument('text', 'string', 'Text', true);
     }
 
-    public function render(): string
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
-        $value = (string)($this->arguments['value'] ?: $this->renderChildren());
-        if (trim($value) === '') {
-            return '';
-        }
-
-        return $this->removeLeadingStars($value);
-    }
-
-    private function removeLeadingStars(string $value): string
-    {
-        $cleaned = $value;
-
-        // Remove leading paragraphs/divs that only contain star symbols, e.g. <p>***</p>.
-        $cleaned = (string)preg_replace(
-            '~^\s*(?:(?:<p[^>]*>|<div[^>]*>)\s*(?:\*|★|☆|✱|✶|✷|✸|✹|✺|✦|✧|&\#9733;|&star;|&nbsp;|\s){1,20}\s*(?:</p>|</div>)\s*)+~iu',
-            '',
-            $cleaned
-        );
-
-        // Remove plain leading star markers in text/RTE teasers, e.g. "*** Das Vier Sterne Hotel...".
-        $cleaned = (string)preg_replace(
-            '~^\s*(?:\*|★|☆|✱|✶|✷|✸|✹|✺|✦|✧|&\#9733;|&star;|&nbsp;|\s){1,20}(?=(?:[A-ZÄÖÜa-zäöü0-9]|<))~u',
-            '',
-            $cleaned
-        );
-
-        // Remove empty first paragraph left behind by the cleanup.
-        $cleaned = (string)preg_replace('~^\s*<p[^>]*>\s*</p>\s*~iu', '', $cleaned);
-
-        return trim($cleaned);
+        return (string)preg_replace('/^\s*\*{1,5}\s*/', '', (string)$arguments['text']);
     }
 }

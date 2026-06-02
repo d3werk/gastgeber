@@ -1,43 +1,19 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-      xmlns:g="http://typo3.org/ns/D3Werk/Gastgeber/ViewHelpers"
-      data-namespace-typo3-fluid="true">
-<f:variable name="categoryGroups" value="{g:categoryGroup(categories: newsItem.categories, fallback: newsItem.firstCategory, limit: 6)}" />
-<f:if condition="{categoryGroups.featureCategories} || {newsItem.txGastgeberEquipment}">
-    <section class="gastgeber-detail__section gastgeber-detail__section--features card border-0 shadow-sm">
-        <div class="card-body p-4 p-lg-5">
-            <h2 class="h3 mb-4"><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:features" /></h2>
-
-            <f:if condition="{categoryGroups.visibleFeatureCategories}">
-                <ul class="gastgeber-detail-feature-list list-unstyled mb-4">
-                    <f:for each="{categoryGroups.visibleFeatureCategories}" as="category">
-                        <li class="gastgeber-detail-feature-list__item">
-                            <f:variable name="categoryIcon" value="{g:categoryIcon(category: category)}" />
-                            <span class="gastgeber-detail-feature-list__icon" aria-hidden="true">
-                                <f:render partial="Category/Icon" arguments="{iconUrl: categoryIcon.url, iconCssClass: categoryIcon.cssClass, title: category.title}" />
-                            </span>
-                            <span class="gastgeber-detail-feature-list__label">{category.title}</span>
-                        </li>
-                    </f:for>
-                </ul>
-            </f:if>
-
-            <f:if condition="{categoryGroups.hasFeatureModal}">
-                <button type="button" class="btn btn-outline-primary gastgeber-detail-feature-list__more mb-4" data-bs-toggle="modal" data-bs-target="#gastgeber-features-modal-{newsItem.uid}">
-                    <span class="gastgeber-detail-feature-list__more-icon" aria-hidden="true">▦</span>
-                    <span class="ms-2"><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:features.showAll" arguments="{0: categoryGroups.featureCount}" /></span>
-                </button>
-                <f:render partial="Detail/FeatureModal" arguments="{newsItem: newsItem, categories: categoryGroups.featureCategories}" />
-            </f:if>
-
-            <f:if condition="{newsItem.txGastgeberEquipment}">
-                <div class="gastgeber-detail-equipment">
-                    <h3 class="h5 mb-3"><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:equipment" /></h3>
-                    <div class="gastgeber-detail-equipment__text">
-                        <f:format.html>{newsItem.txGastgeberEquipment}</f:format.html>
-                    </div>
-                </div>
-            </f:if>
-        </div>
-    </section>
-</f:if>
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:g="http://typo3.org/ns/D3Werk/Gastgeber/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:variable name="features" value="{g:categoryGroup(categories: host.categories, mode: 'features')}" />
+<section class="gastgeber-detail-section gastgeber-detail-section--full">
+    <h3>Merkmale &amp; Ausstattung auf einen Blick</h3>
+    <f:if condition="{features}">
+        <ul class="gastgeber-feature-grid">
+            <f:for each="{features}" as="item" iteration="iterator">
+                <f:if condition="{iterator.index} &lt; {settings.visibleFeaturesLimit}">
+                    <li><f:render partial="Category/Icon" arguments="{presentation: item.presentation}" /><span>{item.presentation.title}</span></li>
+                </f:if>
+            </f:for>
+        </ul>
+        <f:if condition="{features -> f:count()} &gt; {settings.visibleFeaturesLimit}">
+            <button type="button" class="btn btn-outline-primary gastgeber-button gastgeber-button--outline" data-bs-toggle="modal" data-bs-target="#gastgeberFeatureModal-{host.uid}">☰ Alle Ausstattungsmerkmale anzeigen</button>
+        </f:if>
+    </f:if>
+    <f:if condition="{host.equipmentText}"><div class="gastgeber-richtext mt-4"><f:format.html>{host.equipmentText}</f:format.html></div></f:if>
+</section>
 </html>

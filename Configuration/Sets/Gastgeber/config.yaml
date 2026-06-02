@@ -1,6 +1,4 @@
 name: d3-werk/gastgeber
-label: 'Gastgeberanbieter auf Basis EXT:news'
+label: 'Gastgeber'
 dependencies:
-  - georgringer/news
-optionalDependencies:
-  - georgringer/news-twb5
+  - typo3/fluid-styled-content

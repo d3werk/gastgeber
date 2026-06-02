@@ -1,226 +1,117 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <T3DataStructure>
-  <sheets>
-    <sDEF>
-      <ROOT>
-        <sheetTitle>Datenquelle</sheetTitle>
-        <type>array</type>
-        <el>
-          <settings.startingpoint>
-            <label>Datensatz-Ordner der Gastgeber</label>
-            <description>Ordner oder Seite auswählen, in der die Gastgeber-News-Datensätze liegen.</description>
-            <config>
-              <type>group</type>
-              <allowed>pages</allowed>
-              <size>3</size>
-              <maxitems>50</maxitems>
-              <minitems>0</minitems>
-            </config>
-          </settings.startingpoint>
-          <settings.recursive>
-            <label>Unterordner einbeziehen</label>
-            <description>Wie viele Ebenen unterhalb des Datensatz-Ordners durchsucht werden sollen.</description>
-            <config>
-              <type>select</type>
-              <renderType>selectSingle</renderType>
-              <items>
-                <numIndex index="0"><label>Nur ausgewählter Ordner</label><value>0</value></numIndex>
-                <numIndex index="1"><label>1 Ebene</label><value>1</value></numIndex>
-                <numIndex index="2"><label>2 Ebenen</label><value>2</value></numIndex>
-                <numIndex index="3"><label>3 Ebenen</label><value>3</value></numIndex>
-                <numIndex index="4"><label>4 Ebenen</label><value>4</value></numIndex>
-              </items>
-              <default>1</default>
-            </config>
-          </settings.recursive>
-          <settings.categories>
-            <label>Gastgeber-Grundkategorien</label>
-            <description>Optional einschränken, z. B. auf „Gastgeber“. Der Merkmal-Filter kann im Frontend zusätzliche Kategorien übergeben.</description>
-            <config>
-              <type>select</type>
-              <renderType>selectMultipleSideBySide</renderType>
-              <itemsProcFunc>D3Werk\Gastgeber\FormEngine\ItemsProcFunc\GastgeberCategoryItems->itemsProcFunc</itemsProcFunc>
-              <size>12</size>
-              <minitems>0</minitems>
-              <maxitems>99</maxitems>
-            </config>
-          </settings.categories>
-          <settings.categoryConjunction>
-            <label>Verknüpfung der Grundkategorien</label>
-            <description>Für normale Gastgeberlisten meistens „ODER“ verwenden.</description>
-            <config>
-              <type>select</type>
-              <renderType>selectSingle</renderType>
-              <items>
-                <numIndex index="0"><label>Keine Vorgabe</label><value></value></numIndex>
-                <numIndex index="1"><label>ODER – mindestens eine Kategorie reicht</label><value>or</value></numIndex>
-                <numIndex index="2"><label>UND – alle Kategorien müssen vorhanden sein</label><value>and</value></numIndex>
-              </items>
-              <default>or</default>
-            </config>
-          </settings.categoryConjunction>
-          <settings.includeSubCategories>
-            <label>Unterkategorien automatisch einschließen</label>
-            <description>Empfohlen, wenn mit Kategoriegruppen wie „Merkmale“ gearbeitet wird.</description>
-            <config>
-              <type>check</type>
-              <default>1</default>
-            </config>
-          </settings.includeSubCategories>
-        </el>
-      </ROOT>
-    </sDEF>
-    <view>
-      <ROOT>
-        <sheetTitle>Darstellung</sheetTitle>
-        <type>array</type>
-        <el>
-          <settings.gastgeber.defaultView>
-            <label>Standardansicht</label>
-            <description>Diese Ansicht wird zuerst angezeigt. Besucher können über den Umschalter wechseln, wenn dieser aktiv ist.</description>
-            <config>
-              <type>select</type>
-              <renderType>selectSingle</renderType>
-              <items>
-                <numIndex index="0"><label>Cards – bildstarke Kachelansicht</label><value>cards</value></numIndex>
-                <numIndex index="1"><label>Liste – kompakte Vergleichsansicht</label><value>list</value></numIndex>
-                <numIndex index="2"><label>Karte – Gastgeber auf OpenStreetMap</label><value>map</value></numIndex>
-              </items>
-              <default>cards</default>
-            </config>
-          </settings.gastgeber.defaultView>
-          <settings.gastgeber.showViewSwitch>
-            <label>Umschalter Cards / Liste / Karte anzeigen</label>
-            <config>
-              <type>check</type>
-              <default>1</default>
-            </config>
-          </settings.gastgeber.showViewSwitch>
-          <settings.list.paginate.itemsPerPage>
-            <label>Gastgeber pro Seite</label>
-            <description>Empfehlung: 9 oder 12 für Cards, 10 bis 20 für Listen.</description>
-            <config>
-              <type>number</type>
-              <size>4</size>
-              <default>12</default>
-              <range>
-                <lower>1</lower>
-                <upper>99</upper>
-              </range>
-            </config>
-          </settings.list.paginate.itemsPerPage>
-        </el>
-      </ROOT>
-    </view>
-    <filter>
-      <ROOT>
-        <sheetTitle>Filter &amp; Suche</sheetTitle>
-        <type>array</type>
-        <el>
-          <settings.gastgeber.showIntegratedFilter>
-            <label>Filter direkt in dieser Listenansicht anzeigen</label>
-            <description>Empfohlen: Filter und Ergebnisliste bleiben in einem Element. Dann wird kein separates „Gastgeber: Merkmal-Filter“-Element benötigt.</description>
-            <config>
-              <type>check</type>
-              <default>1</default>
-            </config>
-          </settings.gastgeber.showIntegratedFilter>
-          <settings.gastgeber.filterHeadline>
-            <label>Überschrift im Filterbereich</label>
-            <config>
-              <type>input</type>
-              <size>50</size>
-              <default>Unterkunft filtern</default>
-            </config>
-          </settings.gastgeber.filterHeadline>
-          <settings.gastgeber.filterIntroText>
-            <label>Kurzer Einleitungstext</label>
-            <description>Optional. Wird oberhalb der Filtergruppen angezeigt.</description>
-            <config>
-              <type>text</type>
-              <rows>2</rows>
-              <cols>40</cols>
-              <enableRichtext>0</enableRichtext>
-            </config>
-          </settings.gastgeber.filterIntroText>
-          <settings.gastgeber.filterRootCategoryUids>
-            <label>Filter-Wurzelkategorien</label>
-            <description>Leer lassen, um automatisch den Kategoriebaum „Gastgeber“ mit Gastgeber-Art, Klassifizierung, Merkmalen und Zielgruppen zu nutzen. Alternativ eine oder mehrere Elternkategorien auswählen, nicht einzelne Merkmale.</description>
-            <config>
-              <type>select</type>
-              <renderType>selectMultipleSideBySide</renderType>
-              <itemsProcFunc>D3Werk\Gastgeber\FormEngine\ItemsProcFunc\GastgeberCategoryItems->itemsProcFunc</itemsProcFunc>
-              <size>12</size>
-              <minitems>0</minitems>
-              <maxitems>99</maxitems>
-            </config>
-          </settings.gastgeber.filterRootCategoryUids>
-          <settings.gastgeber.filterCategoryConjunction>
-            <label>Logik bei mehreren ausgewählten Filtern</label>
-            <description>ODER ist für Besucher meist besser, UND ist strenger.</description>
-            <config>
-              <type>select</type>
-              <renderType>selectSingle</renderType>
-              <items>
-                <numIndex index="0"><label>ODER – mindestens ein Filter reicht</label><value>or</value></numIndex>
-                <numIndex index="1"><label>UND – alle Filter müssen zutreffen</label><value>and</value></numIndex>
-              </items>
-              <default>or</default>
-            </config>
-          </settings.gastgeber.filterCategoryConjunction>
-          <settings.gastgeber.filterPanelExpanded>
-            <label>Filter beim Laden geöffnet anzeigen</label>
-            <config>
-              <type>check</type>
-              <default>1</default>
-            </config>
-          </settings.gastgeber.filterPanelExpanded>
-          <settings.gastgeber.filterShowRootCategories>
-            <label>Ausgewählte Wurzelkategorien selbst als Filter anzeigen</label>
-            <description>Normalerweise aus lassen. Wurzelkategorien dienen dann nur zur Gruppierung.</description>
-            <config>
-              <type>check</type>
-              <default>0</default>
-            </config>
-          </settings.gastgeber.filterShowRootCategories>
-          <settings.gastgeber.filterResetLabel>
-            <label>Beschriftung für Zurücksetzen-Link</label>
-            <config>
-              <type>input</type>
-              <size>40</size>
-              <default>Alle Merkmale zurücksetzen</default>
-            </config>
-          </settings.gastgeber.filterResetLabel>
-        </el>
-      </ROOT>
-    </filter>
-    <routing>
-      <ROOT>
-        <sheetTitle>Detail &amp; Frontend-Filter</sheetTitle>
-        <type>array</type>
-        <el>
-          <settings.detailPid>
-            <label>Detailseite</label>
-            <description>Seite auswählen, auf der „Gastgeber: Detailansicht“ liegt.</description>
-            <config>
-              <type>group</type>
-              <allowed>pages</allowed>
-              <relationship>manyToOne</relationship>
-              <size>1</size>
-              <maxitems>1</maxitems>
-              <minitems>0</minitems>
-            </config>
-          </settings.detailPid>
-          <settings.disableOverrideDemand>
-            <label>Frontend-Filter deaktivieren</label>
-            <description>Aus lassen, damit „Gastgeber: Merkmal-Filter“ die Liste über URL-Parameter filtern darf.</description>
-            <config>
-              <type>check</type>
-              <default>0</default>
-            </config>
-          </settings.disableOverrideDemand>
-        </el>
-      </ROOT>
-    </routing>
-  </sheets>
+    <sheets>
+        <sDEF>
+            <ROOT>
+                <type>array</type>
+                <el>
+                    <settings.storagePid>
+                        <label>Datensatz-Ordner der Gastgeber</label>
+                        <description>Ordner mit Datensätzen vom Typ Gastgeber. Mehrere UIDs kommasepariert.</description>
+                        <config>
+                            <type>group</type>
+                            <allowed>pages</allowed>
+                            <size>1</size>
+                            <maxitems>99</maxitems>
+                        </config>
+                    </settings.storagePid>
+                    <settings.categories>
+                        <label>Gastgeber-Grundkategorien</label>
+                        <description>Optional: Liste nur auf diese Kategorien einschränken.</description>
+                        <config>
+                            <type>select</type>
+                            <renderType>selectMultipleSideBySide</renderType>
+                            <itemsProcFunc>D3Werk\Gastgeber\FormEngine\ItemsProcFunc\GastgeberCategoryItems->addItems</itemsProcFunc>
+                            <size>8</size>
+                            <maxitems>99</maxitems>
+                        </config>
+                    </settings.categories>
+                    <settings.detailPid>
+                        <label>Detailseite</label>
+                        <description>Seite mit dem Inhaltselement „Gastgeber: Detailansicht“.</description>
+                        <config>
+                            <type>group</type>
+                            <allowed>pages</allowed>
+                            <size>1</size>
+                            <maxitems>1</maxitems>
+                        </config>
+                    </settings.detailPid>
+                </el>
+            </ROOT>
+        </sDEF>
+        <display>
+            <ROOT>
+                <type>array</type>
+                <el>
+                    <settings.defaultView>
+                        <label>Standardansicht</label>
+                        <config>
+                            <type>select</type>
+                            <renderType>selectSingle</renderType>
+                            <items>
+                                <numIndex index="0"><label>Cards</label><value>cards</value></numIndex>
+                                <numIndex index="1"><label>Liste</label><value>list</value></numIndex>
+                                <numIndex index="2"><label>Karte</label><value>map</value></numIndex>
+                            </items>
+                            <default>cards</default>
+                        </config>
+                    </settings.defaultView>
+                    <settings.showViewSwitch>
+                        <label>Ansichtsauswahl anzeigen</label>
+                        <config><type>check</type><renderType>checkboxToggle</renderType><default>1</default></config>
+                    </settings.showViewSwitch>
+                    <settings.itemsPerPage>
+                        <label>Maximale Anzahl Gastgeber</label>
+                        <config><type>number</type><default>24</default></config>
+                    </settings.itemsPerPage>
+                </el>
+            </ROOT>
+        </display>
+        <filter>
+            <ROOT>
+                <type>array</type>
+                <el>
+                    <settings.showFilter>
+                        <label>Filter links in dieser Listenansicht anzeigen</label>
+                        <config><type>check</type><renderType>checkboxToggle</renderType><default>1</default></config>
+                    </settings.showFilter>
+                    <settings.filterHeadline>
+                        <label>Filter-Überschrift</label>
+                        <config><type>input</type><eval>trim</eval><default>Unterkunft filtern</default></config>
+                    </settings.filterHeadline>
+                    <settings.filterIntroText>
+                        <label>Filter-Einleitung</label>
+                        <config><type>text</type><rows>3</rows></config>
+                    </settings.filterIntroText>
+                    <settings.filterRootCategories>
+                        <label>Filter-Wurzelkategorien</label>
+                        <description>Leer lassen, um den kompletten Gastgeber-Baum zu verwenden. Sonst z. B. „Merkmale“, „Gastgeber-Art“ oder „Zielgruppen“ auswählen.</description>
+                        <config>
+                            <type>select</type>
+                            <renderType>selectMultipleSideBySide</renderType>
+                            <itemsProcFunc>D3Werk\Gastgeber\FormEngine\ItemsProcFunc\GastgeberCategoryItems->addItems</itemsProcFunc>
+                            <size>10</size>
+                            <maxitems>99</maxitems>
+                        </config>
+                    </settings.filterRootCategories>
+                    <settings.categoryConjunction>
+                        <label>Filterlogik bei mehreren Merkmalen</label>
+                        <config>
+                            <type>select</type>
+                            <renderType>selectSingle</renderType>
+                            <items>
+                                <numIndex index="0"><label>ODER – ein Merkmal reicht</label><value>or</value></numIndex>
+                                <numIndex index="1"><label>UND – alle Merkmale müssen passen</label><value>and</value></numIndex>
+                            </items>
+                            <default>or</default>
+                        </config>
+                    </settings.categoryConjunction>
+                    <settings.resetLabel>
+                        <label>Beschriftung Zurücksetzen</label>
+                        <config><type>input</type><eval>trim</eval><default>Alle Filter zurücksetzen</default></config>
+                    </settings.resetLabel>
+                </el>
+            </ROOT>
+        </filter>
+    </sheets>
 </T3DataStructure>

@@ -1,33 +1,9 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-      xmlns:g="http://typo3.org/ns/D3Werk/Gastgeber/ViewHelpers"
-      data-namespace-typo3-fluid="true">
-<div class="gastgeber-detail-main d-grid gap-4">
-    <f:if condition="{newsItem.bodytext}">
-        <section class="gastgeber-detail__section card border-0 shadow-sm">
-            <div class="card-body p-4 p-lg-5">
-                <h2 class="h3 mb-3"><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:aboutHost" /></h2>
-                <div class="gastgeber-detail__body news-text-wrap" itemprop="description">
-                    <f:format.html>{g:cleanRatingPrefix(value: newsItem.bodytext)}</f:format.html>
-                </div>
-            </div>
-        </section>
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<section class="gastgeber-detail-section">
+    <h3>Über diese Unterkunft</h3>
+    <f:if condition="{host.description}">
+        <f:then><div class="gastgeber-richtext" itemprop="description"><f:format.html>{host.description}</f:format.html></div></f:then>
+        <f:else><f:if condition="{host.teaser}"><div class="gastgeber-richtext"><f:format.html>{host.teaser}</f:format.html></div></f:if></f:else>
     </f:if>
-
-    <f:if condition="{newsItem.txGastgeberCertifications}">
-        <section class="gastgeber-detail__section card border-0 shadow-sm">
-            <div class="card-body p-4 p-lg-5">
-                <h2 class="h3 mb-3"><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:certifications" /></h2>
-                <f:format.html>{newsItem.txGastgeberCertifications}</f:format.html>
-            </div>
-        </section>
-    </f:if>
-
-    <f:if condition="{settings.gastgeber.detailRenderContentElements}">
-        <f:if condition="{newsItem.contentElements}">
-            <section class="gastgeber-detail__content-elements">
-                <f:cObject typoscriptObjectPath="lib.tx_news.contentElementRendering">{newsItem.contentElementIdList}</f:cObject>
-            </section>
-        </f:if>
-    </f:if>
-</div>
+</section>
 </html>

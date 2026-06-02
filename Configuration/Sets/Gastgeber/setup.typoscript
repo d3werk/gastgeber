@@ -1,104 +1,47 @@
-plugin.tx_news {
+plugin.tx_gastgeber {
   view {
-    templateRootPaths {
-      160 = EXT:gastgeber/Resources/Private/Templates/
-    }
-    partialRootPaths {
-      160 = EXT:gastgeber/Resources/Private/Partials/
-    }
-    layoutRootPaths {
-      160 = EXT:gastgeber/Resources/Private/Layouts/
-    }
+    templateRootPaths.10 = EXT:gastgeber/Resources/Private/Templates/
+    partialRootPaths.10 = EXT:gastgeber/Resources/Private/Partials/
+    layoutRootPaths.10 = EXT:gastgeber/Resources/Private/Layouts/
   }
-
-  settings {
-    cropMaxCharacters = 220
-    displayDummyIfNoMedia = 0
-    disableOverrideDemand = 0
-
-    # Gastgeber-spezifische Optionen für Listenansicht, Filter und Karte.
-    gastgeber {
-      defaultView = cards
-      viewParameter = tx_gastgeber_view
-      showViewSwitch = 1
-      showIntegratedFilter = 1
-      filterHeadline = Unterkunft filtern
-      filterIntroText =
-      filterRootCategoryUids =
-      filterCategoryConjunction = or
-      filterPanelExpanded = 1
-      filterShowRootCategories = 0
-      filterResetLabel = Alle Merkmale zurücksetzen
-      detailRenderContentElements = 0
-      map {
-        defaultLatitude = 53.1966
-        defaultLongitude = 9.9762
-        defaultZoom = 13
-        detailZoom = 16
-        tileUrl = https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png
-        attribution = &copy; OpenStreetMap contributors
-      }
-    }
-
-    list {
-      paginate {
-        itemsPerPage = 12
-        insertAbove = 0
-        insertBelow = 1
-      }
-      media {
-        image {
-          maxWidth = 900
-          maxHeight = 700
-          lazyLoading = lazy
+  persistence {
+    storagePid = {$plugin.tx_gastgeber.persistence.storagePid}
+    classes {
+      D3Werk\Gastgeber\Domain\Model\Host {
+        mapping {
+          tableName = tx_gastgeber_domain_model_host
         }
       }
     }
+  }
+  settings {
+    list {
+      itemsPerPage = 12
+      defaultView = cards
+      showFilter = 1
+      filterOpen = 1
+      categoryConjunction = or
+      showRootCategories = 0
+      showViewSwitch = 1
+    }
     detail {
-      showSocialShareButtons = 0
-      showPrevNext = 0
+      topFeaturesLimit = 8
+      visibleFeaturesLimit = 6
+      showGalleryModal = 1
+      showFeatureModal = 1
+      renderMap = 1
+    }
+    map {
+      zoom = 13
+      defaultLatitude = 53.1966000
+      defaultLongitude = 9.9762000
+      tileUrl = https://tile.openstreetmap.org/{z}/{x}/{y}.png
+      attribution = © OpenStreetMap contributors
     }
   }
 }
 
 page.includeCSS.gastgeber = EXT:gastgeber/Resources/Public/Css/gastgeber.css
-
-# Leaflet für die OpenStreetMap-Kartenansicht.
-# Bei strengen Datenschutzvorgaben kann Leaflet lokal im Sitepackage eingebunden und diese beiden Zeilen überschrieben/entfernt werden.
-page.includeCSSLibs.gastgeberLeaflet = https://unpkg.com/leaflet@1.9.4/dist/leaflet.css
-page.includeJSLibs.gastgeberLeaflet = https://unpkg.com/leaflet@1.9.4/dist/leaflet.js
-page.includeJSFooter.gastgeberMap = EXT:gastgeber/Resources/Public/JavaScript/gastgeber-map.js
-
-# Eigene Gastgeber-Content-Elemente im Backend.
-# Sie verwenden die EXT:news-Controllerlogik, aber die Gastgeber-Templates/Partials.
-plugin.tx_gastgeber_list {
-  view {
-    templateRootPaths {
-      160 = EXT:gastgeber/Resources/Private/Templates/
-    }
-    partialRootPaths {
-      160 = EXT:gastgeber/Resources/Private/Partials/
-    }
-    layoutRootPaths {
-      160 = EXT:gastgeber/Resources/Private/Layouts/
-    }
-    pluginNamespace = tx_news_pi1
-  }
-  settings < plugin.tx_news.settings
-}
-
-plugin.tx_gastgeber_detail {
-  view {
-    templateRootPaths {
-      160 = EXT:gastgeber/Resources/Private/Templates/
-    }
-    partialRootPaths {
-      160 = EXT:gastgeber/Resources/Private/Partials/
-    }
-    layoutRootPaths {
-      160 = EXT:gastgeber/Resources/Private/Layouts/
-    }
-    pluginNamespace = tx_news_pi1
-  }
-  settings < plugin.tx_news.settings
-}
+page.includeJSFooter.gastgeber = EXT:gastgeber/Resources/Public/JavaScript/gastgeber.js
+page.includeCSSLibs.leaflet = https://unpkg.com/leaflet@1.9.4/dist/leaflet.css
+page.includeJSFooterlibs.leaflet = https://unpkg.com/leaflet@1.9.4/dist/leaflet.js

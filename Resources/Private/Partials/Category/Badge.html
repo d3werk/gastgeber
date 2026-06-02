@@ -1,29 +1,13 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-      xmlns:g="http://typo3.org/ns/D3Werk/Gastgeber/ViewHelpers"
-      data-namespace-typo3-fluid="true">
-<f:variable name="categoryIcon" value="{g:categoryIcon(category: category)}" />
-<f:variable name="categoryPresentation" value="{g:categoryPresentation(category: category)}" />
-<f:if condition="{categoryPresentation.isStarRating}">
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:g="http://typo3.org/ns/D3Werk/Gastgeber/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:variable name="presentation" value="{g:categoryPresentation(category: category)}" />
+<f:if condition="{presentation.isRating}">
     <f:then>
-        <span class="badge gastgeber-category-badge {categoryPresentation.badgeClass}" title="{categoryPresentation.ariaLabel}" aria-label="{categoryPresentation.ariaLabel}">
-            <f:if condition="{categoryPresentation.starItems}">
-                <f:then>
-                    <span class="gastgeber-star-rating" aria-hidden="true">
-                        <f:for each="{categoryPresentation.starItems}" as="star">★</f:for>
-                    </span>
-                    <span class="visually-hidden">{categoryPresentation.ariaLabel}</span>
-                </f:then>
-                <f:else>
-                    <span class="gastgeber-star-rating__none">{categoryPresentation.ariaLabel}</span>
-                </f:else>
-            </f:if>
+        <span class="gastgeber-rating-badge" aria-label="{presentation.title}">
+            <f:for each="{0:1,1:2,2:3,3:4,4:5}" as="i"><f:if condition="{i} &lt;= {presentation.ratingStars}">★</f:if></f:for>
         </span>
     </f:then>
     <f:else>
-        <span class="badge gastgeber-category-badge {categoryPresentation.badgeClass}">
-            <f:render partial="Category/Icon" arguments="{iconUrl: categoryIcon.url, iconCssClass: categoryIcon.cssClass, title: category.title}" />
-            <span class="gastgeber-category-badge__label">{category.title}</span>
-        </span>
+        <span class="gastgeber-category-badge"><f:render partial="Category/Icon" arguments="{presentation: presentation}" /> {presentation.title}</span>
     </f:else>
 </f:if>
 </html>

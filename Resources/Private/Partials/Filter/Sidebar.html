@@ -1,78 +1,18 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
-<aside class="gastgeber-filter-sidebar card border-0 shadow-sm" data-gastgeber-filter="1">
-    <div class="card-body p-4">
-        <p class="gastgeber-filter__eyebrow mb-2"><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:filter.eyebrow" /></p>
-        <h2 class="h4 gastgeber-filter-sidebar__headline mb-3">
-            <f:if condition="{headline}">
-                <f:then>{headline}</f:then>
-                <f:else><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:filter.headline" /></f:else>
-            </f:if>
-        </h2>
-        <f:if condition="{introText}">
-            <p class="gastgeber-filter-sidebar__intro text-body-secondary mb-3">{introText}</p>
-        </f:if>
-
-        <div class="gastgeber-filter-sidebar__actions d-grid gap-2 mb-4">
-            <f:link.page pageUid="{targetPid}" additionalParams="{tx_gastgeber_view: 'map'}" class="btn btn-outline-primary">
-                <span aria-hidden="true">⌖</span><span class="ms-2"><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:viewSwitch.map" /></span>
-            </f:link.page>
-            <f:link.page pageUid="{targetPid}" additionalParams="{tx_gastgeber_view: selectedView}" class="btn btn-primary">
-                <f:if condition="{resetLabel}">
-                    <f:then>{resetLabel}</f:then>
-                    <f:else><f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:filter.reset" /></f:else>
-                </f:if>
-            </f:link.page>
-            <f:if condition="{selectedCategoryCount}">
-                <span class="small text-body-secondary">{selectedCategoryCount} <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:filter.activeCount" /></span>
-            </f:if>
-        </div>
-
-        <f:if condition="{categoryTree}">
-            <f:then>
-                <div class="gastgeber-filter-sidebar__groups">
-                    <f:for each="{categoryTree}" as="rootCategory">
-                        <f:if condition="{showRootCategories}">
-                            <f:then>
-                                <section class="gastgeber-filter-sidebar__group">
-                                    <h3 class="h6 gastgeber-filter-sidebar__group-title">{rootCategory.title}</h3>
-                                    <f:render partial="Filter/SidebarItems" arguments="{categories: rootCategory.selfAsList, targetPid: targetPid, categoryConjunction: categoryConjunction, selectedView: selectedView}" />
-                                </section>
-                            </f:then>
-                            <f:else>
-                                <f:if condition="{rootCategory.children}">
-                                    <f:then>
-                                        <f:for each="{rootCategory.children}" as="categoryGroup">
-                                            <section class="gastgeber-filter-sidebar__group">
-                                                <h3 class="h6 gastgeber-filter-sidebar__group-title">{categoryGroup.title}</h3>
-                                                <f:if condition="{categoryGroup.children}">
-                                                    <f:then>
-                                                        <f:render partial="Filter/SidebarItems" arguments="{categories: categoryGroup.children, targetPid: targetPid, categoryConjunction: categoryConjunction, selectedView: selectedView}" />
-                                                    </f:then>
-                                                    <f:else>
-                                                        <f:render partial="Filter/SidebarItems" arguments="{categories: categoryGroup.selfAsList, targetPid: targetPid, categoryConjunction: categoryConjunction, selectedView: selectedView}" />
-                                                    </f:else>
-                                                </f:if>
-                                            </section>
-                                        </f:for>
-                                    </f:then>
-                                    <f:else>
-                                        <section class="gastgeber-filter-sidebar__group">
-                                            <h3 class="h6 gastgeber-filter-sidebar__group-title">{rootCategory.title}</h3>
-                                            <f:render partial="Filter/SidebarItems" arguments="{categories: rootCategory.selfAsList, targetPid: targetPid, categoryConjunction: categoryConjunction, selectedView: selectedView}" />
-                                        </section>
-                                    </f:else>
-                                </f:if>
-                            </f:else>
-                        </f:if>
-                    </f:for>
-                </div>
-            </f:then>
-            <f:else>
-                <div class="alert alert-warning mb-0" role="status">
-                    <f:translate key="LLL:EXT:gastgeber/Resources/Private/Language/locallang.xlf:filter.noCategories" />
-                </div>
-            </f:else>
-        </f:if>
+<div class="gastgeber-filter-sidebar">
+    <div class="gastgeber-filter-sidebar__head">
+        <div class="gastgeber-kicker">Suchen &amp; Buchen</div>
+        <h2>{settings.filterHeadline -> f:or(alternative: settings.headline) -> f:or(alternative: 'Unterkunft filtern')}</h2>
+        <f:if condition="{settings.filterIntroText}"><p>{settings.filterIntroText}</p></f:if>
     </div>
-</aside>
+    <f:if condition="{activeCategories}">
+        <f:link.action action="list" arguments="{view: viewMode}" class="gastgeber-filter-sidebar__reset">{settings.resetLabel -> f:or(alternative: 'Alle Filter zurücksetzen')}</f:link.action>
+    </f:if>
+    <f:for each="{filterGroups}" as="group">
+        <div class="gastgeber-filter-group">
+            <h3>{group.title}</h3>
+            <f:render partial="Filter/SidebarItems" arguments="{items: group.items, viewMode: viewMode}" />
+        </div>
+    </f:for>
+</div>
 </html>

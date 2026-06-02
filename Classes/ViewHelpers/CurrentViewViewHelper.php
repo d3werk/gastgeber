@@ -4,41 +4,24 @@ declare(strict_types=1);
 
 namespace D3Werk\Gastgeber\ViewHelpers;
 
-use Psr\Http\Message\ServerRequestInterface;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
-/**
- * Returns the selected Gastgeber view mode from the current query string.
- */
-final class CurrentViewViewHelper extends AbstractViewHelper
+class CurrentViewViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     public function initializeArguments(): void
     {
-        $this->registerArgument('default', 'string', 'Default view mode: cards, list or map.', false, 'cards');
-        $this->registerArgument('parameterName', 'string', 'GET parameter name.', false, 'tx_gastgeber_view');
+        $this->registerArgument('value', 'string', 'Current value', true);
+        $this->registerArgument('expected', 'string', 'Expected value', true);
+        $this->registerArgument('then', 'string', 'Then', false, 'active');
+        $this->registerArgument('else', 'string', 'Else', false, '');
     }
 
-    public function render(): string
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
-        $allowed = ['cards', 'list', 'map'];
-        $default = (string)$this->arguments['default'];
-        if (!in_array($default, $allowed, true)) {
-            $default = 'cards';
-        }
-
-        $parameterName = (string)$this->arguments['parameterName'];
-        $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
-        if (!$request instanceof ServerRequestInterface) {
-            return $default;
-        }
-
-        $queryParams = $request->getQueryParams();
-        $selectedView = $queryParams[$parameterName] ?? $default;
-        if (is_array($selectedView)) {
-            return $default;
-        }
-
-        $selectedView = strtolower((string)$selectedView);
-        return in_array($selectedView, $allowed, true) ? $selectedView : $default;
+        return (string)$arguments['value'] === (string)$arguments['expected'] ? (string)$arguments['then'] : (string)$arguments['else'];
     }
 }

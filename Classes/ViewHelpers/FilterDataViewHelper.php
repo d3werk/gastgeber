@@ -6,35 +6,27 @@ namespace D3Werk\Gastgeber\ViewHelpers;
 
 use D3Werk\Gastgeber\Utility\FilterDataProvider;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
-/**
- * Provides the backend-managed Gastgeber filter category tree for Fluid templates.
- */
-final class FilterDataViewHelper extends AbstractViewHelper
+class FilterDataViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     public function initializeArguments(): void
     {
-        $this->registerArgument('rootCategoryUids', 'string', 'Comma separated sys_category root UIDs.', false, '');
-        $this->registerArgument('categoryConjunction', 'string', 'EXT:news category conjunction: or/and.', false, 'or');
-        $this->registerArgument('targetPid', 'string', 'Target page UID.', false, '');
-        $this->registerArgument('showRootCategories', 'bool', 'Render selected roots as selectable filters.', false, false);
-        $this->registerArgument('preferGastgeberRoot', 'bool', 'Use Gastgeber root as fallback.', false, true);
+        $this->registerArgument('rootCategoryUids', 'string|array', 'Root category UIDs', false, '');
+        $this->registerArgument('activeCategories', 'array', 'Active categories', false, []);
+        $this->registerArgument('showRootCategories', 'bool', 'Show root categories', false, false);
     }
 
-    /**
-     * @return array<string, mixed>
-     */
-    public function render(): array
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): array
     {
-        $provider = GeneralUtility::makeInstance(FilterDataProvider::class);
-
-        return $provider->build(
-            (string)$this->arguments['rootCategoryUids'],
-            (string)$this->arguments['categoryConjunction'],
-            (string)$this->arguments['targetPid'],
-            (bool)$this->arguments['showRootCategories'],
-            (bool)$this->arguments['preferGastgeberRoot']
+        return GeneralUtility::makeInstance(FilterDataProvider::class)->getFilterGroups(
+            $arguments['rootCategoryUids'] ?? '',
+            $arguments['activeCategories'] ?? [],
+            (bool)($arguments['showRootCategories'] ?? false)
         );
     }
 }

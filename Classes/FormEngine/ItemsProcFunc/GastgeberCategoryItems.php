@@ -4,164 +4,64 @@ declare(strict_types=1);
 
 namespace D3Werk\Gastgeber\FormEngine\ItemsProcFunc;
 
-use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- * Provides a backend-friendly category selector that only shows the
- * Gastgeber taxonomy instead of the complete global sys_category tree.
- */
-final class GastgeberCategoryItems
+class GastgeberCategoryItems
 {
-    private const DEFAULT_ROOT_TITLE = 'Gastgeber';
-
-    /**
-     * @param array<string, mixed> $parameters
-     */
-    public function itemsProcFunc(array &$parameters): void
+    public function addItems(array &$parameters): void
     {
-        $items = [];
-        foreach ($this->findGastgeberRootUids() as $rootUid) {
-            $this->appendCategoryWithChildren($items, $rootUid, 0, []);
+        $rootUids = $this->findRootUids();
+        if ($rootUids === []) {
+            $parameters['items'][] = ['label' => 'Gastgeber-Kategoriebaum noch nicht angelegt', 'value' => 0];
+            return;
         }
-
-        if ($items === []) {
-            $items[] = [
-                'label' => 'Keine Gastgeber-Kategorien gefunden. Bitte zuerst Kategorien mit "gastgeber:categories:create" anlegen.',
-                'value' => 0,
-                'disabled' => true,
-            ];
+        foreach ($rootUids as $rootUid) {
+            $this->appendCategory($parameters['items'], $rootUid, 0);
         }
-
-        $parameters['items'] = $items;
     }
 
-    /**
-     * @return list<int>
-     */
-    private function findGastgeberRootUids(): array
+    /** @return array<int,int> */
+    private function findRootUids(): array
     {
-        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('sys_category');
-        $result = $queryBuilder
-            ->select('uid')
-            ->from('sys_category')
-            ->where(
-                $queryBuilder->expr()->eq('title', $queryBuilder->createNamedParameter(self::DEFAULT_ROOT_TITLE)),
-                $queryBuilder->expr()->eq('parent', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
-            )
+        $qb = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_category');
+        $rows = $qb->select('uid')->from('sys_category')
+            ->where($qb->expr()->eq('title', $qb->createNamedParameter('Gastgeber')))
             ->orderBy('sorting', 'ASC')
-            ->addOrderBy('uid', 'ASC')
-            ->executeQuery();
-
-        $uids = [];
-        while (($uid = $result->fetchOne()) !== false) {
-            $uid = (int)$uid;
-            if ($uid > 0) {
-                $uids[] = $uid;
-            }
-        }
-
-        if ($uids !== []) {
-            return $uids;
-        }
-
-        // Fallback: In manchen Projekten liegt die Kategorie "Gastgeber" nicht auf Root-Ebene.
-        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('sys_category');
-        $result = $queryBuilder
-            ->select('uid')
-            ->from('sys_category')
-            ->where(
-                $queryBuilder->expr()->eq('title', $queryBuilder->createNamedParameter(self::DEFAULT_ROOT_TITLE))
-            )
-            ->orderBy('parent', 'ASC')
-            ->addOrderBy('sorting', 'ASC')
-            ->executeQuery();
-
-        while (($uid = $result->fetchOne()) !== false) {
-            $uid = (int)$uid;
-            if ($uid > 0) {
-                $uids[] = $uid;
-            }
-        }
-
-        return array_values(array_unique($uids));
+            ->executeQuery()->fetchAllAssociative();
+        return array_map(static fn(array $row): int => (int)$row['uid'], $rows);
     }
 
-    /**
-     * @param list<array{label:string,value:int,group?:string,icon?:string,description?:string,disabled?:bool}> $items
-     * @param list<int> $visited
-     */
-    private function appendCategoryWithChildren(array &$items, int $uid, int $level, array $visited): void
+    private function appendCategory(array &$items, int $uid, int $level): void
     {
-        if ($uid <= 0 || in_array($uid, $visited, true)) {
+        $row = $this->fetchCategory($uid);
+        if ($row === []) {
             return;
         }
-        $visited[] = $uid;
-
-        $category = $this->fetchCategory($uid);
-        if ($category === null) {
-            return;
-        }
-
-        $prefix = $level > 0 ? str_repeat('— ', $level) : '';
         $items[] = [
-            'label' => $prefix . (string)$category['title'],
-            'value' => (int)$category['uid'],
+            'label' => str_repeat('— ', $level) . (string)$row['title'],
+            'value' => $uid,
         ];
-
-        foreach ($this->fetchChildCategoryUids($uid) as $childUid) {
-            $this->appendCategoryWithChildren($items, $childUid, $level + 1, $visited);
+        foreach ($this->fetchChildren($uid) as $child) {
+            $this->appendCategory($items, (int)$child['uid'], $level + 1);
         }
     }
 
-    /**
-     * @return array<string, mixed>|null
-     */
-    private function fetchCategory(int $uid): ?array
+    private function fetchCategory(int $uid): array
     {
-        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('sys_category');
-        $row = $queryBuilder
-            ->select('uid', 'title')
-            ->from('sys_category')
-            ->where(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT))
-            )
-            ->executeQuery()
-            ->fetchAssociative();
-
-        return is_array($row) ? $row : null;
+        $qb = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_category');
+        $row = $qb->select('*')->from('sys_category')
+            ->where($qb->expr()->eq('uid', $qb->createNamedParameter($uid, \PDO::PARAM_INT)))
+            ->executeQuery()->fetchAssociative();
+        return is_array($row) ? $row : [];
     }
 
-    /**
-     * @return list<int>
-     */
-    private function fetchChildCategoryUids(int $parentUid): array
+    private function fetchChildren(int $parent): array
     {
-        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('sys_category');
-        $result = $queryBuilder
-            ->select('uid')
-            ->from('sys_category')
-            ->where(
-                $queryBuilder->expr()->eq('parent', $queryBuilder->createNamedParameter($parentUid, Connection::PARAM_INT))
-            )
+        $qb = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_category');
+        return $qb->select('*')->from('sys_category')
+            ->where($qb->expr()->eq('parent', $qb->createNamedParameter($parent, \PDO::PARAM_INT)))
             ->orderBy('sorting', 'ASC')
-            ->addOrderBy('title', 'ASC')
-            ->executeQuery();
-
-        $uids = [];
-        while (($uid = $result->fetchOne()) !== false) {
-            $uid = (int)$uid;
-            if ($uid > 0) {
-                $uids[] = $uid;
-            }
-        }
-
-        return $uids;
-    }
-
-    private function getConnectionPool(): ConnectionPool
-    {
-        return GeneralUtility::makeInstance(ConnectionPool::class);
+            ->executeQuery()->fetchAllAssociative();
     }
 }

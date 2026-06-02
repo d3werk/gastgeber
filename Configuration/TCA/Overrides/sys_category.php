@@ -2,69 +2,46 @@
 
 declare(strict_types=1);
 
-defined('TYPO3') or die();
-
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-
-$ll = 'LLL:EXT:gastgeber/Resources/Private/Language/locallang_db.xlf:';
 
 $additionalColumns = [
     'tx_gastgeber_icon' => [
         'exclude' => true,
-        'label' => $ll . 'sys_category.tx_gastgeber_icon',
-        'description' => $ll . 'sys_category.tx_gastgeber_icon.description',
+        'label' => 'LLL:EXT:gastgeber/Resources/Private/Language/locallang_db.xlf:category.icon',
         'config' => [
             'type' => 'file',
-            'allowed' => 'svg,png,jpg,jpeg,gif,webp',
+            'allowed' => 'common-image-types',
             'maxitems' => 1,
-            'minitems' => 0,
-            'appearance' => [
-                'createNewRelationLinkTitle' => $ll . 'sys_category.tx_gastgeber_icon.add',
-            ],
         ],
     ],
-    'tx_gastgeber_icon_css_class' => [
+    'tx_gastgeber_icon_class' => [
         'exclude' => true,
-        'label' => $ll . 'sys_category.tx_gastgeber_icon_css_class',
-        'description' => $ll . 'sys_category.tx_gastgeber_icon_css_class.description',
-        'config' => [
-            'type' => 'input',
-            'size' => 30,
-            'max' => 120,
-            'eval' => 'trim',
-            'placeholder' => 'bi bi-wifi oder fa-solid fa-dog',
-        ],
+        'label' => 'LLL:EXT:gastgeber/Resources/Private/Language/locallang_db.xlf:category.icon_class',
+        'description' => 'LLL:EXT:gastgeber/Resources/Private/Language/locallang_db.xlf:category.icon_class.description',
+        'config' => ['type' => 'input', 'eval' => 'trim', 'placeholder' => 'bi bi-wifi oder fa-solid fa-dog'],
     ],
     'tx_gastgeber_top_feature' => [
         'exclude' => true,
-        'label' => $ll . 'sys_category.tx_gastgeber_top_feature',
-        'description' => $ll . 'sys_category.tx_gastgeber_top_feature.description',
-        'config' => [
-            'type' => 'check',
-            'renderType' => 'checkboxToggle',
-            'default' => 0,
-        ],
+        'label' => 'LLL:EXT:gastgeber/Resources/Private/Language/locallang_db.xlf:category.top_feature',
+        'description' => 'LLL:EXT:gastgeber/Resources/Private/Language/locallang_db.xlf:category.top_feature.description',
+        'config' => ['type' => 'check', 'renderType' => 'checkboxToggle'],
     ],
-    'tx_gastgeber_filter_hidden' => [
+    'tx_gastgeber_hide_filter' => [
         'exclude' => true,
-        'label' => $ll . 'sys_category.tx_gastgeber_filter_hidden',
-        'description' => $ll . 'sys_category.tx_gastgeber_filter_hidden.description',
-        'config' => [
-            'type' => 'check',
-            'renderType' => 'checkboxToggle',
-            'default' => 0,
-        ],
+        'label' => 'LLL:EXT:gastgeber/Resources/Private/Language/locallang_db.xlf:category.hide_filter',
+        'description' => 'LLL:EXT:gastgeber/Resources/Private/Language/locallang_db.xlf:category.hide_filter.description',
+        'config' => ['type' => 'check', 'renderType' => 'checkboxToggle'],
+    ],
+    'tx_gastgeber_is_filter_group' => [
+        'exclude' => true,
+        'label' => 'LLL:EXT:gastgeber/Resources/Private/Language/locallang_db.xlf:category.is_filter_group',
+        'description' => 'LLL:EXT:gastgeber/Resources/Private/Language/locallang_db.xlf:category.is_filter_group.description',
+        'config' => ['type' => 'check', 'renderType' => 'checkboxToggle'],
     ],
 ];
 
 ExtensionManagementUtility::addTCAcolumns('sys_category', $additionalColumns);
-
-$GLOBALS['TCA']['sys_category']['palettes']['gastgeberFeatureIcon'] = [
-    'label' => $ll . 'palettes.gastgeberFeatureIcon',
-    'showitem' => 'tx_gastgeber_icon, --linebreak--, tx_gastgeber_icon_css_class, --linebreak--, tx_gastgeber_top_feature, --linebreak--, tx_gastgeber_filter_hidden',
-];
-
 ExtensionManagementUtility::addToAllTCAtypes(
     'sys_category',
-    '--div--;' . $ll . 'tabs.gastgeberFeature, --palette--;;gastgeberFeatureIcon'
+    '--div--;LLL:EXT:gastgeber/Resources/Private/Language/locallang_db.xlf:tab.gastgeber_filter, tx_gastgeber_icon, tx_gastgeber_icon_class, tx_gastgeber_top_feature, tx_gastgeber_hide_filter, tx_gastgeber_is_filter_group'
 );

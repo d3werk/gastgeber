@@ -4,79 +4,67 @@ declare(strict_types=1);
 
 namespace D3Werk\Gastgeber\Utility;
 
-use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\FileRepository;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-final class CategoryIconResolver
+class CategoryIconResolver
 {
-    /** @var array<int, array{url:string, cssClass:string}> */
-    private array $cache = [];
-
-    public function __construct(
-        private readonly ConnectionPool $connectionPool,
-        private readonly FileRepository $fileRepository,
-    ) {
-    }
-
-    /**
-     * @return array{url:string, cssClass:string}
-     */
-    public function resolve(int $categoryUid): array
+    /** @return array<string,mixed> */
+    public function getPresentation(int $categoryUid, string $fallbackTitle = ''): array
     {
-        if ($categoryUid <= 0) {
-            return ['url' => '', 'cssClass' => ''];
-        }
-
-        if (isset($this->cache[$categoryUid])) {
-            return $this->cache[$categoryUid];
-        }
-
-        $data = [
-            'url' => $this->resolveFileUrl($categoryUid),
-            'cssClass' => $this->resolveCssClass($categoryUid),
+        $row = $this->fetchCategoryRow($categoryUid);
+        $title = $fallbackTitle !== '' ? $fallbackTitle : (string)($row['title'] ?? '');
+        $presentation = [
+            'uid' => $categoryUid,
+            'title' => $title,
+            'iconClass' => (string)($row['tx_gastgeber_icon_class'] ?? ''),
+            'iconUrl' => $this->resolveIconUrl($categoryUid),
+            'isRating' => $this->isRatingTitle($title),
+            'ratingStars' => $this->ratingStars($title),
+            'hideFilter' => (bool)($row['tx_gastgeber_hide_filter'] ?? false),
+            'topFeature' => (bool)($row['tx_gastgeber_top_feature'] ?? false),
         ];
-
-        $this->cache[$categoryUid] = $data;
-        return $data;
+        return $presentation;
     }
 
-    private function resolveFileUrl(int $categoryUid): string
+    private function fetchCategoryRow(int $categoryUid): array
     {
-        try {
-            $fileReferences = $this->fileRepository->findByRelation('sys_category', 'tx_gastgeber_icon', $categoryUid);
-            if ($fileReferences === []) {
-                return '';
-            }
-
-            $fileReference = $fileReferences[0];
-            if (method_exists($fileReference, 'getPublicUrl')) {
-                return (string)$fileReference->getPublicUrl();
-            }
-        } catch (\Throwable) {
-            return '';
-        }
-
-        return '';
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_category');
+        $row = $queryBuilder
+            ->select('*')
+            ->from('sys_category')
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($categoryUid, \PDO::PARAM_INT)))
+            ->executeQuery()
+            ->fetchAssociative();
+        return is_array($row) ? $row : [];
     }
 
-    private function resolveCssClass(int $categoryUid): string
+    private function resolveIconUrl(int $categoryUid): string
     {
-        try {
-            $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_category');
-            $value = $queryBuilder
-                ->select('tx_gastgeber_icon_css_class')
-                ->from('sys_category')
-                ->where(
-                    $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($categoryUid, Connection::PARAM_INT))
-                )
-                ->setMaxResults(1)
-                ->executeQuery()
-                ->fetchOne();
-        } catch (\Throwable) {
+        $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+        $references = $fileRepository->findByRelation('sys_category', 'tx_gastgeber_icon', $categoryUid);
+        if ($references === []) {
             return '';
         }
+        $file = $references[0]->getOriginalFile();
+        return $file->getPublicUrl() ?? '';
+    }
 
-        return trim((string)($value ?: ''));
+    private function isRatingTitle(string $title): bool
+    {
+        return (bool)preg_match('/^(keine\s+sterne|[1-5]\s*stern|[1-5]\s*sterne|\*{1,5})$/iu', trim($title));
+    }
+
+    private function ratingStars(string $title): int
+    {
+        $normalized = trim($title);
+        if (preg_match('/^([1-5])\s*stern/iu', $normalized, $matches)) {
+            return (int)$matches[1];
+        }
+        if (preg_match('/^(\*{1,5})$/', $normalized, $matches)) {
+            return strlen($matches[1]);
+        }
+        return 0;
     }
 }

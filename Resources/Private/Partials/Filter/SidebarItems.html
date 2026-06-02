@@ -1,36 +1,12 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
-<ul class="gastgeber-filter-sidebar__items list-unstyled mb-0">
-    <f:for each="{categories}" as="category">
-        <li class="gastgeber-filter-sidebar__item">
-            <f:if condition="{category.hasFilterCategories}">
-                <f:then>
-                    <f:link.page pageUid="{targetPid}"
-                                 additionalParams="{tx_news_pi1: {overwriteDemand: {categories: category.filterCategoryList, categoryConjunction: categoryConjunction}}, tx_gastgeber_view: selectedView}"
-                                 class="gastgeber-filter-sidebar__link {f:if(condition: category.active, then: 'is-active')}"
-                                 title="{category.title}"
-                                 aria-pressed="{f:if(condition: category.active, then: 'true', else: 'false')}">
-                        <span class="gastgeber-filter-sidebar__box" aria-hidden="true"></span>
-                        <f:render partial="Category/Icon" arguments="{iconUrl: category.iconUrl, iconCssClass: category.iconCssClass, title: category.title}" />
-                        <span class="gastgeber-filter-sidebar__label">{category.title}</span>
-                    </f:link.page>
-                </f:then>
-                <f:else>
-                    <f:link.page pageUid="{targetPid}"
-                                 additionalParams="{tx_gastgeber_view: selectedView}"
-                                 class="gastgeber-filter-sidebar__link {f:if(condition: category.active, then: 'is-active')}"
-                                 title="{category.title}"
-                                 aria-pressed="{f:if(condition: category.active, then: 'true', else: 'false')}">
-                        <span class="gastgeber-filter-sidebar__box" aria-hidden="true"></span>
-                        <f:render partial="Category/Icon" arguments="{iconUrl: category.iconUrl, iconCssClass: category.iconCssClass, title: category.title}" />
-                        <span class="gastgeber-filter-sidebar__label">{category.title}</span>
-                    </f:link.page>
-                </f:else>
-            </f:if>
-            <f:if condition="{category.children}">
-                <div class="gastgeber-filter-sidebar__children">
-                    <f:render partial="Filter/SidebarItems" arguments="{categories: category.children, targetPid: targetPid, categoryConjunction: categoryConjunction, selectedView: selectedView}" />
-                </div>
-            </f:if>
+<ul class="gastgeber-filter-items">
+    <f:for each="{items}" as="item">
+        <li>
+            <f:link.action action="list" arguments="{categories: item.linkCategories, view: viewMode}" class="gastgeber-filter-link {f:if(condition: item.active, then: 'is-active')}">
+                <span class="gastgeber-filter-link__box" aria-hidden="true"></span>
+                <f:render partial="Category/Icon" arguments="{presentation: item.presentation}" />
+                <span>{item.title}</span>
+            </f:link.action>
         </li>
     </f:for>
 </ul>
