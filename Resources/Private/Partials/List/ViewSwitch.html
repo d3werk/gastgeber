@@ -1,7 +1,0 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
-<div class="gastgeber-view-switch" role="group" aria-label="Ansicht wählen">
-  <f:link.action action="list" arguments="{view:'cards', search:filters.search, types:filters.types, features:filters.features, districts:filters.districts}" class="gastgeber-view-switch__item {f:if(condition:'{viewMode} == \'cards\'', then:'is-active')}">▦ Cards</f:link.action>
-  <f:link.action action="list" arguments="{view:'list', search:filters.search, types:filters.types, features:filters.features, districts:filters.districts}" class="gastgeber-view-switch__item {f:if(condition:'{viewMode} == \'list\'', then:'is-active')}">☰ Liste</f:link.action>
-  <f:link.action action="list" arguments="{view:'map', search:filters.search, types:filters.types, features:filters.features, districts:filters.districts}" class="gastgeber-view-switch__item {f:if(condition:'{viewMode} == \'map\'', then:'is-active')}">⌖ Karte</f:link.action>
-</div>
-</html>
