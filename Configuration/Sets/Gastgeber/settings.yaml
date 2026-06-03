@@ -2,3 +2,6 @@ plugin:
   tx_gastgeber:
     persistence:
       storagePid: ''
+    settings:
+      detailPid: ''
+      listPid: ''

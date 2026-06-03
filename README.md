@@ -48,6 +48,39 @@ Empfohlen ist für normale Gastgeberseiten nur:
 
 Das separate Filter-Plugin ist nur für spezielle Einstiegsseiten vorgesehen.
 
+
+## Verbindung Liste → Detailseite
+
+Die Liste hat jetzt im Backend eine echte Seitenauswahl für die Detailseite. Dadurch muss keine UID mehr manuell eingetragen werden.
+
+Empfohlenes Setup:
+
+```text
+Seite "Gastgeber / Übersicht"
+└── Inhaltselement "Gastgeber: Übersicht / Liste"
+    ├── Datensatz-Ordner / Storage PID = Ordner mit Gastgeber-Datensätzen
+    └── Detailseite = Seite "Gastgeber / Detail"
+
+Seite "Gastgeber / Detail"
+└── Inhaltselement "Gastgeber: Detailansicht"
+    ├── Datensatz-Ordner / Storage PID = gleicher Ordner wie in der Liste
+    └── Übersichtsseite / Zurück-Link = Seite "Gastgeber / Übersicht"
+```
+
+Die Linkausgabe wurde wie bei etablierten TYPO3-Listen-/Detail-Plugins aufgebaut:
+
+- Wenn in der Listenansicht eine Detailseite gewählt ist, werden Detail-Links gezielt an das Plugin `Gastgeber: Detailansicht` auf dieser Seite übergeben.
+- Wenn keine Detailseite gewählt ist, kann die Listen-, Karten- oder Teaseransicht die Detailaktion als Fallback selbst anzeigen.
+- Teaser- und Kartenplugin besitzen ebenfalls eine Detailseiten-Auswahl, damit Links von Startseiten oder Karten sauber zur Detailseite führen.
+
+Für sprechende Detail-URLs liegt ein Beispiel unter:
+
+```text
+Configuration/Routes/GastgeberDetail.example.yaml
+```
+
+Der Inhalt kann in die jeweilige Site-Konfiguration übernommen und die UID der Detailseite angepasst werden.
+
 ## Backend-Pflege
 
 Gastgeber-Datensätze sind redaktionell gegliedert in:

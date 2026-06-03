@@ -156,6 +156,9 @@
 .gastgeber-card__meta { display: flex; align-items: center; flex-wrap: wrap; gap: .75rem; color: var(--gastgeber-muted); }
 .gastgeber-card__district { font-weight: 650; }
 .gastgeber-card__teaser { margin: 0; color: var(--gastgeber-text); }
+.gastgeber-card__teaser p { margin: 0 0 .5rem; }
+.gastgeber-card__teaser p:last-child { margin-bottom: 0; }
+.gastgeber-card__teaser a { font-weight: 600; text-decoration: underline; text-underline-offset: .16em; }
 .gastgeber-address { color: var(--gastgeber-muted); margin: 0; }
 .gastgeber-badge { display: inline-flex; align-items: center; gap: .4rem; border: 1px solid var(--gastgeber-border); padding: .25rem .55rem; font-weight: 700; color: var(--gastgeber-primary); background: #fff; }
 .gastgeber-badge--type { border-color: var(--gastgeber-primary-soft); background: var(--gastgeber-primary-soft); }

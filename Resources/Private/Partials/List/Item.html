@@ -1,16 +1,32 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 <article class="gastgeber-card {f:if(condition: viewMode == 'list', then: 'gastgeber-card--list')}" itemscope="itemscope" itemtype="https://schema.org/LodgingBusiness">
   <div class="gastgeber-card__media">
-    <f:link.action action="detail" arguments="{host: host}" title="{host.title}">
-      <f:if condition="{host.firstMedia}">
-        <f:then>
-          <f:image image="{host.firstMedia.originalResource}" class="gastgeber-card__image" width="800" height="520c" alt="{host.title}" loading="lazy" />
-        </f:then>
-        <f:else>
-          <div class="gastgeber-card__placeholder"><span>{host.title}</span></div>
-        </f:else>
-      </f:if>
-    </f:link.action>
+    <f:if condition="{settings.detailPid}">
+      <f:then>
+        <f:link.action action="detail" controller="Host" extensionName="Gastgeber" pluginName="Detail" pageUid="{settings.detailPid}" arguments="{host: host}" title="{host.title}">
+          <f:if condition="{host.firstMedia}">
+            <f:then>
+              <f:image image="{host.firstMedia.originalResource}" class="gastgeber-card__image" width="800" height="520c" alt="{host.title}" loading="lazy" />
+            </f:then>
+            <f:else>
+              <div class="gastgeber-card__placeholder"><span>{host.title}</span></div>
+            </f:else>
+          </f:if>
+        </f:link.action>
+      </f:then>
+      <f:else>
+        <f:link.action action="detail" arguments="{host: host}" title="{host.title}">
+          <f:if condition="{host.firstMedia}">
+            <f:then>
+              <f:image image="{host.firstMedia.originalResource}" class="gastgeber-card__image" width="800" height="520c" alt="{host.title}" loading="lazy" />
+            </f:then>
+            <f:else>
+              <div class="gastgeber-card__placeholder"><span>{host.title}</span></div>
+            </f:else>
+          </f:if>
+        </f:link.action>
+      </f:else>
+    </f:if>
     <f:if condition="{host.primaryCertificate}">
       <div class="gastgeber-card__rating">
         <f:render partial="Certificate/RatingBadge" arguments="{certificate: host.primaryCertificate}" />
@@ -27,13 +43,22 @@
     </div>
 
     <h3 class="gastgeber-card__title" itemprop="name">
-      <f:link.action action="detail" arguments="{host: host}" itemprop="url">{host.title}</f:link.action>
+      <f:if condition="{settings.detailPid}">
+        <f:then>
+          <f:link.action action="detail" controller="Host" extensionName="Gastgeber" pluginName="Detail" pageUid="{settings.detailPid}" arguments="{host: host}" itemprop="url">{host.title}</f:link.action>
+        </f:then>
+        <f:else>
+          <f:link.action action="detail" arguments="{host: host}" itemprop="url">{host.title}</f:link.action>
+        </f:else>
+      </f:if>
     </h3>
 
     <f:if condition="{host.shortAddress}"><p class="gastgeber-address" itemprop="address">{host.shortAddress}</p></f:if>
 
     <f:if condition="{host.teaser}">
-      <p class="gastgeber-card__teaser" itemprop="description">{host.teaser -> f:format.stripTags()}</p>
+      <div class="gastgeber-card__teaser" itemprop="description">
+        <f:format.html>{host.teaser}</f:format.html>
+      </div>
     </f:if>
 
     <f:render partial="List/FeatureStrip" arguments="{host: host}" />
@@ -46,7 +71,14 @@
     </div>
 
     <div class="gastgeber-card__actions">
-      <f:link.action action="detail" arguments="{host: host}" class="btn btn-primary">Details ansehen</f:link.action>
+      <f:if condition="{settings.detailPid}">
+        <f:then>
+          <f:link.action action="detail" controller="Host" extensionName="Gastgeber" pluginName="Detail" pageUid="{settings.detailPid}" arguments="{host: host}" class="btn btn-primary">Details ansehen</f:link.action>
+        </f:then>
+        <f:else>
+          <f:link.action action="detail" arguments="{host: host}" class="btn btn-primary">Details ansehen</f:link.action>
+        </f:else>
+      </f:if>
       <f:if condition="{host.bookingUrl}"><f:link.typolink parameter="{host.bookingUrl}" class="btn btn-outline-primary" additionalAttributes="{rel:'noopener'}">Anfragen / Buchen</f:link.typolink></f:if>
       <f:if condition="{host.hasCoordinates}"><f:link.action action="list" arguments="{view:'map'}" class="btn btn-link gastgeber-card__maplink">Auf Karte</f:link.action></f:if>
     </div>

@@ -9,6 +9,8 @@ plugin.tx_gastgeber {
   }
   settings {
     itemsPerPage = 24
+    detailPid =
+    listPid =
     defaultView = cards
     showFilter = 1
     showViewSwitch = 1

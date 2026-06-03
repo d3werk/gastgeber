@@ -10,10 +10,10 @@ use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
-ExtensionUtility::configurePlugin('Gastgeber', 'List', [HostController::class => 'list'], [HostController::class => 'list']);
+ExtensionUtility::configurePlugin('Gastgeber', 'List', [HostController::class => 'list,detail'], [HostController::class => 'list']);
 ExtensionUtility::configurePlugin('Gastgeber', 'Detail', [HostController::class => 'detail'], []);
-ExtensionUtility::configurePlugin('Gastgeber', 'Map', [HostController::class => 'map'], [HostController::class => 'map']);
-ExtensionUtility::configurePlugin('Gastgeber', 'Teaser', [HostController::class => 'teaser'], [HostController::class => 'teaser']);
+ExtensionUtility::configurePlugin('Gastgeber', 'Map', [HostController::class => 'map,detail'], [HostController::class => 'map']);
+ExtensionUtility::configurePlugin('Gastgeber', 'Teaser', [HostController::class => 'teaser,detail'], [HostController::class => 'teaser']);
 ExtensionUtility::configurePlugin('Gastgeber', 'Categories', [HostController::class => 'categories'], [HostController::class => 'categories']);
 ExtensionUtility::configurePlugin('Gastgeber', 'Filter', [FilterController::class => 'index'], [FilterController::class => 'index']);
 

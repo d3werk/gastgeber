@@ -7,7 +7,16 @@
   <div class="gastgeber-map-list" aria-label="Gastgeber auf der Karte">
     <f:for each="{hosts}" as="host">
       <article>
-        <strong><f:link.action action="detail" arguments="{host: host}">{host.title}</f:link.action></strong>
+        <strong>
+          <f:if condition="{settings.detailPid}">
+            <f:then>
+              <f:link.action action="detail" controller="Host" extensionName="Gastgeber" pluginName="Detail" pageUid="{settings.detailPid}" arguments="{host: host}">{host.title}</f:link.action>
+            </f:then>
+            <f:else>
+              <f:link.action action="detail" arguments="{host: host}">{host.title}</f:link.action>
+            </f:else>
+          </f:if>
+        </strong>
         <f:if condition="{host.type}"><span>{host.type.title}</span></f:if>
         <f:if condition="{host.addressLine}"><small>{host.addressLine}</small></f:if>
       </article>

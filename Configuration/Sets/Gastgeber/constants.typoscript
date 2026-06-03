@@ -1,1 +1,4 @@
 plugin.tx_gastgeber.persistence.storagePid =
+
+plugin.tx_gastgeber.settings.detailPid =
+plugin.tx_gastgeber.settings.listPid =

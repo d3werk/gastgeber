@@ -140,19 +140,33 @@ class HostController extends ActionController
     private function applySeo(Host $host): void
     {
         $title = $host->getSeoTitle() !== '' ? $host->getSeoTitle() : $host->getTitle();
-        $description = $host->getMetaDescription() !== '' ? $host->getMetaDescription() : $host->getTeaser();
+        $description = $this->plainText($host->getMetaDescription());
+        if ($description === '') {
+            $description = $this->plainText($host->getTeaser());
+        }
+        if ($description === '') {
+            $description = $this->plainText($host->getDescription());
+        }
         if ($title !== '') {
             $this->pageRenderer->setTitle($title);
             $this->metaTagManagerRegistry->getManagerForProperty('og:title')->addProperty('og:title', $host->getOgTitle() !== '' ? $host->getOgTitle() : $title);
         }
         if ($description !== '') {
             $this->metaTagManagerRegistry->getManagerForProperty('description')->addProperty('description', $description);
-            $this->metaTagManagerRegistry->getManagerForProperty('og:description')->addProperty('og:description', $host->getOgDescription() !== '' ? $host->getOgDescription() : $description);
+            $ogDescription = $this->plainText($host->getOgDescription());
+            $this->metaTagManagerRegistry->getManagerForProperty('og:description')->addProperty('og:description', $ogDescription !== '' ? $ogDescription : $description);
         }
         if ($host->isNoindex()) {
             $this->metaTagManagerRegistry->getManagerForProperty('robots')->addProperty('robots', 'noindex,follow');
         }
         $this->addStructuredData($host, $title, $description);
+    }
+
+    private function plainText(string $value): string
+    {
+        $value = html_entity_decode(strip_tags($value), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $value = (string)preg_replace('/\s+/', ' ', $value);
+        return trim($value);
     }
 
     private function addStructuredData(Host $host, string $title, string $description): void

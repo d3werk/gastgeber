@@ -1,0 +1,24 @@
+# Beispiel für config/sites/<site>/config.yaml
+# UID-Werte anpassen:
+# - 407 = Detailseite mit Plugin "Gastgeber: Detailansicht"
+#
+# Danach sollte die Listenansicht im FlexForm-Feld "Detailseite" ebenfalls auf diese Seite zeigen.
+routeEnhancers:
+  GastgeberDetail:
+    type: Extbase
+    extension: Gastgeber
+    plugin: Detail
+    limitToPages:
+      - 407
+    routes:
+      -
+        routePath: '/{host}'
+        _controller: 'Host::detail'
+        _arguments:
+          host: host
+    defaultController: 'Host::detail'
+    aspects:
+      host:
+        type: PersistedAliasMapper
+        tableName: tx_gastgeber_domain_model_host
+        routeFieldName: slug
