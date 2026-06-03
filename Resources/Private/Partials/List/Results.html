@@ -1,0 +1,14 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:gh="http://typo3.org/ns/D3Werk/Gastgeber/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:if condition="{viewMode} == 'map'">
+  <f:then><f:render partial="Map/List" arguments="{_all}" /></f:then>
+  <f:else>
+    <div class="gastgeber-results {f:if(condition:'{viewMode} == \'list\'', then:'gastgeber-results--list', else:'row g-4')}">
+      <f:for each="{hosts}" as="host">
+        <div class="{f:if(condition:'{viewMode} == \'list\'', then:'gastgeber-list-row', else:'col-12 col-md-6 col-xl-4')}">
+          <f:render partial="List/Item" arguments="{host:host, viewMode:viewMode, settings:settings}" />
+        </div>
+      </f:for>
+    </div>
+  </f:else>
+</f:if>
+</html>

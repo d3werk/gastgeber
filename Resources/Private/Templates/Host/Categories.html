@@ -1,0 +1,16 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="Default" />
+<f:section name="Main">
+<div class="gastgeber-type-teasers row g-4">
+  <f:for each="{types}" as="type">
+    <div class="col-12 col-md-6 col-xl-3">
+      <f:link.page pageUid="{settings.targetPid}" additionalParams="{tx_gastgeber_list:{types:{0:type.uid}}}" class="gastgeber-type-card">
+        <f:render partial="Category/Icon" arguments="{item:type}" />
+        <strong>{type.title}</strong>
+        <span>{type.description}</span>
+      </f:link.page>
+    </div>
+  </f:for>
+</div>
+</f:section>
+</html>

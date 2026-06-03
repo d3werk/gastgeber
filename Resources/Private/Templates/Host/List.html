@@ -1,0 +1,28 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="Default" />
+<f:section name="Main">
+<div class="gastgeber-directory">
+  <div class="gastgeber-toolbar">
+    <div>
+      <div class="gastgeber-eyebrow">Ergebnisse</div>
+      <h2>Unterkünfte finden</h2>
+    </div>
+    <f:if condition="{settings.showViewSwitch}">
+      <f:render partial="List/ViewSwitch" arguments="{_all}" />
+    </f:if>
+  </div>
+
+  <f:if condition="{settings.showFilter}">
+    <f:then>
+      <div class="row g-4">
+        <aside class="col-12 col-lg-3"><f:render partial="Filter/Sidebar" arguments="{_all}" /></aside>
+        <main class="col-12 col-lg-9"><f:render partial="List/Results" arguments="{_all}" /></main>
+      </div>
+    </f:then>
+    <f:else>
+      <main class="col-12"><f:render partial="List/Results" arguments="{_all}" /></main>
+    </f:else>
+  </f:if>
+</div>
+</f:section>
+</html>

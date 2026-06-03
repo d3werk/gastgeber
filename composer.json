@@ -1,0 +1,52 @@
+{
+  "name": "d3-werk/gastgeber",
+  "description": "Eigenständiges TYPO3-Gastgeberverzeichnis mit Gastgebern, Unterkunftsarten, Merkmalen, Ortsteilen, Zertifikaten, Filter, Karte, Galerie und SEO.",
+  "license": "GPL-2.0-or-later",
+  "type": "typo3-cms-extension",
+  "keywords": ["TYPO3", "extension", "gastgeber", "unterkuenfte", "tourismus", "openstreetmap", "leaflet"],
+  "authors": [
+    {
+      "name": "d3-werk",
+      "homepage": "https://www.d3-werk.de",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "source": "https://github.com/d3werk/gastgeber",
+    "issues": "https://github.com/d3werk/gastgeber/issues"
+  },
+  "require": {
+    "php": ">= 8.2 < 8.6",
+    "symfony/console": "^5.4 || ^6.4 || ^7.0",
+    "typo3/cms-backend": "^13.4.20 || ^14.0",
+    "typo3/cms-core": "^13.4.20 || ^14.0",
+    "typo3/cms-extbase": "^13.4.20 || ^14.0",
+    "typo3/cms-fluid": "^13.4.20 || ^14.0",
+    "typo3/cms-frontend": "^13.4.20 || ^14.0",
+    "typo3/cms-install": "^13.4.20 || ^14.0"
+  },
+  "suggest": {
+    "typo3/cms-seo": "Für XML-Sitemaps und erweiterte SEO-Funktionen.",
+    "d3-werk/sitepackage": "Für projektspezifische Template- und SCSS-Overrides."
+  },
+  "autoload": {
+    "psr-4": {
+      "D3Werk\\Gastgeber\\": "Classes/"
+    }
+  },
+  "replace": {
+    "typo3-ter/gastgeber": "self.version"
+  },
+  "extra": {
+    "typo3/cms": {
+      "extension-key": "gastgeber"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "typo3/class-alias-loader": true,
+      "typo3/cms-composer-installers": true
+    },
+    "sort-packages": true
+  }
+}

@@ -1,0 +1,46 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:gh="http://typo3.org/ns/D3Werk/Gastgeber/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:form action="list" method="get" class="gastgeber-filter-sidebar">
+  <f:form.hidden name="view" value="{viewMode}" />
+  <h3>Filter</h3>
+  <label class="gastgeber-filter-search">
+    <span>Suche</span>
+    <f:form.textfield type="search" name="search" value="{filters.search}" placeholder="Name, Ort, Ausstattung..." />
+  </label>
+  <div class="gastgeber-filter-group">
+    <h4>Art der Unterkunft</h4>
+    <f:for each="{types}" as="type">
+      <label class="gastgeber-filter-check">
+        <f:form.checkbox name="types[]" value="{type.uid}" checked="{gh:inArray(needle:type.uid, haystack:filters.types)}" />
+        <span><f:render partial="Category/Icon" arguments="{item:type}" /> {type.title}</span>
+      </label>
+    </f:for>
+  </div>
+  <div class="gastgeber-filter-group">
+    <h4>Ortsteil</h4>
+    <f:for each="{districts}" as="district">
+      <label class="gastgeber-filter-check">
+        <f:form.checkbox name="districts[]" value="{district.uid}" checked="{gh:inArray(needle:district.uid, haystack:filters.districts)}" />
+        <span>{district.title}</span>
+      </label>
+    </f:for>
+  </div>
+  <div class="gastgeber-filter-group">
+    <h4>Ausstattung</h4>
+    <f:for each="{featureGroups}" as="group">
+      <div class="gastgeber-filter-subtitle">{group.title}</div>
+      <f:for each="{features}" as="feature">
+        <f:if condition="{feature.group.uid} == {group.uid}">
+          <label class="gastgeber-filter-check">
+            <f:form.checkbox name="features[]" value="{feature.uid}" checked="{gh:inArray(needle:feature.uid, haystack:filters.features)}" />
+            <span><f:render partial="Category/Icon" arguments="{item:feature}" /> {feature.title}</span>
+          </label>
+        </f:if>
+      </f:for>
+    </f:for>
+  </div>
+  <div class="gastgeber-filter-actions">
+    <button class="btn btn-primary" type="submit">Filter anwenden</button>
+    <f:link.action action="list" class="btn btn-outline-primary">Alle Filter zurücksetzen</f:link.action>
+  </div>
+</f:form>
+</html>

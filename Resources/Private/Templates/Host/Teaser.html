@@ -1,0 +1,6 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="Default" />
+<f:section name="Main">
+<div class="row g-4 gastgeber-teaser"><f:for each="{hosts}" as="host"><div class="col-12 col-md-6 col-xl-4"><f:render partial="List/Item" arguments="{host:host, viewMode:'cards', settings:settings}" /></div></f:for></div>
+</f:section>
+</html>

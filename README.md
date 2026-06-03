@@ -1,10 +1,40 @@
 # Gastgeber
 
-Eigenständige TYPO3-Erweiterung für Gastgeber, Unterkünfte, Filter, Listenansichten, Detailseiten, Galerien und Karten.
+Eigenständige TYPO3-Erweiterung für ein professionelles Gastgeber- und Unterkunftsverzeichnis.
 
-## Wichtig
+## Architektur
 
-Diese Version arbeitet **unabhängig von EXT:news**. Gastgeber werden in der eigenen Tabelle `tx_gastgeber_domain_model_host` gepflegt.
+Die Extension arbeitet unabhängig von EXT:news. Gastgeber, Unterkunftsarten, Merkmalsgruppen, Merkmale, Ortsteile und Zertifikate werden in eigenen Tabellen gespeichert:
+
+- `tx_gastgeber_domain_model_host`
+- `tx_gastgeber_domain_model_type`
+- `tx_gastgeber_domain_model_featuregroup`
+- `tx_gastgeber_domain_model_feature`
+- `tx_gastgeber_domain_model_district`
+- `tx_gastgeber_domain_model_certificate`
+
+## Frontend-Plugins
+
+- Gastgeber: Übersicht / Liste
+- Gastgeber: Detailansicht
+- Gastgeber: Kartenansicht
+- Gastgeber: Teaser
+- Gastgeber: Unterkunftsarten-Teaser
+- Gastgeber: Filter
+
+## Backend-Pflege
+
+Gastgeber-Datensätze sind redaktionell gegliedert in:
+
+- Allgemein
+- Medien
+- Adresse / Karte
+- Kontakt / Buchung
+- Preise / Kapazität
+- Ausstattung / Merkmale
+- SEO / Suchmaschinen
+
+Merkmale haben eigene Felder für Icon, Icon-CSS-Klasse, Filterbarkeit, Anzeige in Cards, Anzeige auf der Detailseite und Top-Merkmal.
 
 ## Installation
 
@@ -14,43 +44,30 @@ vendor/bin/typo3 extension:setup
 vendor/bin/typo3 cache:flush
 ```
 
-Danach Datenbankstruktur prüfen und übernehmen.
+Danach in den Admin Tools die Datenbankstruktur analysieren und übernehmen.
 
-## Kategorien anlegen
+## Standarddaten anlegen
 
 ```bash
-vendor/bin/typo3 gastgeber:categories:create --pid=123
+vendor/bin/typo3 gastgeber:setup:defaults --pid=123
 ```
 
-`123` ist die UID des Ordners, in dem `sys_category`-Datensätze liegen sollen.
+`123` ist die UID des Speicherordners für Gastgeber-Stammdaten.
 
-## Seitenaufbau
+## Empfohlener Seitenaufbau
 
-- Seite „Gastgeber“: Inhaltselement **Gastgeber: Übersicht / Liste**
-- Seite „Gastgeber Detail“: Inhaltselement **Gastgeber: Detailansicht**
+```text
+Gastgeber
+├── Übersicht
+│   └── Gastgeber: Übersicht / Liste
+├── Detail
+│   └── Gastgeber: Detailansicht
+└── Karte
+    └── Gastgeber: Kartenansicht
+```
 
-Im Listen-Element die Detailseite auswählen.
+## Hinweise
 
-## Backend-Pflege
-
-Gastgeber werden als eigene Datensätze gepflegt. Die wichtigsten Reiter:
-
-- Allgemein: Titel, URL, Kurztext, Beschreibung, Bilder, Kategorien
-- Adresse / Karte: Anschrift, automatische Koordinaten, Kartenanzeige
-- Kontakt / Buchung: Telefon, E-Mail, Website, Anfrage-/Buchungslink, Buchungstext
-- Preise / Kapazität: Preise, Personen, Zimmer, Betten, Fläche
-- Ausstattung / Hinweise: Ausstattungstext und Klassifizierung
-- SEO / Suchmaschinen: SEO-Titel, Meta-Beschreibung, Social-Media-Texte
-
-## Merkmale und Icons
-
-Merkmale sind `sys_category`-Datensätze. Pro Kategorie können gepflegt werden:
-
-- Merkmal-Icon als Datei
-- Icon-CSS-Klasse
-- Top-Merkmal für die Detailseite
-- Im Filter ausblenden
-
-## Karten
-
-Koordinaten können manuell gepflegt oder beim Speichern über die Anschrift ermittelt werden. Die Kartenansicht nutzt Leaflet/OpenStreetMap.
+- Die Karte basiert auf Leaflet/OpenStreetMap.
+- Externe Kartenkacheln sollten im Projekt datenschutzrechtlich geprüft werden.
+- Templates und SCSS können im Sitepackage über TYPO3-Template-Pfade überschrieben werden.

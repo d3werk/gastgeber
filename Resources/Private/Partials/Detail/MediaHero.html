@@ -1,0 +1,21 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<div class="gastgeber-gallery-hero">
+  <div class="gastgeber-gallery-hero__main">
+    <f:if condition="{host.firstMedia}">
+      <f:then><f:image image="{host.firstMedia.originalResource}" class="gastgeber-gallery-hero__image" width="1200" height="620c" alt="{host.title}" /></f:then>
+      <f:else><div class="gastgeber-gallery-hero__placeholder">{host.title}</div></f:else>
+    </f:if>
+  </div>
+  <div class="gastgeber-gallery-hero__side">
+    <f:for each="{host.media}" as="image" iteration="i">
+      <f:if condition="{i.index} &gt; 0"><f:if condition="{i.index} &lt; 5"><f:image image="{image.originalResource}" class="gastgeber-gallery-hero__thumb" width="520" height="300c" alt="{host.title}" /></f:if></f:if>
+    </f:for>
+  </div>
+  <f:if condition="{host.mediaCount} &gt; 1">
+    <button type="button" class="gastgeber-gallery-button" data-bs-toggle="modal" data-bs-target="#gastgeber-gallery-{host.uid}">▦ Alle Bilder anzeigen</button>
+  </f:if>
+  <f:if condition="{host.certificates}">
+    <div class="gastgeber-detail-rating"><f:for each="{host.certificates}" as="certificate" iteration="i"><f:if condition="{i.isFirst}">{certificate.title}</f:if></f:for></div>
+  </f:if>
+</div>
+</html>

@@ -1,0 +1,10 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<div class="modal fade" id="gastgeber-gallery-{host.uid}" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title">Bildergalerie</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button></div>
+      <div class="modal-body"><div class="row g-3"><f:for each="{host.media}" as="image"><div class="col-12 col-md-6"><f:image image="{image.originalResource}" class="img-fluid w-100" width="900" height="560c" alt="{host.title}" /></div></f:for></div></div>
+    </div>
+  </div>
+</div>
+</html>
