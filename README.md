@@ -13,6 +13,23 @@ Die Extension arbeitet unabhängig von EXT:news. Gastgeber, Unterkunftsarten, Me
 - `tx_gastgeber_domain_model_district`
 - `tx_gastgeber_domain_model_certificate`
 
+## Frontend-Funktionen
+
+- Gastgeberliste mit linker Filterspalte
+- Filter als echte GET-Links mit teilbaren URLs
+- Suchfeld über Name, Ort und Beschreibung
+- Ansichten: Cards, Liste und Karte
+- Icons in Filter, Cards, Listenansicht und Detailansicht
+- Sterne-/Zertifikats-Badge oben rechts im Bild
+- Detailseite mit großem Hero/Galerie-Layout
+- Galerie-Modal für alle Bilder
+- Ausstattungs-Modal ab mehr als sechs Merkmalen
+- Top-Merkmale direkt unter dem Hero
+- Anfragen-/Buchen-Box rechts neben dem Inhalt
+- separate Preise-&-Kapazität-Box
+- Leaflet/OpenStreetMap-Karte
+- JSON-LD für `LodgingBusiness`
+
 ## Frontend-Plugins
 
 - Gastgeber: Übersicht / Liste
@@ -21,6 +38,15 @@ Die Extension arbeitet unabhängig von EXT:news. Gastgeber, Unterkunftsarten, Me
 - Gastgeber: Teaser
 - Gastgeber: Unterkunftsarten-Teaser
 - Gastgeber: Filter
+
+Empfohlen ist für normale Gastgeberseiten nur:
+
+```text
+1. Gastgeber: Übersicht / Liste
+2. Gastgeber: Detailansicht auf separater Detailseite
+```
+
+Das separate Filter-Plugin ist nur für spezielle Einstiegsseiten vorgesehen.
 
 ## Backend-Pflege
 
@@ -34,7 +60,15 @@ Gastgeber-Datensätze sind redaktionell gegliedert in:
 - Ausstattung / Merkmale
 - SEO / Suchmaschinen
 
-Merkmale haben eigene Felder für Icon, Icon-CSS-Klasse, Filterbarkeit, Anzeige in Cards, Anzeige auf der Detailseite und Top-Merkmal.
+Wichtig für Redakteure:
+
+- erstes Bild in der Bildergalerie = Hero-Bild
+- weitere Bilder erscheinen im Galerie-Modal
+- Merkmale werden als eigene Datensätze gepflegt
+- jedes Merkmal kann ein Icon oder eine CSS-Iconklasse bekommen
+- jedes Merkmal kann für Filter, Cards, Detailseite und Top-Merkmal getrennt geschaltet werden
+- Zertifikate/Sterne werden als eigene Datensätze gepflegt
+- Koordinaten können manuell gepflegt oder per Geocoding aus der Anschrift ermittelt werden
 
 ## Installation
 
@@ -42,6 +76,7 @@ Merkmale haben eigene Felder für Icon, Icon-CSS-Klasse, Filterbarkeit, Anzeige 
 composer require d3-werk/gastgeber
 vendor/bin/typo3 extension:setup
 vendor/bin/typo3 cache:flush
+vendor/bin/typo3 cache:warmup
 ```
 
 Danach in den Admin Tools die Datenbankstruktur analysieren und übernehmen.
@@ -70,4 +105,5 @@ Gastgeber
 
 - Die Karte basiert auf Leaflet/OpenStreetMap.
 - Externe Kartenkacheln sollten im Projekt datenschutzrechtlich geprüft werden.
+- Bootstrap 5 wird für Modals und Buttons erwartet.
 - Templates und SCSS können im Sitepackage über TYPO3-Template-Pfade überschrieben werden.

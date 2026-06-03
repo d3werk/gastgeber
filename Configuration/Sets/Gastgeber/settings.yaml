@@ -1,0 +1,4 @@
+plugin:
+  tx_gastgeber:
+    persistence:
+      storagePid: ''

@@ -1,0 +1,37 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:gh="http://typo3.org/ns/D3Werk/Gastgeber/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+<f:layout name="Default" />
+<f:section name="Main">
+<div class="gastgeber-directory">
+  <header class="gastgeber-toolbar">
+    <div class="gastgeber-toolbar__intro">
+      <p class="gastgeber-eyebrow mb-1">Gastgeberverzeichnis</p>
+      <h2>Unterkünfte finden</h2>
+      <p class="gastgeber-toolbar__text"><f:count subject="{hosts}" /> Gastgeber gefunden</p>
+    </div>
+    <div class="gastgeber-toolbar__actions">
+      <f:if condition="{settings.showViewSwitch}">
+        <f:render partial="List/ViewSwitch" arguments="{_all}" />
+      </f:if>
+    </div>
+  </header>
+
+  <f:if condition="{settings.showFilter}">
+    <f:then>
+      <div class="gastgeber-layout">
+        <div class="gastgeber-layout__filter">
+          <f:render partial="Filter/Sidebar" arguments="{_all}" />
+        </div>
+        <div class="gastgeber-layout__results">
+          <f:render partial="List/Results" arguments="{_all}" />
+        </div>
+      </div>
+    </f:then>
+    <f:else>
+      <f:render partial="List/Results" arguments="{_all}" />
+    </f:else>
+  </f:if>
+</div>
+</f:section>
+</html>

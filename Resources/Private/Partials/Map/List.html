@@ -1,0 +1,17 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:gh="http://typo3.org/ns/D3Werk/Gastgeber/ViewHelpers" data-namespace-typo3-fluid="true">
+<div class="gastgeber-map-view">
+  <div class="gastgeber-map-wrap">
+    <div class="gastgeber-map" data-gastgeber-map="1" data-lat="{settings.mapCenterLat}" data-lng="{settings.mapCenterLng}" data-zoom="{settings.mapZoom}"></div>
+    <script type="application/json" class="gastgeber-map-markers"><gh:mapMarkers hosts="{hosts}" /></script>
+  </div>
+  <div class="gastgeber-map-list" aria-label="Gastgeber auf der Karte">
+    <f:for each="{hosts}" as="host">
+      <article>
+        <strong><f:link.action action="detail" arguments="{host: host}">{host.title}</f:link.action></strong>
+        <f:if condition="{host.type}"><span>{host.type.title}</span></f:if>
+        <f:if condition="{host.addressLine}"><small>{host.addressLine}</small></f:if>
+      </article>
+    </f:for>
+  </div>
+</div>
+</html>

@@ -1,0 +1,25 @@
+plugin.tx_gastgeber {
+  view {
+    templateRootPaths.10 = EXT:gastgeber/Resources/Private/Templates/
+    partialRootPaths.10 = EXT:gastgeber/Resources/Private/Partials/
+    layoutRootPaths.10 = EXT:gastgeber/Resources/Private/Layouts/
+  }
+  persistence {
+    storagePid = {$plugin.tx_gastgeber.persistence.storagePid}
+  }
+  settings {
+    itemsPerPage = 24
+    defaultView = cards
+    showFilter = 1
+    showViewSwitch = 1
+    featureConjunction = and
+    mapCenterLat = 53.1966000
+    mapCenterLng = 9.9762000
+    mapZoom = 13
+  }
+}
+
+page.includeCSS.gastgeber = EXT:gastgeber/Resources/Public/Css/gastgeber.css
+page.includeJSFooter.gastgeber = EXT:gastgeber/Resources/Public/JavaScript/gastgeber.js
+page.includeCSSLibs.leaflet = https://unpkg.com/leaflet@1.9.4/dist/leaflet.css
+page.includeJSFooterlibs.leaflet = https://unpkg.com/leaflet@1.9.4/dist/leaflet.js
