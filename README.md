@@ -214,3 +214,9 @@ In der Listenansicht ist die Karte wieder im oberen Ansicht-Umschalter verfügba
 Die einzelnen Card-Buttons **Auf Karte** wurden entfernt, damit die Bedienung eindeutig über den oberen Karten-Button erfolgt. Die Kurzinfo **Personen** wurde aus der Card entfernt; Kapazitäten bleiben weiterhin in der Detailansicht und im Bereich Preise / Kapazität pflegbar.
 
 Für die Karte gilt weiterhin: Leaflet und die Leaflet-CSS-Datei werden über das TypoScript-Set eingebunden. Das JavaScript initialisiert Karten im Modal erst, wenn das Modal sichtbar ist, und aktualisiert anschließend die Kartengröße. Dadurch wird verhindert, dass Leaflet in einem unsichtbaren Modal mit falscher Breite/Höhe startet.
+
+### Hotfix: Listenansicht mit Karten-Modal
+
+In der Listenansicht wird das Karten-Modal bereits serverseitig vorbereitet. Dadurch wird auch der Marker-ViewHelper ausgeführt, bevor der Besucher den Modal-Button anklickt. Der Marker-ViewHelper wurde robuster gemacht: Extbase-QueryResult/Traversable wird ohne strikte `iterable`-Fluid-Argumentvalidierung akzeptiert, Koordinaten werden numerisch geprüft und JSON wird mit `JSON_INVALID_UTF8_SUBSTITUTE` erzeugt. Damit kann ein einzelner fehlerhafter Datensatz die Listenansicht nicht mehr mit einer TYPO3-„Oops“-Meldung abbrechen.
+
+Zusätzlich wurde die Card-Kurzinfo-Bedingung in ein Model-Getter (`hasCardFacts`) verlagert. Dadurch wird keine komplexe Fluid-OR-Bedingung mehr im Listen-Partial benötigt.
