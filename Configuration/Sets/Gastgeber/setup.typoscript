@@ -19,6 +19,19 @@ plugin.tx_gastgeber {
     mapCenterLat = 53.1966000
     mapCenterLng = 9.9762000
     mapZoom = 13
+    mapMarkerIconUrl =
+    mapMarkerIconRetinaUrl =
+    mapMarkerShadowUrl =
+    mapMarkerIconWidth = 38
+    mapMarkerIconHeight = 46
+    mapMarkerIconAnchorX = 19
+    mapMarkerIconAnchorY = 46
+    mapMarkerPopupAnchorX = 0
+    mapMarkerPopupAnchorY = -42
+    mapMarkerShadowWidth = 41
+    mapMarkerShadowHeight = 41
+    mapMarkerShadowAnchorX = 12
+    mapMarkerShadowAnchorY = 41
   }
 }
 

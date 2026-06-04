@@ -214,3 +214,27 @@ Wichtig: Für den mobilen Filter-Button und die vorhandenen Modale wird Bootstra
 ### Detail-Galerie: Desktop-Mosaik
 
 Die Detailansicht zeigt auf Desktop und Tablet-Landscape links das Hauptbild und rechts exakt vier Vorschaubilder aus der Galerie. Die Galerie verwendet eine feste Mosaik-Höhe und ein 2×2-Raster, damit die rechte Bildspalte immer bündig mit dem Hauptbild abschließt. Ab Tablet-Portrait/Smartphone wird die rechte Bildspalte ausgeblendet; alle weiteren Bilder bleiben über den Button „Alle Bilder anzeigen“ im Modal erreichbar.
+
+## Eigenes Marker-/Standort-Symbol für die Karte
+
+Die Kartenansicht verwendet ein eigenes SVG-Standardsymbol aus `Resources/Public/Icons/map-marker.svg`, damit der Standort-Marker nicht von den Leaflet-Standardgrafiken auf externen Pfaden abhängt.
+
+Ein eigenes Symbol kann pro Plugin im Backend-FlexForm-Feld **Eigenes Marker-/Standort-Symbol** eingetragen werden, z. B.:
+
+```text
+/fileadmin/undeloh/karte-marker.svg
+```
+
+Alternativ global per TypoScript:
+
+```typoscript
+plugin.tx_gastgeber.settings.mapMarkerIconUrl = /fileadmin/undeloh/karte-marker.svg
+plugin.tx_gastgeber.settings.mapMarkerIconWidth = 38
+plugin.tx_gastgeber.settings.mapMarkerIconHeight = 46
+plugin.tx_gastgeber.settings.mapMarkerIconAnchorX = 19
+plugin.tx_gastgeber.settings.mapMarkerIconAnchorY = 46
+plugin.tx_gastgeber.settings.mapMarkerPopupAnchorY = -42
+```
+
+Für andere Symbolgrößen müssen Breite, Höhe und Anker passend gesetzt werden. Der Anker ist der Punkt des Bildes, der exakt auf der Koordinate liegen soll.
+

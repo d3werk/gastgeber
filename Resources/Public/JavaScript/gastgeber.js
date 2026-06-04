@@ -5,6 +5,53 @@
     });
   }
 
+
+
+  function readNumber(value, fallback) {
+    var number = parseFloat(value);
+    return Number.isFinite(number) ? number : fallback;
+  }
+
+  function createMarkerIcon(mapElement) {
+    var iconUrl = (mapElement.dataset.markerIconUrl || '').trim();
+    if (!iconUrl) {
+      return null;
+    }
+
+    var iconWidth = readNumber(mapElement.dataset.markerIconWidth, 38);
+    var iconHeight = readNumber(mapElement.dataset.markerIconHeight, 46);
+    var iconAnchorX = readNumber(mapElement.dataset.markerIconAnchorX, iconWidth / 2);
+    var iconAnchorY = readNumber(mapElement.dataset.markerIconAnchorY, iconHeight);
+    var popupAnchorX = readNumber(mapElement.dataset.markerPopupAnchorX, 0);
+    var popupAnchorY = readNumber(mapElement.dataset.markerPopupAnchorY, -Math.round(iconHeight * 0.9));
+
+    var iconOptions = {
+      iconUrl: iconUrl,
+      iconSize: [iconWidth, iconHeight],
+      iconAnchor: [iconAnchorX, iconAnchorY],
+      popupAnchor: [popupAnchorX, popupAnchorY],
+      className: 'gastgeber-map-marker-icon'
+    };
+
+    if ((mapElement.dataset.markerIconRetinaUrl || '').trim()) {
+      iconOptions.iconRetinaUrl = mapElement.dataset.markerIconRetinaUrl.trim();
+    }
+
+    if ((mapElement.dataset.markerShadowUrl || '').trim()) {
+      iconOptions.shadowUrl = mapElement.dataset.markerShadowUrl.trim();
+      iconOptions.shadowSize = [
+        readNumber(mapElement.dataset.markerShadowWidth, iconWidth),
+        readNumber(mapElement.dataset.markerShadowHeight, iconHeight)
+      ];
+      iconOptions.shadowAnchor = [
+        readNumber(mapElement.dataset.markerShadowAnchorX, iconAnchorX),
+        readNumber(mapElement.dataset.markerShadowAnchorY, iconAnchorY)
+      ];
+    }
+
+    return L.icon(iconOptions);
+  }
+
   function refreshMap(mapElement, delay) {
     if (!mapElement || !mapElement._gastgeberMap) {
       return;
@@ -42,6 +89,7 @@
       }).addTo(map);
 
       var markerScript = mapElement.parentElement.querySelector('.gastgeber-map-markers');
+      var customMarkerIcon = createMarkerIcon(mapElement);
       var bounds = [];
       if (markerScript) {
         try {
@@ -52,7 +100,7 @@
             if (!Number.isFinite(markerLat) || !Number.isFinite(markerLng)) return;
             var ll = [markerLat, markerLng];
             bounds.push(ll);
-            L.marker(ll).addTo(map).bindPopup('<strong>' + escapeHtml(marker.title) + '</strong><br>' + escapeHtml(marker.address || ''));
+            L.marker(ll, customMarkerIcon ? {icon: customMarkerIcon} : {}).addTo(map).bindPopup('<strong>' + escapeHtml(marker.title) + '</strong><br>' + escapeHtml(marker.address || ''));
           });
         } catch (e) {}
       }

@@ -53,6 +53,70 @@
             <default>15</default>
             </config>
           </settings.mapZoom>
+
+          <settings.mapMarkerIconUrl>
+            <label>Eigenes Marker-/Standort-Symbol</label>
+            <description>Optional: Pfad oder URL zu einem eigenen SVG/PNG, z. B. /fileadmin/undeloh/karte-marker.svg. Leer lassen für das Standard-Symbol der Extension.</description>
+            <config>
+              <type>input</type>
+              <size>50</size>
+              <eval>trim</eval>
+            </config>
+          </settings.mapMarkerIconUrl>
+
+          <settings.mapMarkerIconWidth>
+            <label>Marker-Breite in Pixel</label>
+            <description>Breite des Symbols. Standard: 38.</description>
+            <config>
+              <type>number</type>
+              <default>38</default>
+              <range>
+                <lower>1</lower>
+                <upper>512</upper>
+              </range>
+            </config>
+          </settings.mapMarkerIconWidth>
+
+          <settings.mapMarkerIconHeight>
+            <label>Marker-Höhe in Pixel</label>
+            <description>Höhe des Symbols. Standard: 46.</description>
+            <config>
+              <type>number</type>
+              <default>46</default>
+              <range>
+                <lower>1</lower>
+                <upper>512</upper>
+              </range>
+            </config>
+          </settings.mapMarkerIconHeight>
+
+          <settings.mapMarkerIconAnchorX>
+            <label>Marker-Anker X</label>
+            <description>Horizontaler Punkt des Symbols, der exakt auf der Koordinate liegt. Standard: 19.</description>
+            <config>
+              <type>number</type>
+              <default>19</default>
+            </config>
+          </settings.mapMarkerIconAnchorX>
+
+          <settings.mapMarkerIconAnchorY>
+            <label>Marker-Anker Y</label>
+            <description>Vertikaler Punkt des Symbols, der exakt auf der Koordinate liegt. Bei Pin-Symbolen meist die volle Höhe. Standard: 46.</description>
+            <config>
+              <type>number</type>
+              <default>46</default>
+            </config>
+          </settings.mapMarkerIconAnchorY>
+
+          <settings.mapMarkerPopupAnchorY>
+            <label>Popup-Versatz Y</label>
+            <description>Vertikaler Popup-Versatz relativ zum Marker-Anker. Standard: -42.</description>
+            <config>
+              <type>number</type>
+              <default>-42</default>
+            </config>
+          </settings.mapMarkerPopupAnchorY>
+
         </el>
       </ROOT>
     </sDEF>
