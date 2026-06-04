@@ -63,12 +63,13 @@
 
     <f:render partial="List/FeatureStrip" arguments="{host: host}" />
 
-    <div class="gastgeber-card__facts" aria-label="Kurzinfos">
-      <f:if condition="{host.priceFrom}"><span>ab {host.priceFrom -> f:format.currency(currencySign:'€', decimalSeparator:',', thousandsSeparator:'.')}</span></f:if>
-      <f:if condition="{host.persons}"><span>{host.persons} Pers.</span></f:if>
-      <f:if condition="{host.beds}"><span>{host.beds} Betten</span></f:if>
-      <f:if condition="{host.sizeSqm}"><span>{host.sizeSqm} m²</span></f:if>
-    </div>
+    <f:if condition="{host.priceFrom} || {host.beds} || {host.sizeSqm}">
+      <div class="gastgeber-card__facts" aria-label="Kurzinfos">
+        <f:if condition="{host.priceFrom}"><span>ab {host.priceFrom -> f:format.currency(currencySign:'€', decimalSeparator:',', thousandsSeparator:'.')}</span></f:if>
+        <f:if condition="{host.beds}"><span>{host.beds} Betten</span></f:if>
+        <f:if condition="{host.sizeSqm}"><span>{host.sizeSqm} m²</span></f:if>
+      </div>
+    </f:if>
 
     <div class="gastgeber-card__actions">
       <f:if condition="{settings.detailPid}">
@@ -80,7 +81,6 @@
         </f:else>
       </f:if>
       <f:if condition="{host.bookingUrl}"><f:link.typolink parameter="{host.bookingUrl}" class="btn btn-outline-primary" additionalAttributes="{rel:'noopener'}">Anfragen / Buchen</f:link.typolink></f:if>
-      <f:if condition="{host.hasCoordinates}"><f:link.action action="list" arguments="{view:'map'}" class="btn btn-link gastgeber-card__maplink">Auf Karte</f:link.action></f:if>
     </div>
   </div>
 </article>

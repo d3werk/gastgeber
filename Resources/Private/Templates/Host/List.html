@@ -36,6 +36,10 @@
       <f:render partial="List/Results" arguments="{_all}" />
     </f:else>
   </f:if>
+
+  <f:if condition="{settings.showMap}">
+    <f:render partial="List/MapModal" arguments="{_all}" />
+  </f:if>
 </div>
 </f:section>
 </html>

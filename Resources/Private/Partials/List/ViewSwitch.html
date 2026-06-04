@@ -3,7 +3,7 @@
   <f:link.action action="list" arguments="{view:'cards', search:filters.search, types:filters.types, features:filters.features, districts:filters.districts}" class="gastgeber-view-switch__item {f:if(condition: viewMode == 'cards', then: 'is-active')}">▦ Cards</f:link.action>
   <f:link.action action="list" arguments="{view:'list', search:filters.search, types:filters.types, features:filters.features, districts:filters.districts}" class="gastgeber-view-switch__item {f:if(condition: viewMode == 'list', then: 'is-active')}">☰ Liste</f:link.action>
   <f:if condition="{settings.showMap}">
-    <f:link.action action="list" arguments="{view:'map', search:filters.search, types:filters.types, features:filters.features, districts:filters.districts}" class="gastgeber-view-switch__item {f:if(condition: viewMode == 'map', then: 'is-active')}">⌖ Karte</f:link.action>
+    <button type="button" class="gastgeber-view-switch__item gastgeber-view-switch__button" data-bs-toggle="modal" data-bs-target="#gastgeber-map-modal" aria-controls="gastgeber-map-modal">⌖ Karte</button>
   </f:if>
 </div>
 </html>

@@ -206,3 +206,11 @@ Wichtig: Für den mobilen Filter-Button und die vorhandenen Modale wird Bootstra
 ### Detail-Galerie: Desktop-Mosaik
 
 Die Detailansicht zeigt auf Desktop und Tablet-Landscape links das Hauptbild und rechts exakt vier Vorschaubilder aus der Galerie. Die Galerie verwendet eine feste Mosaik-Höhe und ein 2×2-Raster, damit die rechte Bildspalte immer bündig mit dem Hauptbild abschließt. Ab Tablet-Portrait/Smartphone wird die rechte Bildspalte ausgeblendet; alle weiteren Bilder bleiben über den Button „Alle Bilder anzeigen“ im Modal erreichbar.
+
+### Listenansicht: Kartenansicht als Modal
+
+In der Listenansicht ist die Karte wieder im oberen Ansicht-Umschalter verfügbar. Der Button **Karte** öffnet die Kartenansicht als Bootstrap-Modal und verwendet die aktuell gefilterte Gastgebermenge. Dadurch bleiben Cards- und Listenansicht sichtbar, während die Karte bei Bedarf als Overlay geöffnet wird.
+
+Die einzelnen Card-Buttons **Auf Karte** wurden entfernt, damit die Bedienung eindeutig über den oberen Karten-Button erfolgt. Die Kurzinfo **Personen** wurde aus der Card entfernt; Kapazitäten bleiben weiterhin in der Detailansicht und im Bereich Preise / Kapazität pflegbar.
+
+Für die Karte gilt weiterhin: Leaflet und die Leaflet-CSS-Datei werden über das TypoScript-Set eingebunden. Das JavaScript initialisiert Karten im Modal erst, wenn das Modal sichtbar ist, und aktualisiert anschließend die Kartengröße. Dadurch wird verhindert, dass Leaflet in einem unsichtbaren Modal mit falscher Breite/Höhe startet.
