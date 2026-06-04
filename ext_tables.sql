@@ -16,6 +16,8 @@ CREATE TABLE tx_gastgeber_domain_model_host (
     slug varchar(2048) DEFAULT '' NOT NULL,
     type int(11) unsigned DEFAULT '0' NOT NULL,
     district int(11) unsigned DEFAULT '0' NOT NULL,
+    stars int(11) DEFAULT '0' NOT NULL,
+    star_superior smallint(5) unsigned DEFAULT '0' NOT NULL,
     teaser text,
     description mediumtext,
     featured smallint(5) unsigned DEFAULT '0' NOT NULL,
@@ -44,6 +46,7 @@ CREATE TABLE tx_gastgeber_domain_model_host (
     request_email varchar(255) DEFAULT '' NOT NULL,
     price_from decimal(10,2) DEFAULT '0.00' NOT NULL,
     price_info text,
+    price_items int(11) unsigned DEFAULT '0' NOT NULL,
     persons int(11) DEFAULT '0' NOT NULL,
     bedrooms int(11) DEFAULT '0' NOT NULL,
     beds int(11) DEFAULT '0' NOT NULL,
@@ -191,6 +194,29 @@ CREATE TABLE tx_gastgeber_domain_model_certificate (
     PRIMARY KEY (uid),
     KEY parent (pid),
     KEY slug (slug(191))
+);
+
+
+CREATE TABLE tx_gastgeber_domain_model_priceitem (
+    uid int(11) unsigned NOT NULL auto_increment,
+    pid int(11) DEFAULT '0' NOT NULL,
+    tstamp int(11) unsigned DEFAULT '0' NOT NULL,
+    crdate int(11) unsigned DEFAULT '0' NOT NULL,
+    cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
+    deleted smallint(5) unsigned DEFAULT '0' NOT NULL,
+    hidden smallint(5) unsigned DEFAULT '0' NOT NULL,
+    sorting int(11) unsigned DEFAULT '0' NOT NULL,
+    sys_language_uid int(11) DEFAULT '0' NOT NULL,
+    l10n_parent int(11) unsigned DEFAULT '0' NOT NULL,
+    l10n_diffsource mediumblob,
+    host int(11) unsigned DEFAULT '0' NOT NULL,
+    row_type varchar(32) DEFAULT 'price' NOT NULL,
+    title text,
+    description mediumtext,
+    PRIMARY KEY (uid),
+    KEY parent (pid),
+    KEY host (host),
+    KEY row_type (row_type)
 );
 
 CREATE TABLE tx_gastgeber_host_feature_mm (

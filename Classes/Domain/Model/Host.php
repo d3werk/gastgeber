@@ -51,6 +51,8 @@ class Host extends AbstractEntity
 
     protected float $priceFrom = 0.0;
     protected string $priceInfo = '';
+    /** @var ObjectStorage<PriceItem> */
+    protected ObjectStorage $priceItems;
     protected int $persons = 0;
     protected int $bedrooms = 0;
     protected int $beds = 0;
@@ -80,6 +82,7 @@ class Host extends AbstractEntity
         $this->media = new ObjectStorage();
         $this->logo = new ObjectStorage();
         $this->documents = new ObjectStorage();
+        $this->priceItems = new ObjectStorage();
         $this->features = new ObjectStorage();
         $this->certificates = new ObjectStorage();
     }
@@ -162,6 +165,13 @@ class Host extends AbstractEntity
     public function setPriceFrom(float $priceFrom): void { $this->priceFrom = $priceFrom; }
     public function getPriceInfo(): string { return $this->priceInfo; }
     public function setPriceInfo(string $priceInfo): void { $this->priceInfo = $priceInfo; }
+    /** @return ObjectStorage<PriceItem> */ public function getPriceItems(): ObjectStorage { return $this->priceItems; }
+    /** @param ObjectStorage<PriceItem> $priceItems */ public function setPriceItems(ObjectStorage $priceItems): void { $this->priceItems = $priceItems; }
+    public function addPriceItem(PriceItem $priceItem): void { $this->priceItems->attach($priceItem); }
+    public function removePriceItem(PriceItem $priceItem): void { $this->priceItems->detach($priceItem); }
+    public function getPriceItemCount(): int { return count($this->priceItems); }
+    public function hasPriceItems(): bool { return count($this->priceItems) > 0; }
+    public function getHasPriceItems(): bool { return $this->hasPriceItems(); }
     public function getPersons(): int { return $this->persons; }
     public function setPersons(int $persons): void { $this->persons = $persons; }
     public function getBedrooms(): int { return $this->bedrooms; }

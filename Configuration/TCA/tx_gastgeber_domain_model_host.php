@@ -44,7 +44,7 @@ return array (
                 --div--;LLL:EXT:gastgeber/Resources/Private/Language/locallang_db.xlf:tabs.contactBooking,
                     contact_name, phone, mobile, email, website, booking_url, booking_text, request_email,
                 --div--;LLL:EXT:gastgeber/Resources/Private/Language/locallang_db.xlf:tabs.pricesCapacity,
-                    price_from, price_info, persons, bedrooms, beds, bathrooms, size_sqm, units, season_info, capacity_note,
+                    price_from, price_items, price_info, persons, bedrooms, beds, bathrooms, size_sqm, units, season_info, capacity_note,
                 --div--;LLL:EXT:gastgeber/Resources/Private/Language/locallang_db.xlf:tabs.features,
                     features, certificates, equipment_text, opening_times, accessibility_text, sustainability_text,
                 --div--;LLL:EXT:gastgeber/Resources/Private/Language/locallang_db.xlf:tabs.seo,
@@ -529,17 +529,60 @@ return array (
         'format' => 'decimal',
         'default' => 0,
       ),
-      'label' => 'Preis ab',
+      'label' => 'Preis ab / Kurzpreis',
+      'description' => 'Optionaler Kurzpreis für Listenansicht und Schnellüberblick. Die ausführlichen Preise werden darunter als flexible Preistabelle gepflegt.',
+    ),
+    'price_items' => 
+    array (
+      'label' => 'Flexible Preistabelle',
+      'description' => 'Hier werden individuelle Preiszeilen gepflegt. Geeignet für Einzelzimmer, Doppelzimmer, Ferienwohnungen, Hunde, Pferdeboxen, Parkplätze, WLAN oder Saisonhinweise. Jede Zeile erscheint in der Detailansicht als Tabelle.',
+      'config' => 
+      array (
+        'type' => 'inline',
+        'foreign_table' => 'tx_gastgeber_domain_model_priceitem',
+        'foreign_field' => 'host',
+        'foreign_sortby' => 'sorting',
+        'minitems' => 0,
+        'maxitems' => 200,
+        'appearance' => 
+        array (
+          'collapseAll' => false,
+          'expandSingle' => true,
+          'newRecordLinkTitle' => 'Preiszeile hinzufügen',
+          'useSortable' => true,
+          'showSynchronizationLink' => true,
+          'showAllLocalizationLink' => true,
+          'showPossibleLocalizationRecords' => true,
+          'enabledControls' => 
+          array (
+            'info' => true,
+            'new' => true,
+            'dragdrop' => true,
+            'sort' => true,
+            'hide' => true,
+            'delete' => true,
+            'localize' => true,
+          ),
+        ),
+        'behaviour' => 
+        array (
+          'allowLanguageSynchronization' => true,
+        ),
+      ),
     ),
     'price_info' => 
     array (
+      'label' => 'Zusätzlicher Preistext / Hinweise',
+      'description' => 'Optionaler Hinweis unter der Preistabelle, z. B. Kurtaxe, Mindestaufenthalt, Saisonbesonderheiten oder „Preise auf Anfrage“.',
       'config' => 
       array (
         'type' => 'text',
-        'rows' => 4,
-        'eval' => 'trim',
+        'enableRichtext' => true,
+        'richtextConfiguration' => 'default',
+        'rows' => 5,
+        'cols' => 80,
+        'softref' => 'typolink_tag,email[subst],url',
       ),
-      'label' => 'Preisinformationen',
     ),
     'persons' => 
     array (

@@ -29,6 +29,11 @@
       <trans-unit id="tx_gastgeber_domain_model_certificate"><source>Zertifikat / Klassifizierung</source></trans-unit>
           <trans-unit id="tx_gastgeber_domain_model_host.stars"><source>Sterne-Klassifizierung</source></trans-unit>
       <trans-unit id="tx_gastgeber_domain_model_host.star_superior"><source>Superior-Zusatz anzeigen</source></trans-unit>
+      <trans-unit id="tx_gastgeber_domain_model_priceitem"><source>Preiszeile / Preisbeschreibung</source></trans-unit>
+      <trans-unit id="tx_gastgeber_domain_model_host.price_items"><source>Flexible Preistabelle</source></trans-unit>
+      <trans-unit id="tx_gastgeber_domain_model_priceitem.row_type"><source>Zeilentyp</source></trans-unit>
+      <trans-unit id="tx_gastgeber_domain_model_priceitem.title"><source>Leistung / Bezeichnung</source></trans-unit>
+      <trans-unit id="tx_gastgeber_domain_model_priceitem.description"><source>Preis / Beschreibung</source></trans-unit>
 </body>
   </file>
 </xliff>

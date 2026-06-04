@@ -1,0 +1,9 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:if condition="{host.bookingUrl} || {host.email} || {host.phone}">
+  <section class="gastgeber-mobile-actions" aria-label="Schnelle Kontaktmöglichkeiten">
+    <f:if condition="{host.bookingUrl}"><f:link.typolink parameter="{host.bookingUrl}" class="btn btn-primary" additionalAttributes="{rel:'noopener'}">Anfragen / Buchen</f:link.typolink></f:if>
+    <f:if condition="{host.email}"><a href="mailto:{host.email}" class="btn btn-outline-primary">E-Mail</a></f:if>
+    <f:if condition="{host.phone}"><a href="tel:{host.phone}" class="btn btn-outline-primary">Anrufen</a></f:if>
+  </section>
+</f:if>
+</html>

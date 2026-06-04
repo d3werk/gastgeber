@@ -19,8 +19,12 @@
 
   <f:if condition="{settings.showFilter}">
     <f:then>
+      <button class="btn btn-primary gastgeber-mobile-filter-toggle d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#gastgeber-filter-panel" aria-expanded="false" aria-controls="gastgeber-filter-panel">
+        <span aria-hidden="true">☰</span>
+        <span>Filter anzeigen / ausblenden</span>
+      </button>
       <div class="gastgeber-layout">
-        <div class="gastgeber-layout__filter">
+        <div id="gastgeber-filter-panel" class="gastgeber-layout__filter collapse d-lg-block">
           <f:render partial="Filter/Sidebar" arguments="{_all}" />
         </div>
         <div class="gastgeber-layout__results">

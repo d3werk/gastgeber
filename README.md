@@ -176,3 +176,29 @@ Die Merkmalsauswahl im Gastgeber-Datensatz zeigt im Auswahltext zusätzlich ein 
 ## Sterne-Klassifizierung direkt an der Unterkunft
 
 Gastgeber-Datensätze besitzen wieder ein eigenes Feld **Sterne-Klassifizierung**. Redakteure wählen dort direkt 1 bis 5 Sterne aus und können zusätzlich **Superior** aktivieren. Diese direkte Auswahl wird in Listen- und Detail-Hero als Badge angezeigt und für JSON-LD `starRating` genutzt. Die Relation **Klassifizierung / Sterne / Zertifikate** bleibt zusätzlich für DTV, Bett+Bike oder weitere Prüfsiegel erhalten und dient als Fallback, wenn keine direkte Sterne-Auswahl gepflegt wurde.
+
+## Flexible Preise & Kapazität als Tabelle
+
+Der Bereich **Preise / Kapazität** ist jetzt nicht mehr auf wenige starre Felder beschränkt. Im Gastgeber-Datensatz gibt es zusätzlich die Inline-Tabelle **Flexible Preistabelle**.
+
+Redakteure können beliebig viele Preiszeilen anlegen, sortieren und bei Bedarf deaktivieren:
+
+- **Preiszeile**: linke Spalte „Leistung / Bezeichnung“, rechte Spalte „Preis / Beschreibung“
+- **Zwischenüberschrift**: trennt längere Preisblöcke, z. B. „Pferdeboxen“ oder „Ferienwohnungen“
+- **Hinweis**: läuft über beide Spalten, z. B. Kurtaxe, Mindestaufenthalt oder Sonderbedingungen
+
+Damit lassen sich einfache Preislisten wie „Einzelzimmer ab 70 €“ genauso pflegen wie umfangreiche Beschreibungen mit mehrzeiligen Bedingungen für Ferienwohnungen, Hunde, Pferdeboxen oder Zusatzleistungen. Das Feld **Preis ab / Kurzpreis** bleibt nur noch als optionale Kurzinfo für Cards, Listen und Schnellüberblick erhalten.
+
+## Mobile- und Tablet-Optimierung
+
+Die Frontend-Ausgabe wurde für Smartphone und Tablet überarbeitet:
+
+- Die linke Filterspalte wird auf Tablet/Smartphone über einen mobilen Filter-Button ein- und ausgeblendet.
+- Der Ansicht-Umschalter bricht sauber um und verursacht keine horizontale Überbreite mehr.
+- Listen-Karten stapeln sich auf kleineren Displays sauber untereinander.
+- Detail-Hero, Sterne-Badge und Galerie-Button sind für kleine Displays neu positioniert.
+- In der Detailansicht erscheint direkt unter dem Hero eine mobile Schnellaktionsleiste für Buchung, E-Mail und Telefon.
+- Merkmale, Top-Merkmale, Preistabelle, Kapazitätsboxen, Karte und Modale wurden responsiv nachgeschärft.
+- Die flexible Preistabelle wird ab Smartphone-Breite als gestapelte Tabelle ausgegeben, damit lange Preisbeschreibungen lesbar bleiben.
+
+Wichtig: Für den mobilen Filter-Button und die vorhandenen Modale wird Bootstrap-JavaScript benötigt. Im Bootstrap Package ist dies üblicherweise bereits vorhanden.
