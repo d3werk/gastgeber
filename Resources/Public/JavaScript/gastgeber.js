@@ -46,8 +46,11 @@
       if (markerScript) {
         try {
           JSON.parse(markerScript.textContent || '[]').forEach(function (marker) {
-            if (!marker.lat || !marker.lng) return;
-            var ll = [parseFloat(marker.lat), parseFloat(marker.lng)];
+            if (marker.lat === null || marker.lng === null || marker.lat === '' || marker.lng === '') return;
+            var markerLat = parseFloat(marker.lat);
+            var markerLng = parseFloat(marker.lng);
+            if (!Number.isFinite(markerLat) || !Number.isFinite(markerLng)) return;
+            var ll = [markerLat, markerLng];
             bounds.push(ll);
             L.marker(ll).addTo(map).bindPopup('<strong>' + escapeHtml(marker.title) + '</strong><br>' + escapeHtml(marker.address || ''));
           });
