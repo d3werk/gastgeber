@@ -5,3 +5,4 @@ plugin:
     settings:
       detailPid: ''
       listPid: ''
+      showMap: '1'

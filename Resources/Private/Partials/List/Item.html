@@ -63,13 +63,11 @@
 
     <f:render partial="List/FeatureStrip" arguments="{host: host}" />
 
-    <f:if condition="{host.priceFrom} || {host.beds} || {host.sizeSqm}">
-      <div class="gastgeber-card__facts" aria-label="Kurzinfos">
-        <f:if condition="{host.priceFrom}"><span>ab {host.priceFrom -> f:format.currency(currencySign:'€', decimalSeparator:',', thousandsSeparator:'.')}</span></f:if>
-        <f:if condition="{host.beds}"><span>{host.beds} Betten</span></f:if>
-        <f:if condition="{host.sizeSqm}"><span>{host.sizeSqm} m²</span></f:if>
-      </div>
-    </f:if>
+    <div class="gastgeber-card__facts" aria-label="Kurzinfos">
+      <f:if condition="{host.priceFrom}"><span>ab {host.priceFrom -> f:format.currency(currencySign:'€', decimalSeparator:',', thousandsSeparator:'.')}</span></f:if>
+      <f:if condition="{host.beds}"><span>{host.beds} Betten</span></f:if>
+      <f:if condition="{host.sizeSqm}"><span>{host.sizeSqm} m²</span></f:if>
+    </div>
 
     <div class="gastgeber-card__actions">
       <f:if condition="{settings.detailPid}">

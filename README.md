@@ -18,7 +18,7 @@ Die Extension arbeitet unabhängig von EXT:news. Gastgeber, Unterkunftsarten, Me
 - Gastgeberliste mit linker Filterspalte
 - Filter als echte GET-Links mit teilbaren URLs
 - Suchfeld über Name, Ort und Beschreibung
-- Ansichten: Cards, Liste und Karte
+- Ansichten: Cards und Liste, zusätzliche Kartenansicht als Bootstrap-Modal
 - Icons in Filter, Cards, Listenansicht und Detailansicht
 - Sterne-/Zertifikats-Badge oben rechts im Bild
 - Detailseite mit großem Hero/Galerie-Layout
@@ -29,6 +29,14 @@ Die Extension arbeitet unabhängig von EXT:news. Gastgeber, Unterkunftsarten, Me
 - separate Preise-&-Kapazität-Box
 - Leaflet/OpenStreetMap-Karte
 - JSON-LD für `LodgingBusiness`
+
+
+## Änderung: Kartenansicht in der Listenansicht
+
+Der Ansicht-Umschalter der Gastgeberliste zeigt wieder drei Optionen: `Cards`, `Liste` und `Karte`.
+Die Kartenoption öffnet jetzt ein Bootstrap-Modal mit der gefilterten Gastgeberkarte. Die einzelnen Gastgeber-Cards enthalten keinen separaten Link `Auf Karte` mehr. Die Personen-Kurzinfo in der Card wurde ebenfalls entfernt; Preis, Betten und Quadratmeter bleiben erhalten.
+
+Wichtig für die Ausgabe: `settings.showMap = 1` ist im Set als Standard gesetzt. Wenn die Karte in einem bestehenden Inhaltselement weiterhin nicht erscheint, das Listen-Plugin einmal im Backend öffnen, `Kartenansicht aktivieren` prüfen und speichern.
 
 ## Frontend-Plugins
 
@@ -206,17 +214,3 @@ Wichtig: Für den mobilen Filter-Button und die vorhandenen Modale wird Bootstra
 ### Detail-Galerie: Desktop-Mosaik
 
 Die Detailansicht zeigt auf Desktop und Tablet-Landscape links das Hauptbild und rechts exakt vier Vorschaubilder aus der Galerie. Die Galerie verwendet eine feste Mosaik-Höhe und ein 2×2-Raster, damit die rechte Bildspalte immer bündig mit dem Hauptbild abschließt. Ab Tablet-Portrait/Smartphone wird die rechte Bildspalte ausgeblendet; alle weiteren Bilder bleiben über den Button „Alle Bilder anzeigen“ im Modal erreichbar.
-
-### Listenansicht: Kartenansicht als Modal
-
-In der Listenansicht ist die Karte wieder im oberen Ansicht-Umschalter verfügbar. Der Button **Karte** öffnet die Kartenansicht als Bootstrap-Modal und verwendet die aktuell gefilterte Gastgebermenge. Dadurch bleiben Cards- und Listenansicht sichtbar, während die Karte bei Bedarf als Overlay geöffnet wird.
-
-Die einzelnen Card-Buttons **Auf Karte** wurden entfernt, damit die Bedienung eindeutig über den oberen Karten-Button erfolgt. Die Kurzinfo **Personen** wurde aus der Card entfernt; Kapazitäten bleiben weiterhin in der Detailansicht und im Bereich Preise / Kapazität pflegbar.
-
-Für die Karte gilt weiterhin: Leaflet und die Leaflet-CSS-Datei werden über das TypoScript-Set eingebunden. Das JavaScript initialisiert Karten im Modal erst, wenn das Modal sichtbar ist, und aktualisiert anschließend die Kartengröße. Dadurch wird verhindert, dass Leaflet in einem unsichtbaren Modal mit falscher Breite/Höhe startet.
-
-### Hotfix: Listenansicht mit Karten-Modal
-
-In der Listenansicht wird das Karten-Modal bereits serverseitig vorbereitet. Dadurch wird auch der Marker-ViewHelper ausgeführt, bevor der Besucher den Modal-Button anklickt. Der Marker-ViewHelper wurde robuster gemacht: Extbase-QueryResult/Traversable wird ohne strikte `iterable`-Fluid-Argumentvalidierung akzeptiert, Koordinaten werden numerisch geprüft und JSON wird mit `JSON_INVALID_UTF8_SUBSTITUTE` erzeugt. Damit kann ein einzelner fehlerhafter Datensatz die Listenansicht nicht mehr mit einer TYPO3-„Oops“-Meldung abbrechen.
-
-Zusätzlich wurde die Card-Kurzinfo-Bedingung in ein Model-Getter (`hasCardFacts`) verlagert. Dadurch wird keine komplexe Fluid-OR-Bedingung mehr im Listen-Partial benötigt.

@@ -57,6 +57,9 @@
   background: #fff;
 }
 .gastgeber-view-switch__item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   color: var(--gastgeber-primary);
   background: #fff;
   padding: .75rem 1.35rem;
@@ -64,14 +67,14 @@
   border: 0;
   border-right: 1px solid var(--gastgeber-primary);
   font: inherit;
-  line-height: 1.5;
   font-weight: 700;
+  line-height: 1.2;
+  cursor: pointer;
 }
 .gastgeber-view-switch__item:last-child { border-right: 0; }
 .gastgeber-view-switch__item:hover,
 .gastgeber-view-switch__item:focus { background: var(--gastgeber-primary-soft); color: var(--gastgeber-primary); }
 .gastgeber-view-switch__item.is-active { background: var(--gastgeber-primary); color: #fff; }
-.gastgeber-view-switch__button { cursor: pointer; appearance: none; }
 
 .gastgeber-filter-sidebar {
   position: sticky;
@@ -316,11 +319,10 @@
 .gastgeber-map-list article strong a:hover { text-decoration: underline; }
 .gastgeber-map-list article span,
 .gastgeber-map-list article small { display: block; color: var(--gastgeber-muted); }
-.gastgeber-map-modal .modal-body { padding: 1rem; }
-.gastgeber-map-modal .gastgeber-map-view { grid-template-columns: minmax(0, 1fr) minmax(240px, 320px); gap: 1rem; }
-.gastgeber-map-modal .gastgeber-map { min-height: min(70vh, 620px); }
-.gastgeber-map-modal .gastgeber-map-list { max-height: min(70vh, 620px); }
-@media (max-width: 991px) { .gastgeber-map-view { grid-template-columns: 1fr; } .gastgeber-map-view .gastgeber-map-list { max-height: none; } .gastgeber-map-modal .gastgeber-map-view { grid-template-columns: 1fr; } .gastgeber-map-modal .gastgeber-map-list { max-height: 260px; } }
+.gastgeber-map-modal .modal-body { overflow: hidden; }
+.gastgeber-map-modal .gastgeber-map { min-height: min(68vh, 620px); }
+.gastgeber-map-modal .gastgeber-map-list { max-height: min(68vh, 620px); }
+@media (max-width: 991px) { .gastgeber-map-view { grid-template-columns: 1fr; } .gastgeber-map-view .gastgeber-map-list { max-height: none; } .gastgeber-map-modal .modal-body { overflow: auto; } }
 
 /* Flexible Preistabelle */
 .gastgeber-price-table-wrap {

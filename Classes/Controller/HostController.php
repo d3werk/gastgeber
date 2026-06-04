@@ -99,6 +99,7 @@ class HostController extends ActionController
             'districts' => $this->districtRepository->findAllIgnoringStorage(),
             'filters' => $filters,
             'viewMode' => $viewMode,
+            'mapModalId' => 'gastgeber-map-modal-' . substr(md5((string)microtime(true) . spl_object_id($this)), 0, 10),
             'activeTypeMap' => array_fill_keys($filters['types'] ?? [], true),
             'activeFeatureMap' => array_fill_keys($filters['features'] ?? [], true),
             'activeDistrictMap' => array_fill_keys($filters['districts'] ?? [], true),
