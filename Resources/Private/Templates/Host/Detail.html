@@ -28,12 +28,12 @@
         </aside>
       </div>
 
+      <footer class="gastgeber-detail__footer">
+        <f:render partial="Detail/BackButton" arguments="{settings: settings}" />
+      </footer>
+
       <f:render partial="Detail/GalleryModal" arguments="{host: host}" />
       <f:render partial="Detail/FeatureModal" arguments="{host: host}" />
-
-      <f:if condition="{settings.listPid}">
-        <f:link.page pageUid="{settings.listPid}" class="gastgeber-backlink">← Zurück zur Übersicht</f:link.page>
-      </f:if>
     </article>
   </f:then>
   <f:else>

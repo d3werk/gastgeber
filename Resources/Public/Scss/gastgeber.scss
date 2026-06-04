@@ -260,6 +260,8 @@
 .gastgeber-gallery-modal__figure { background: var(--gastgeber-surface-soft); }
 .gastgeber-gallery-modal__image { min-height: 260px; max-height: 520px; }
 .gastgeber-gallery-modal__caption { color: var(--gastgeber-muted); padding: 0 .25rem .25rem; }
+.gastgeber-detail__footer { display: flex; justify-content: flex-start; margin-top: 2rem; }
+.gastgeber-detail__back-button { display: inline-flex; align-items: center; gap: .45rem; font-weight: 800; }
 .gastgeber-backlink { display: inline-block; margin-top: 1rem; color: var(--gastgeber-primary); font-weight: 800; }
 .gastgeber-empty { border-radius: 0; }
 
@@ -738,4 +740,11 @@
   .gastgeber-modal .modal-body {
     padding: 1rem;
   }
+}
+
+/* Detail: Webseiten-Link zeigt den gepflegten Linkpfad und darf umbrechen. */
+.gastgeber-contact-card__website {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.35;
 }

@@ -174,8 +174,40 @@
     });
   }
 
+  function initBackButtons(root) {
+    var scope = root || document;
+    scope.querySelectorAll('[data-gastgeber-back-button]').forEach(function (button) {
+      if (button.dataset.gastgeberBackInitialized === '1') {
+        return;
+      }
+      button.dataset.gastgeberBackInitialized = '1';
+      button.addEventListener('click', function (event) {
+        if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+          return;
+        }
+
+        var referrer = document.referrer || '';
+        var hasSameOriginReferrer = false;
+        try {
+          hasSameOriginReferrer = referrer !== '' && new URL(referrer).origin === window.location.origin;
+        } catch (e) {}
+
+        if (window.history && window.history.length > 1 && hasSameOriginReferrer) {
+          event.preventDefault();
+          window.history.back();
+          return;
+        }
+
+        if (button.tagName.toLowerCase() !== 'a') {
+          event.preventDefault();
+        }
+      });
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     initViewSwitches(document);
+    initBackButtons(document);
     initMaps(document);
   });
 

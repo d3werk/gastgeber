@@ -238,3 +238,7 @@ plugin.tx_gastgeber.settings.mapMarkerPopupAnchorY = -42
 
 Für andere Symbolgrößen müssen Breite, Höhe und Anker passend gesetzt werden. Der Anker ist der Punkt des Bildes, der exakt auf der Koordinate liegen soll.
 
+
+### Webseiten-Link in der Detailansicht
+
+Der Webseiten-Link in der Kontaktbox der Detailansicht wird nicht mehr mit dem generischen Text „Webseite öffnen“ ausgegeben. Stattdessen erscheint der im Gastgeber-Datensatz gepflegte Linkpfad als sichtbarer Linktext. Beispiel: Wird im Feld „Webseite“ `https://www.beispiel.de/ferienwohnung` eingetragen, erscheint genau dieser Pfad als klickbarer Link.
