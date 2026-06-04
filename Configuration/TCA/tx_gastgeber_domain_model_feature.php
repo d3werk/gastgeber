@@ -2,186 +2,214 @@
 
 declare(strict_types=1);
 
-return [
-    'ctrl' => [
-        'title' => 'LLL:EXT:gastgeber/Resources/Private/Language/locallang_db.xlf:tx_gastgeber_domain_model_feature',
-        'label' => 'title',
-        'tstamp' => 'tstamp',
-        'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
-        'delete' => 'deleted',
-        'sortby' => 'sorting',
-        'versioningWS' => true,
-        'languageField' => 'sys_language_uid',
-        'transOrigPointerField' => 'l10n_parent',
-        'transOrigDiffSourceField' => 'l10n_diffsource',
-        'enablecolumns' => ['disabled' => 'hidden'],
-        'searchFields' => 'title,slug,description',
-        'iconfile' => 'EXT:gastgeber/Resources/Public/Icons/Extension.svg',
-        'security' => ['ignorePageTypeRestriction' => true],
-    ],
-    'types' => ['1' => ['showitem' => '--palette--;;visibility,title,slug,group,icon,icon_class,filterable,show_in_card,show_in_detail,top_feature,description,--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language,sys_language_uid,l10n_parent,l10n_diffsource']],
-    'palettes' => [
-        'visibility' => ['showitem' => 'hidden'],
-    ],
-    'columns' => array (
-  'sys_language_uid' => 
+return array (
+  'ctrl' => 
   array (
-    'config' => 
+    'title' => 'Merkmal / Ausstattung',
+    'label' => 'title',
+    'tstamp' => 'tstamp',
+    'crdate' => 'crdate',
+    'cruser_id' => 'cruser_id',
+    'delete' => 'deleted',
+    'sortby' => 'sorting',
+    'versioningWS' => true,
+    'languageField' => 'sys_language_uid',
+    'transOrigPointerField' => 'l10n_parent',
+    'transOrigDiffSourceField' => 'l10n_diffsource',
+    'enablecolumns' => 
     array (
-      'type' => 'language',
+      'disabled' => 'hidden',
+    ),
+    'searchFields' => 'title,slug,description',
+    'iconfile' => 'EXT:gastgeber/Resources/Public/Icons/Extension.svg',
+    'security' => 
+    array (
+      'ignorePageTypeRestriction' => true,
     ),
   ),
-  'l10n_parent' => 
+  'types' => 
   array (
-    'displayCond' => 'FIELD:sys_language_uid:>:0',
-    'config' => 
+    1 => 
     array (
-      'type' => 'select',
-      'renderType' => 'selectSingle',
-      'foreign_table' => 'tx_gastgeber_domain_model_feature',
-      'foreign_table_where' => 'AND {#tx_gastgeber_domain_model_feature}.{#pid}=###CURRENT_PID### AND {#tx_gastgeber_domain_model_feature}.{#sys_language_uid} IN (-1,0)',
-      'default' => 0,
+      'showitem' => '--palette--;;visibility,title,slug,group,icon,icon_class,filterable,show_in_card,show_in_detail,top_feature,description,--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language,sys_language_uid,l10n_parent,l10n_diffsource',
     ),
   ),
-  'l10n_diffsource' => 
+  'palettes' => 
   array (
-    'config' => 
+    'visibility' => 
     array (
-      'type' => 'passthrough',
+      'showitem' => 'hidden',
     ),
   ),
-  'hidden' => 
+  'columns' => 
   array (
-    'config' => 
+    'sys_language_uid' => 
     array (
-      'type' => 'check',
-      'renderType' => 'checkboxToggle',
-    ),
-  ),
-  'title' => 
-  array (
-    'config' => 
-    array (
-      'type' => 'input',
-      'required' => true,
-      'max' => 255,
-      'eval' => 'trim',
-    ),
-  ),
-  'slug' => 
-  array (
-    'config' => 
-    array (
-      'type' => 'slug',
-      'generatorOptions' => 
+      'config' => 
       array (
-        'fields' => 
-        array (
-          0 => 'title',
-        ),
-        'fieldSeparator' => '-',
+        'type' => 'language',
       ),
-      'fallbackCharacter' => '-',
-      'eval' => 'uniqueInPid',
-      'default' => '',
+      'label' => 'Sprache',
     ),
-  ),
-  'description' => 
-  array (
-    'config' => 
+    'l10n_parent' => 
     array (
-      'type' => 'text',
-      'enableRichtext' => true,
-      'richtextConfiguration' => 'default',
-      'rows' => 5,
-    ),
-  ),
-  'group' => 
-  array (
-    'config' => 
-    array (
-      'type' => 'select',
-      'renderType' => 'selectSingle',
-      'foreign_table' => 'tx_gastgeber_domain_model_featuregroup',
-      'foreign_table_where' => 'AND {#tx_gastgeber_domain_model_featuregroup}.{#hidden}=0 ORDER BY {#tx_gastgeber_domain_model_featuregroup}.{#sorting},{#tx_gastgeber_domain_model_featuregroup}.{#title}',
-      'items' => 
+      'displayCond' => 'FIELD:sys_language_uid:>:0',
+      'config' => 
       array (
-        0 => 
-        array (
-          'label' => '',
-          'value' => 0,
-        ),
+        'type' => 'select',
+        'renderType' => 'selectSingle',
+        'foreign_table' => 'tx_gastgeber_domain_model_feature',
+        'foreign_table_where' => 'AND {#tx_gastgeber_domain_model_feature}.{#pid}=###CURRENT_PID### AND {#tx_gastgeber_domain_model_feature}.{#sys_language_uid} IN (-1,0)',
+        'default' => 0,
       ),
-      'default' => 0,
+      'label' => 'Übersetzung von',
     ),
-  ),
-  'icon' => 
-  array (
-    'label' => 'Merkmal-Icon',
-    'description' => 'Optionales SVG/PNG-Icon für Filter, Liste und Detailansicht.',
-    'config' => 
+    'l10n_diffsource' => 
     array (
-      'type' => 'file',
-      'allowed' => 'common-image-types',
-      'maxitems' => 1,
+      'config' => 
+      array (
+        'type' => 'passthrough',
+      ),
+      'label' => 'Übersetzungsänderungen',
     ),
-  ),
-  'icon_class' => 
-  array (
-    'label' => 'Icon-CSS-Klasse',
-    'description' => 'Alternative zum Upload, z. B. bi bi-wifi oder fa-solid fa-dog.',
-    'config' => 
+    'hidden' => 
     array (
-      'type' => 'input',
-      'max' => 255,
-      'eval' => 'trim',
-      'placeholder' => 'bi bi-wifi, fa-solid fa-dog ...',
+      'config' => 
+      array (
+        'type' => 'check',
+        'renderType' => 'checkboxToggle',
+      ),
+      'label' => 'Deaktivieren',
     ),
-  ),
-  'filterable' => 
-  array (
-    'label' => 'Im Filter anzeigen',
-    'description' => 'Nur aktivierte Merkmale erscheinen in der linken Filterspalte.',
-    'config' => 
+    'title' => 
     array (
-      'type' => 'check',
-      'renderType' => 'checkboxToggle',
-      'default' => 1,
+      'config' => 
+      array (
+        'type' => 'input',
+        'required' => true,
+        'max' => 255,
+        'eval' => 'trim',
+      ),
+      'label' => 'Name des Merkmals',
+      'description' => 'Bezeichnung des Merkmals, z. B. WLAN, Parkplatz, Haustiere erlaubt oder Terrasse.',
     ),
-  ),
-  'show_in_card' => 
-  array (
-    'label' => 'In Karten-/Listenansicht als Icon anzeigen',
-    'description' => 'Wird als kompaktes Merkmal direkt im Gastgeber-Teaser ausgegeben.',
-    'config' => 
+    'slug' => 
     array (
-      'type' => 'check',
-      'renderType' => 'checkboxToggle',
-      'default' => 1,
+      'config' => 
+      array (
+        'type' => 'slug',
+        'generatorOptions' => 
+        array (
+          'fields' => 
+          array (
+            0 => 'title',
+          ),
+          'fieldSeparator' => '-',
+        ),
+        'fallbackCharacter' => '-',
+        'eval' => 'uniqueInPid',
+        'default' => '',
+      ),
+      'label' => 'URL-Segment / Slug',
     ),
-  ),
-  'show_in_detail' => 
-  array (
-    'label' => 'In Detailansicht anzeigen',
-    'description' => 'Wird in der Detailseite und ggf. im Ausstattungs-Modal angezeigt.',
-    'config' => 
+    'description' => 
     array (
-      'type' => 'check',
-      'renderType' => 'checkboxToggle',
-      'default' => 1,
+      'config' => 
+      array (
+        'type' => 'text',
+        'enableRichtext' => true,
+        'richtextConfiguration' => 'default',
+        'rows' => 5,
+      ),
+      'label' => 'Beschreibung',
     ),
-  ),
-  'top_feature' => 
-  array (
-    'label' => 'Als Top-Merkmal unter dem Hero anzeigen',
-    'description' => 'Besonders wichtige Merkmale werden prominent direkt unter der Bildergalerie angezeigt.',
-    'config' => 
+    'group' => 
     array (
-      'type' => 'check',
-      'renderType' => 'checkboxToggle',
-      'default' => 0,
+      'config' => 
+      array (
+        'type' => 'select',
+        'renderType' => 'selectSingle',
+        'foreign_table' => 'tx_gastgeber_domain_model_featuregroup',
+        'foreign_table_where' => 'AND {#tx_gastgeber_domain_model_featuregroup}.{#hidden}=0 ORDER BY {#tx_gastgeber_domain_model_featuregroup}.{#sorting},{#tx_gastgeber_domain_model_featuregroup}.{#title}',
+        'items' => 
+        array (
+          0 => 
+          array (
+            'label' => 'Bitte wählen',
+            'value' => 0,
+          ),
+        ),
+        'default' => 0,
+      ),
+      'label' => 'Merkmalsgruppe',
+      'description' => 'Merkmalsgruppe für Filter, Detailansicht und Modal.',
+    ),
+    'icon' => 
+    array (
+      'label' => 'Merkmal-Icon',
+      'description' => 'Optionales SVG/PNG-Icon für Filter, Liste und Detailansicht.',
+      'config' => 
+      array (
+        'type' => 'file',
+        'allowed' => 'common-image-types',
+        'maxitems' => 1,
+      ),
+    ),
+    'icon_class' => 
+    array (
+      'label' => 'Icon-CSS-Klasse',
+      'description' => 'Alternative zum Upload, z. B. bi bi-wifi oder fa-solid fa-dog.',
+      'config' => 
+      array (
+        'type' => 'input',
+        'max' => 255,
+        'eval' => 'trim',
+        'placeholder' => 'bi bi-wifi, fa-solid fa-dog ...',
+      ),
+    ),
+    'filterable' => 
+    array (
+      'label' => 'Im Filter anzeigen',
+      'description' => 'Nur aktivierte Merkmale erscheinen in der linken Filterspalte.',
+      'config' => 
+      array (
+        'type' => 'check',
+        'renderType' => 'checkboxToggle',
+        'default' => 1,
+      ),
+    ),
+    'show_in_card' => 
+    array (
+      'label' => 'In Karten-/Listenansicht anzeigen',
+      'description' => 'Wird als kompaktes Merkmal direkt im Gastgeber-Teaser ausgegeben.',
+      'config' => 
+      array (
+        'type' => 'check',
+        'renderType' => 'checkboxToggle',
+        'default' => 1,
+      ),
+    ),
+    'show_in_detail' => 
+    array (
+      'label' => 'In Detailansicht anzeigen',
+      'description' => 'Wird in der Detailseite und ggf. im Ausstattungs-Modal angezeigt.',
+      'config' => 
+      array (
+        'type' => 'check',
+        'renderType' => 'checkboxToggle',
+        'default' => 1,
+      ),
+    ),
+    'top_feature' => 
+    array (
+      'label' => 'Als Top-Merkmal anzeigen',
+      'description' => 'Besonders wichtige Merkmale werden prominent direkt unter der Bildergalerie angezeigt.',
+      'config' => 
+      array (
+        'type' => 'check',
+        'renderType' => 'checkboxToggle',
+        'default' => 0,
+      ),
     ),
   ),
-),
-];
+);

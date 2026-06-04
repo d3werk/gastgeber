@@ -165,3 +165,9 @@ Wenn im Backend weiterhin alte News-Felder erscheinen, ist meist noch ein alter 
 ### Merkmale in der Detailansicht
 
 In der Gastgeber-Detailansicht werden maximal sechs Merkmale direkt sichtbar ausgegeben. Die Darstellung erfolgt als zweizeiliges 3er-Raster: links das gepflegte Icon, rechts der Merkmaltext. Weitere Merkmale werden über den Button „Weitere Merkmale anzeigen“ in einem Bootstrap-Modal ausgegeben. Im Backend wird die Merkmalsauswahl beim Gastgeber zusätzlich mit einem Icon-Hinweis und der Merkmalsgruppe im Auswahltext unterstützt.
+
+## Backend-Beschriftungen / TCA
+
+Alle fachlichen Tabellen der Standalone-Erweiterung besitzen jetzt explizite deutsche Feldbeschriftungen und Hilfetexte in der TCA. Dadurch erscheinen beim Anlegen und Bearbeiten von Gastgebern, Merkmalen, Merkmalsgruppen, Unterkunftsarten, Ortsteilen und Zertifikaten keine technischen Platzhalter wie `[title]`, `[slug]` oder `[description]` mehr.
+
+Die Merkmalsauswahl im Gastgeber-Datensatz zeigt im Auswahltext zusätzlich ein kleines Text-Icon und die zugehörige Merkmalsgruppe. Dadurch können Redakteure die Merkmale schneller und sicherer auswählen.
