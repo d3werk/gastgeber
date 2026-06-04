@@ -171,3 +171,8 @@ In der Gastgeber-Detailansicht werden maximal sechs Merkmale direkt sichtbar aus
 Alle fachlichen Tabellen der Standalone-Erweiterung besitzen jetzt explizite deutsche Feldbeschriftungen und Hilfetexte in der TCA. Dadurch erscheinen beim Anlegen und Bearbeiten von Gastgebern, Merkmalen, Merkmalsgruppen, Unterkunftsarten, Ortsteilen und Zertifikaten keine technischen Platzhalter wie `[title]`, `[slug]` oder `[description]` mehr.
 
 Die Merkmalsauswahl im Gastgeber-Datensatz zeigt im Auswahltext zusätzlich ein kleines Text-Icon und die zugehörige Merkmalsgruppe. Dadurch können Redakteure die Merkmale schneller und sicherer auswählen.
+
+
+## Sterne-Klassifizierung direkt an der Unterkunft
+
+Gastgeber-Datensätze besitzen wieder ein eigenes Feld **Sterne-Klassifizierung**. Redakteure wählen dort direkt 1 bis 5 Sterne aus und können zusätzlich **Superior** aktivieren. Diese direkte Auswahl wird in Listen- und Detail-Hero als Badge angezeigt und für JSON-LD `starRating` genutzt. Die Relation **Klassifizierung / Sterne / Zertifikate** bleibt zusätzlich für DTV, Bett+Bike oder weitere Prüfsiegel erhalten und dient als Fallback, wenn keine direkte Sterne-Auswahl gepflegt wurde.

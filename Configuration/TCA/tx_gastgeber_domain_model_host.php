@@ -36,7 +36,7 @@ return array (
       'showitem' => '
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
                     --palette--;;visibility,
-                    title, slug, type, district, teaser, description, featured, priority, external_id,
+                    title, slug, type, district, stars, star_superior, teaser, description, featured, priority, external_id,
                 --div--;LLL:EXT:gastgeber/Resources/Private/Language/locallang_db.xlf:tabs.media,
                     media, logo, documents, video_url,
                 --div--;LLL:EXT:gastgeber/Resources/Private/Language/locallang_db.xlf:tabs.addressMap,
@@ -207,6 +207,37 @@ return array (
       ),
       'label' => 'Ortsteil / Lage',
       'description' => 'Optionaler Ortsteil oder Lagebereich.',
+    ),
+    'stars' => 
+    array (
+      'label' => 'Sterne-Klassifizierung',
+      'description' => 'Sterne direkt an der Unterkunft pflegen. Diese Auswahl wird im Bild-Badge der Listen- und Detailansicht angezeigt. Zertifikate können zusätzlich gepflegt werden.',
+      'config' => 
+      array (
+        'type' => 'select',
+        'renderType' => 'selectSingle',
+        'items' => 
+        array (
+          array('label' => 'Keine Sterne anzeigen', 'value' => 0),
+          array('label' => '★ 1 Stern', 'value' => 1),
+          array('label' => '★★ 2 Sterne', 'value' => 2),
+          array('label' => '★★★ 3 Sterne', 'value' => 3),
+          array('label' => '★★★★ 4 Sterne', 'value' => 4),
+          array('label' => '★★★★★ 5 Sterne', 'value' => 5),
+        ),
+        'default' => 0,
+      ),
+    ),
+    'star_superior' => 
+    array (
+      'label' => 'Superior-Zusatz anzeigen',
+      'description' => 'Aktivieren, wenn die Sterne-Klassifizierung als „Superior“ ausgegeben werden soll, z. B. 4 Sterne Superior.',
+      'config' => 
+      array (
+        'type' => 'check',
+        'renderType' => 'checkboxToggle',
+        'default' => 0,
+      ),
     ),
     'teaser' => 
     array (
@@ -617,15 +648,22 @@ return array (
     'certificates' => 
     array (
       'label' => 'Klassifizierung / Sterne / Zertifikate',
-      'description' => 'Sterne oder Zertifikate wählen. Die erste Stern-Klassifizierung wird als Badge im Bild angezeigt.',
+      'description' => 'Optionale Zertifikate, Prüfsiegel oder bisherige Sterne-Datensätze. Für die normale Sterne-Ausgabe bitte bevorzugt das Feld „Sterne-Klassifizierung“ verwenden. Wenn dort nichts gewählt ist, wird die erste Stern-Klassifizierung aus dieser Auswahl als Fallback verwendet.',
       'config' => 
       array (
         'type' => 'select',
         'renderType' => 'selectMultipleSideBySide',
         'foreign_table' => 'tx_gastgeber_domain_model_certificate',
         'MM' => 'tx_gastgeber_host_certificate_mm',
+        'itemsProcFunc' => 'D3Werk\\Gastgeber\\FormEngine\\ItemsProcFunc\\CertificateItems->addStarLabels',
         'size' => 8,
         'autoSizeMax' => 20,
+        'fieldControl' => 
+        array (
+          'editPopup' => array ('disabled' => false),
+          'addRecord' => array ('disabled' => false),
+          'listModule' => array ('disabled' => false),
+        ),
       ),
     ),
     'equipment_text' => 

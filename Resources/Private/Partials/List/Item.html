@@ -27,9 +27,9 @@
         </f:link.action>
       </f:else>
     </f:if>
-    <f:if condition="{host.primaryCertificate}">
+    <f:if condition="{host.hasStarRating}">
       <div class="gastgeber-card__rating">
-        <f:render partial="Certificate/RatingBadge" arguments="{certificate: host.primaryCertificate}" />
+        <f:render partial="Host/RatingBadge" arguments="{host: host}" />
       </div>
     </f:if>
   </div>

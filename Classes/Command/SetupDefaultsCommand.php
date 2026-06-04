@@ -45,8 +45,22 @@ class SetupDefaultsCommand extends Command
         foreach (['Undeloh','Wesel','Wehlen','Meningen','Heimbuch','Thonhof','Egestorf'] as $title) {
             $this->insertIfMissing('tx_gastgeber_domain_model_district', $pid, $title);
         }
-        foreach (['1 Stern','2 Sterne','3 Sterne','4 Sterne','5 Sterne','DTV klassifiziert','Bett+Bike'] as $title) {
-            $this->insertIfMissing('tx_gastgeber_domain_model_certificate', $pid, $title);
+        foreach ([
+            'Keine Sterne' => ['rating_value' => 0, 'issuer' => 'Klassifizierung'],
+            '1 Stern' => ['rating_value' => 1, 'issuer' => 'Klassifizierung'],
+            '2 Sterne' => ['rating_value' => 2, 'issuer' => 'Klassifizierung'],
+            '3 Sterne' => ['rating_value' => 3, 'issuer' => 'Klassifizierung'],
+            '4 Sterne' => ['rating_value' => 4, 'issuer' => 'Klassifizierung'],
+            '5 Sterne' => ['rating_value' => 5, 'issuer' => 'Klassifizierung'],
+            '1 Stern Superior' => ['rating_value' => 1, 'issuer' => 'Klassifizierung'],
+            '2 Sterne Superior' => ['rating_value' => 2, 'issuer' => 'Klassifizierung'],
+            '3 Sterne Superior' => ['rating_value' => 3, 'issuer' => 'Klassifizierung'],
+            '4 Sterne Superior' => ['rating_value' => 4, 'issuer' => 'Klassifizierung'],
+            '5 Sterne Superior' => ['rating_value' => 5, 'issuer' => 'Klassifizierung'],
+            'DTV klassifiziert' => ['issuer' => 'DTV'],
+            'Bett+Bike' => ['issuer' => 'ADFC'],
+        ] as $title => $extra) {
+            $this->insertIfMissing('tx_gastgeber_domain_model_certificate', $pid, $title, $extra);
         }
         $output->writeln('<info>Gastgeber-Standarddaten wurden angelegt/ergänzt.</info>');
         return Command::SUCCESS;

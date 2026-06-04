@@ -68,6 +68,7 @@ CREATE TABLE tx_gastgeber_domain_model_host (
     KEY slug (slug(191)),
     KEY type (type),
     KEY district (district),
+    KEY stars (stars),
     KEY visible (hidden,deleted,starttime,endtime)
 );
 

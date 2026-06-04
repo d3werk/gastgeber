@@ -202,10 +202,10 @@ class HostController extends ActionController
         if ($host->getPriceFrom() > 0) {
             $data['priceRange'] = 'ab ' . number_format($host->getPriceFrom(), 2, ',', '.') . ' EUR';
         }
-        if ($host->getPrimaryCertificate() !== null && $host->getPrimaryCertificate()->getStarCount() > 0) {
+        if ($host->getStarCount() > 0) {
             $data['starRating'] = [
                 '@type' => 'Rating',
-                'ratingValue' => $host->getPrimaryCertificate()->getStarCount(),
+                'ratingValue' => $host->getStarCount(),
                 'bestRating' => 5,
             ];
         }

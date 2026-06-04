@@ -14,6 +14,8 @@ class Host extends AbstractEntity
     protected string $slug = '';
     protected ?HostType $type = null;
     protected ?District $district = null;
+    protected int $stars = 0;
+    protected bool $starSuperior = false;
     protected string $teaser = '';
     protected string $description = '';
     protected bool $featured = false;
@@ -90,6 +92,11 @@ class Host extends AbstractEntity
     public function setType(?HostType $type): void { $this->type = $type; }
     public function getDistrict(): ?District { return $this->district; }
     public function setDistrict(?District $district): void { $this->district = $district; }
+    public function getStars(): int { return $this->stars; }
+    public function setStars(int $stars): void { $this->stars = max(0, min(5, $stars)); }
+    public function getStarSuperior(): bool { return $this->starSuperior; }
+    public function isStarSuperior(): bool { return $this->starSuperior; }
+    public function setStarSuperior(bool $starSuperior): void { $this->starSuperior = $starSuperior; }
     public function getTeaser(): string { return $this->teaser; }
     public function setTeaser(string $teaser): void { $this->teaser = $teaser; }
     public function getDescription(): string { return $this->description; }
@@ -325,6 +332,43 @@ class Host extends AbstractEntity
             $groups[$groupUid]['features'][] = $feature;
         }
         return array_values($groups);
+    }
+
+    public function getStarCount(): int
+    {
+        if ($this->stars > 0) {
+            return max(0, min(5, $this->stars));
+        }
+        $certificate = $this->getPrimaryCertificate();
+        return $certificate ? $certificate->getStarCount() : 0;
+    }
+
+    public function getHasStarRating(): bool
+    {
+        return $this->stars > 0 || $this->getPrimaryCertificate() !== null;
+    }
+
+    public function getStarLabel(): string
+    {
+        $count = $this->getStarCount();
+        if ($count > 0) {
+            return str_repeat('★', $count);
+        }
+        $certificate = $this->getPrimaryCertificate();
+        return $certificate ? $certificate->getStarLabel() : '';
+    }
+
+    public function getStarRatingTitle(): string
+    {
+        if ($this->stars > 0) {
+            $label = $this->stars === 1 ? '1 Stern' : $this->stars . ' Sterne';
+            if ($this->starSuperior) {
+                $label .= ' Superior';
+            }
+            return $label;
+        }
+        $certificate = $this->getPrimaryCertificate();
+        return $certificate ? $certificate->getTitle() : '';
     }
 
     public function getPrimaryCertificate(): ?Certificate

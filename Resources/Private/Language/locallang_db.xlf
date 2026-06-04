@@ -27,6 +27,8 @@
       <trans-unit id="tx_gastgeber_domain_model_feature"><source>Merkmal / Ausstattung</source></trans-unit>
       <trans-unit id="tx_gastgeber_domain_model_district"><source>Ortsteil</source></trans-unit>
       <trans-unit id="tx_gastgeber_domain_model_certificate"><source>Zertifikat / Klassifizierung</source></trans-unit>
-    </body>
+          <trans-unit id="tx_gastgeber_domain_model_host.stars"><source>Sterne-Klassifizierung</source></trans-unit>
+      <trans-unit id="tx_gastgeber_domain_model_host.star_superior"><source>Superior-Zusatz anzeigen</source></trans-unit>
+</body>
   </file>
 </xliff>
