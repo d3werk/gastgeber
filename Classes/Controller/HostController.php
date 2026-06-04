@@ -30,7 +30,7 @@ class HostController extends ActionController
     public function listAction(): ResponseInterface
     {
         $filters = $this->readFilters();
-        $viewMode = $this->readViewMode((string)($this->settings['defaultView'] ?? 'cards'));
+        $viewMode = $this->readViewMode((string)($this->settings['defaultView'] ?? 'cards'), (bool)($this->settings['showMap'] ?? true));
         $hosts = $this->hostRepository->findDemanded($this->settings, $filters);
         $this->view->assignMultiple($this->buildListAssignments($hosts, $filters, $viewMode));
         return $this->htmlResponse();
@@ -131,10 +131,12 @@ class HostController extends ActionController
         return array_values(array_unique(array_filter(array_map('intval', explode(',', (string)$value)))));
     }
 
-    private function readViewMode(string $defaultView): string
+    private function readViewMode(string $defaultView, bool $mapEnabled = true): string
     {
-        $view = $this->request->hasArgument('view') ? (string)$this->request->getArgument('view') : $defaultView;
-        return in_array($view, ['cards', 'list', 'map'], true) ? $view : 'cards';
+        $allowedViews = $mapEnabled ? ['cards', 'list', 'map'] : ['cards', 'list'];
+        $fallbackView = in_array($defaultView, $allowedViews, true) ? $defaultView : 'cards';
+        $view = $this->request->hasArgument('view') ? (string)$this->request->getArgument('view') : $fallbackView;
+        return in_array($view, $allowedViews, true) ? $view : $fallbackView;
     }
 
     private function applySeo(Host $host): void

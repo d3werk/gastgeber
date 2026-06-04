@@ -169,15 +169,27 @@ return [
         'capacity_note' => ['config' => ['type' => 'text', 'rows' => 4, 'eval' => 'trim']],
         'features' => [
             'label' => 'Merkmale / Ausstattung',
-            'description' => 'Strukturierte Merkmale auswählen. Sichtbarkeit, Icons und Top-Merkmale werden im Merkmal-Datensatz gepflegt.',
+            'description' => 'Strukturierte Merkmale auswählen. Links in der Auswahl steht ein Icon-Hinweis mit Merkmaltext und Gruppe. Im Frontend werden die ersten 6 Merkmale als 3er-Raster angezeigt, weitere Merkmale erscheinen im Modal.',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'tx_gastgeber_domain_model_feature',
                 'foreign_table_where' => 'AND {#tx_gastgeber_domain_model_feature}.{#hidden}=0 ORDER BY {#tx_gastgeber_domain_model_feature}.{#group},{#tx_gastgeber_domain_model_feature}.{#sorting},{#tx_gastgeber_domain_model_feature}.{#title}',
                 'MM' => 'tx_gastgeber_host_feature_mm',
-                'size' => 15,
+                'itemsProcFunc' => \D3Werk\Gastgeber\FormEngine\ItemsProcFunc\FeatureItems::class . '->addIconLabels',
+                'size' => 18,
                 'autoSizeMax' => 30,
+                'fieldControl' => [
+                    'editPopup' => [
+                        'disabled' => false,
+                    ],
+                    'addRecord' => [
+                        'disabled' => false,
+                    ],
+                    'listModule' => [
+                        'disabled' => false,
+                    ],
+                ],
             ],
         ],
         'certificates' => [

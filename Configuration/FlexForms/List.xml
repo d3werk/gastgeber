@@ -3,109 +3,25 @@
   <sheets>
     <sDEF>
       <ROOT>
-        <sheetTitle>Gastgeberliste</sheetTitle>
+        <sheetTitle>Gastgeberliste konfigurieren</sheetTitle>
+        <description>Nur die fachlich notwendigen Einstellungen für die Gastgeber-Übersicht.</description>
         <type>array</type>
         <el>
           <settings.storagePid>
-            <label>Datensatz-Ordner / Storage PID</label>
+            <label>Datensatz-Ordner</label>
+            <description>Ordner oder Seiten, aus denen die Gastgeber-Datensätze gelesen werden. Leer lassen, wenn der globale Storage PID aus dem Set/TypoScript verwendet werden soll.</description>
             <config>
               <type>group</type>
               <allowed>pages</allowed>
-              <size>3</size>
+              <size>1</size>
               <maxitems>50</maxitems>
               <minitems>0</minitems>
             </config>
           </settings.storagePid>
-          <settings.types>
-            <label>Unterkunftsarten einschränken</label>
-            <config>
-              <type>select</type>
-              <renderType>selectMultipleSideBySide</renderType>
-              <foreign_table>tx_gastgeber_domain_model_type</foreign_table>
-              <foreign_table_where>AND {tx_gastgeber_domain_model_type}.{hidden}=0 ORDER BY {tx_gastgeber_domain_model_type}.{sorting},{tx_gastgeber_domain_model_type}.{title}</foreign_table_where>
-              <minitems>0</minitems>
-              <maxitems>99</maxitems>
-              <size>8</size>
-            </config>
-          </settings.types>
-          <settings.featureRoots>
-            <label>Merkmale im Filter einschränken</label>
-            <config>
-              <type>select</type>
-              <renderType>selectMultipleSideBySide</renderType>
-              <foreign_table>tx_gastgeber_domain_model_featuregroup</foreign_table>
-              <foreign_table_where>AND {tx_gastgeber_domain_model_featuregroup}.{hidden}=0 ORDER BY {tx_gastgeber_domain_model_featuregroup}.{sorting},{tx_gastgeber_domain_model_featuregroup}.{title}</foreign_table_where>
-              <minitems>0</minitems>
-              <maxitems>99</maxitems>
-              <size>8</size>
-            </config>
-          </settings.featureRoots>
-          <settings.itemsPerPage>
-            <label>Anzahl pro Seite</label>
-            <config>
-              <type>input</type>
-            <default>24</default>
-            </config>
-          </settings.itemsPerPage>
-          <settings.defaultView>
-            <label>Standardansicht</label>
-            <config>
-              <type>select</type>
-              <renderType>selectSingle</renderType>
-              <items>
-                <numIndex index="0">
-                  <label>Cards</label><value>cards</value>
-                </numIndex>
-                <numIndex index="1">
-                  <label>Liste</label><value>list</value>
-                </numIndex>
-                <numIndex index="2">
-                  <label>Karte</label><value>map</value>
-                </numIndex>
-              </items>
-            </config>
-          </settings.defaultView>
-          <settings.showFilter>
-            <label>Filterspalte anzeigen</label>
-            <config>
-              <type>check</type>
-              <renderType>checkboxToggle</renderType>
-              <default>1</default>
-            </config>
-          </settings.showFilter>
-          <settings.showMap>
-            <label>Kartenansicht aktivieren</label>
-            <config>
-              <type>check</type>
-              <renderType>checkboxToggle</renderType>
-              <default>1</default>
-            </config>
-          </settings.showMap>
-          <settings.showViewSwitch>
-            <label>Ansicht-Umschalter anzeigen</label>
-            <config>
-              <type>check</type>
-              <renderType>checkboxToggle</renderType>
-              <default>1</default>
-            </config>
-          </settings.showViewSwitch>
-          <settings.featureConjunction>
-            <label>Logik bei mehreren Merkmalen</label>
-            <config>
-              <type>select</type>
-              <renderType>selectSingle</renderType>
-              <items>
-                <numIndex index="0">
-                  <label>Alle ausgewählten Merkmale müssen vorhanden sein</label><value>and</value>
-                </numIndex>
-                <numIndex index="1">
-                  <label>Mindestens eines der Merkmale muss vorhanden sein</label><value>or</value>
-                </numIndex>
-              </items>
-            </config>
-          </settings.featureConjunction>
+
           <settings.detailPid>
             <label>Detailseite</label>
+            <description>Seite mit dem Plugin „Gastgeber: Detailansicht“. Bild, Titel und Button der Liste verlinken auf diese Seite.</description>
             <config>
               <type>group</type>
               <allowed>pages</allowed>
@@ -120,6 +36,155 @@
               </suggestOptions>
             </config>
           </settings.detailPid>
+
+          <settings.defaultView>
+            <label>Standardansicht</label>
+            <description>Ansicht, die beim ersten Aufruf aktiv ist.</description>
+            <config>
+              <type>select</type>
+              <renderType>selectSingle</renderType>
+              <default>cards</default>
+              <items>
+                <numIndex index="0">
+                  <label>Cards / Kacheln</label>
+                  <value>cards</value>
+                </numIndex>
+                <numIndex index="1">
+                  <label>Listenansicht</label>
+                  <value>list</value>
+                </numIndex>
+                <numIndex index="2">
+                  <label>Kartenansicht</label>
+                  <value>map</value>
+                </numIndex>
+              </items>
+            </config>
+          </settings.defaultView>
+
+          <settings.sort>
+            <label>Standardsortierung</label>
+            <description>Die Sortierung kann im Frontend später über Filter-/Sortierlinks überschrieben werden.</description>
+            <config>
+              <type>select</type>
+              <renderType>selectSingle</renderType>
+              <default>default</default>
+              <items>
+                <numIndex index="0">
+                  <label>Empfehlung / Priorität, danach Alphabet</label>
+                  <value>default</value>
+                </numIndex>
+                <numIndex index="1">
+                  <label>Alphabetisch</label>
+                  <value>title</value>
+                </numIndex>
+                <numIndex index="2">
+                  <label>Preis ab</label>
+                  <value>price</value>
+                </numIndex>
+              </items>
+            </config>
+          </settings.sort>
+
+          <settings.itemsPerPage>
+            <label>Anzahl Gastgeber anzeigen</label>
+            <description>Maximale Anzahl in dieser Übersicht. 0 bedeutet: alle passenden Gastgeber anzeigen.</description>
+            <config>
+              <type>number</type>
+              <default>24</default>
+              <range>
+                <lower>0</lower>
+                <upper>999</upper>
+              </range>
+            </config>
+          </settings.itemsPerPage>
+
+          <settings.showFilter>
+            <label>Linke Filterspalte anzeigen</label>
+            <description>Zeigt Suche, Unterkunftsarten, Ortsteile und Merkmale links neben den Ergebnissen.</description>
+            <config>
+              <type>check</type>
+              <renderType>checkboxToggle</renderType>
+              <default>1</default>
+            </config>
+          </settings.showFilter>
+
+          <settings.showViewSwitch>
+            <label>Ansicht-Umschalter anzeigen</label>
+            <description>Erlaubt den Wechsel zwischen Cards, Liste und Karte.</description>
+            <config>
+              <type>check</type>
+              <renderType>checkboxToggle</renderType>
+              <default>1</default>
+            </config>
+          </settings.showViewSwitch>
+
+          <settings.showMap>
+            <label>Kartenansicht aktivieren</label>
+            <description>Wenn deaktiviert, wird die Karte in der Ansichtsauswahl nicht angeboten.</description>
+            <config>
+              <type>check</type>
+              <renderType>checkboxToggle</renderType>
+              <default>1</default>
+            </config>
+          </settings.showMap>
+
+          <settings.types>
+            <label>Unterkunftsarten vorauswählen</label>
+            <description>Optional. Leer lassen, um alle Unterkunftsarten anzuzeigen. Für Spezialseiten wie „Ferienwohnungen“ hier die gewünschte Art auswählen.</description>
+            <config>
+              <type>select</type>
+              <renderType>selectMultipleSideBySide</renderType>
+              <foreign_table>tx_gastgeber_domain_model_type</foreign_table>
+              <foreign_table_where>AND {tx_gastgeber_domain_model_type}.{hidden}=0 ORDER BY {tx_gastgeber_domain_model_type}.{sorting},{tx_gastgeber_domain_model_type}.{title}</foreign_table_where>
+              <minitems>0</minitems>
+              <maxitems>99</maxitems>
+              <size>8</size>
+            </config>
+          </settings.types>
+
+          <settings.featureRoots>
+            <label>Merkmalsgruppen im Filter einschränken</label>
+            <description>Optional. Leer lassen, um alle filterbaren Merkmalsgruppen anzuzeigen.</description>
+            <config>
+              <type>select</type>
+              <renderType>selectMultipleSideBySide</renderType>
+              <foreign_table>tx_gastgeber_domain_model_featuregroup</foreign_table>
+              <foreign_table_where>AND {tx_gastgeber_domain_model_featuregroup}.{hidden}=0 ORDER BY {tx_gastgeber_domain_model_featuregroup}.{sorting},{tx_gastgeber_domain_model_featuregroup}.{title}</foreign_table_where>
+              <minitems>0</minitems>
+              <maxitems>99</maxitems>
+              <size>8</size>
+            </config>
+          </settings.featureRoots>
+
+          <settings.featureConjunction>
+            <label>Merkmalslogik</label>
+            <description>Bestimmt, wie mehrere ausgewählte Merkmale kombiniert werden.</description>
+            <config>
+              <type>select</type>
+              <renderType>selectSingle</renderType>
+              <default>and</default>
+              <items>
+                <numIndex index="0">
+                  <label>Alle ausgewählten Merkmale müssen vorhanden sein</label>
+                  <value>and</value>
+                </numIndex>
+                <numIndex index="1">
+                  <label>Mindestens eines der Merkmale muss vorhanden sein</label>
+                  <value>or</value>
+                </numIndex>
+              </items>
+            </config>
+          </settings.featureConjunction>
+
+          <settings.featuredOnly>
+            <label>Nur hervorgehobene Gastgeber anzeigen</label>
+            <description>Für Startseiten- oder Empfehlungslisten. Für die normale Gastgeberübersicht deaktiviert lassen.</description>
+            <config>
+              <type>check</type>
+              <renderType>checkboxToggle</renderType>
+              <default>0</default>
+            </config>
+          </settings.featuredOnly>
         </el>
       </ROOT>
     </sDEF>

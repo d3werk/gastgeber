@@ -140,3 +140,28 @@ Gastgeber
 - Externe Kartenkacheln sollten im Projekt datenschutzrechtlich geprüft werden.
 - Bootstrap 5 wird für Modals und Buttons erwartet.
 - Templates und SCSS können im Sitepackage über TYPO3-Template-Pfade überschrieben werden.
+
+## Backend: Listenansicht sauber konfigurieren
+
+Die Listenansicht verwendet eine eigene FlexForm `Configuration/FlexForms/List.xml`. Es gibt keine Abhängigkeit mehr zu EXT:news und keine News-Felder wie Sortierlogik, Kategorienmodus, Unterkategorien oder News-Pagination.
+
+Für das Inhaltselement **Gastgeber: Übersicht / Liste** sind nur diese fachlichen Einstellungen relevant:
+
+- Datensatz-Ordner
+- Detailseite
+- Standardansicht
+- Standardsortierung
+- Anzahl Gastgeber anzeigen
+- Filterspalte anzeigen
+- Ansicht-Umschalter anzeigen
+- Kartenansicht aktivieren
+- Unterkunftsarten vorauswählen
+- Merkmalsgruppen im Filter einschränken
+- Merkmalslogik
+- Nur hervorgehobene Gastgeber anzeigen
+
+Wenn im Backend weiterhin alte News-Felder erscheinen, ist meist noch ein alter TYPO3-Cache aktiv oder ein altes Inhaltselement vom Typ News-Plugin wird bearbeitet. In diesem Fall Cache leeren, das Inhaltselement als **Gastgeber: Übersicht / Liste** neu auswählen und den Datensatz einmal speichern.
+
+### Merkmale in der Detailansicht
+
+In der Gastgeber-Detailansicht werden maximal sechs Merkmale direkt sichtbar ausgegeben. Die Darstellung erfolgt als zweizeiliges 3er-Raster: links das gepflegte Icon, rechts der Merkmaltext. Weitere Merkmale werden über den Button „Weitere Merkmale anzeigen“ in einem Bootstrap-Modal ausgegeben. Im Backend wird die Merkmalsauswahl beim Gastgeber zusätzlich mit einem Icon-Hinweis und der Merkmalsgruppe im Auswahltext unterstützt.

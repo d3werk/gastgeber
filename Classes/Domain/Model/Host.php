@@ -260,6 +260,28 @@ class Host extends AbstractEntity
         return $count;
     }
 
+    public function getRemainingFeatureCount(): int
+    {
+        return max(0, $this->getDetailFeatureCount() - 6);
+    }
+
+    /** @return array<int,Feature> */
+    public function getRemainingDetailFeatures(): array
+    {
+        $features = [];
+        $visibleIndex = 0;
+        foreach ($this->features as $feature) {
+            if (!$feature->isShowInDetail()) {
+                continue;
+            }
+            $visibleIndex++;
+            if ($visibleIndex > 6) {
+                $features[] = $feature;
+            }
+        }
+        return $features;
+    }
+
     /** @return array<int,Feature> */ public function getDetailFeatures(): array
     {
         $features = [];
@@ -274,8 +296,23 @@ class Host extends AbstractEntity
     /** @return array<int,array{title:string,iconClass:string,features:array<int,Feature>}> */
     public function getGroupedDetailFeatures(): array
     {
+        return $this->groupFeatures($this->getDetailFeatures());
+    }
+
+    /** @return array<int,array{title:string,iconClass:string,features:array<int,Feature>}> */
+    public function getGroupedRemainingDetailFeatures(): array
+    {
+        return $this->groupFeatures($this->getRemainingDetailFeatures());
+    }
+
+    /**
+     * @param array<int,Feature> $features
+     * @return array<int,array{title:string,iconClass:string,features:array<int,Feature>}>
+     */
+    private function groupFeatures(array $features): array
+    {
         $groups = [];
-        foreach ($this->getDetailFeatures() as $feature) {
+        foreach ($features as $feature) {
             $group = $feature->getGroup();
             $groupUid = $group ? (string)$group->getUid() : '0';
             if (!isset($groups[$groupUid])) {

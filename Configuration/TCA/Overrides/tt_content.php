@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
 $plugins = [
@@ -38,39 +37,26 @@ $plugins = [
     ],
 ];
 
-$registerPluginReflection = new \ReflectionMethod(ExtensionUtility::class, 'registerPlugin');
-$supportsFlexFormArgument = $registerPluginReflection->getNumberOfParameters() >= 7;
-
 foreach ($plugins as $pluginName => $configuration) {
     $ctypeKey = 'gastgeber_' . strtolower($pluginName);
-    if ($supportsFlexFormArgument) {
-        ExtensionUtility::registerPlugin(
-            'Gastgeber',
-            $pluginName,
-            $configuration['title'],
-            'ext-gastgeber',
-            'gastgeber',
-            $configuration['description'],
-            $configuration['flexForm']
-        );
-    } else {
-        ExtensionUtility::registerPlugin(
-            'Gastgeber',
-            $pluginName,
-            $configuration['title'],
-            'ext-gastgeber',
-            'gastgeber',
-            $configuration['description']
-        );
-        ExtensionManagementUtility::addPiFlexFormValue('*', $configuration['flexForm'], $ctypeKey);
-    }
 
-    ExtensionManagementUtility::addToAllTCAtypes(
-        'tt_content',
-        '--div--;LLL:EXT:gastgeber/Resources/Private/Language/locallang_db.xlf:tabs.plugin,pi_flexform,',
-        $ctypeKey,
-        'after:header'
+    ExtensionUtility::registerPlugin(
+        'Gastgeber',
+        $pluginName,
+        $configuration['title'],
+        'ext-gastgeber',
+        'gastgeber',
+        $configuration['description']
     );
+
+    // TYPO3 13/14: Die FlexForm wird bewusst direkt am CType gesetzt.
+    // Dadurch kann keine fremde Default-FlexForm (z. B. aus EXT:news) auf diesen CType fallen.
+    $GLOBALS['TCA']['tt_content']['types'][$ctypeKey]['columnsOverrides']['pi_flexform']['config'] = [
+        'type' => 'flex',
+        'ds' => [
+            'default' => $configuration['flexForm'],
+        ],
+    ];
 
     $GLOBALS['TCA']['tt_content']['types'][$ctypeKey]['showitem'] = '
         --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,

@@ -6,21 +6,18 @@
         <p class="gastgeber-eyebrow mb-1">Ausstattung</p>
         <h3>Merkmale &amp; Ausstattung auf einen Blick</h3>
       </div>
-      <f:if condition="{host.detailFeatureCount} &gt; 6">
+      <f:if condition="{host.remainingFeatureCount} &gt; 0">
         <button type="button" class="btn btn-outline-primary gastgeber-feature-more" data-bs-toggle="modal" data-bs-target="#gastgeber-features-{host.uid}">
           <span class="gastgeber-feature-more__icon" aria-hidden="true">▦</span>
-          <span>Alle {host.detailFeatureCount} Ausstattungsmerkmale anzeigen</span>
+          <span>Weitere {host.remainingFeatureCount} Merkmale anzeigen</span>
         </button>
       </f:if>
     </div>
 
     <f:if condition="{host.detailPreviewFeatures}">
-      <ul class="gastgeber-feature-grid gastgeber-feature-grid--preview">
+      <ul class="gastgeber-feature-grid gastgeber-feature-grid--preview" aria-label="Wichtigste Ausstattungsmerkmale">
         <f:for each="{host.detailPreviewFeatures}" as="feature">
-          <li>
-            <span class="gastgeber-feature-grid__icon" aria-hidden="true"><f:render partial="Category/Icon" arguments="{item: feature}" /></span>
-            <span class="gastgeber-feature-grid__label">{feature.title}</span>
-          </li>
+          <f:render partial="Feature/Item" arguments="{feature: feature, showDescription: 0}" />
         </f:for>
       </ul>
     </f:if>
