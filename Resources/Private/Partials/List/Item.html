@@ -1,5 +1,7 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
-<article class="gastgeber-card {f:if(condition: viewMode == 'list', then: 'gastgeber-card--list')}" itemscope="itemscope" itemtype="https://schema.org/LodgingBusiness">
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:gh="http://typo3.org/ns/D3Werk/Gastgeber/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+<article class="gastgeber-card {gh:currentView(value:viewMode, expected:'list', then:'gastgeber-card--list')}" data-gastgeber-card itemscope="itemscope" itemtype="https://schema.org/LodgingBusiness">
   <div class="gastgeber-card__media">
     <f:if condition="{settings.detailPid}">
       <f:then>

@@ -66,8 +66,78 @@
     });
   }
 
+  function setListView(directory, viewMode) {
+    if (!directory || (viewMode !== 'cards' && viewMode !== 'list')) {
+      return;
+    }
+
+    var isList = viewMode === 'list';
+    var results = directory.querySelector('[data-gastgeber-results]');
+    if (!results) {
+      return;
+    }
+
+    results.classList.toggle('gastgeber-results--list', isList);
+    results.classList.toggle('row', !isList);
+    results.classList.toggle('g-4', !isList);
+
+    results.querySelectorAll('[data-gastgeber-result-item]').forEach(function (item) {
+      item.className = isList ? 'gastgeber-list-row' : 'col-12 col-md-6 col-xl-4';
+    });
+
+    results.querySelectorAll('[data-gastgeber-card]').forEach(function (card) {
+      card.classList.toggle('gastgeber-card--list', isList);
+    });
+
+    directory.querySelectorAll('[data-gastgeber-view-toggle]').forEach(function (toggle) {
+      var active = toggle.dataset.gastgeberViewToggle === viewMode;
+      toggle.classList.toggle('is-active', active);
+      toggle.setAttribute('aria-pressed', active ? 'true' : 'false');
+    });
+
+    directory.dataset.gastgeberViewMode = viewMode;
+  }
+
+  function initViewSwitches(root) {
+    var scope = root || document;
+    scope.querySelectorAll('[data-gastgeber-view-toggle]').forEach(function (toggle) {
+      if (toggle.dataset.gastgeberSwitchInitialized === '1') {
+        return;
+      }
+      toggle.dataset.gastgeberSwitchInitialized = '1';
+      toggle.addEventListener('click', function (event) {
+        if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+          return;
+        }
+        var viewMode = toggle.dataset.gastgeberViewToggle;
+        if (viewMode !== 'cards' && viewMode !== 'list') {
+          return;
+        }
+        var directory = toggle.closest('[data-gastgeber-directory]') || toggle.closest('.gastgeber-directory');
+        if (!directory || !directory.querySelector('[data-gastgeber-results]')) {
+          return;
+        }
+        event.preventDefault();
+        setListView(directory, viewMode);
+        if (toggle.href && window.history && window.history.pushState) {
+          window.history.pushState({gastgeberViewMode: viewMode}, '', toggle.href);
+        }
+      });
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
+    initViewSwitches(document);
     initMaps(document);
+  });
+
+  window.addEventListener('popstate', function (event) {
+    if (!event.state || !event.state.gastgeberViewMode) {
+      return;
+    }
+    document.querySelectorAll('[data-gastgeber-directory]').forEach(function (directory) {
+      setListView(directory, event.state.gastgeberViewMode);
+    });
   });
 
   document.addEventListener('shown.bs.modal', function (event) {
