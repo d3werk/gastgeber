@@ -21,6 +21,7 @@
 
   <f:if condition="{host.mediaCount} &gt; 1">
     <div class="gastgeber-gallery-hero__side" aria-hidden="true">
+      <f:comment>Die Desktop-Mosaikansicht zeigt rechts genau vier Vorschaubilder: Bild 2 bis Bild 5. Weitere Bilder bleiben im Modal.</f:comment>
       <f:for each="{host.media}" as="media" iteration="mediaIterator">
         <f:if condition="{mediaIterator.index} &gt; 0">
           <f:if condition="{mediaIterator.index} &lt; 5">

@@ -202,3 +202,7 @@ Die Frontend-Ausgabe wurde für Smartphone und Tablet überarbeitet:
 - Die flexible Preistabelle wird ab Smartphone-Breite als gestapelte Tabelle ausgegeben, damit lange Preisbeschreibungen lesbar bleiben.
 
 Wichtig: Für den mobilen Filter-Button und die vorhandenen Modale wird Bootstrap-JavaScript benötigt. Im Bootstrap Package ist dies üblicherweise bereits vorhanden.
+
+### Detail-Galerie: Desktop-Mosaik
+
+Die Detailansicht zeigt auf Desktop und Tablet-Landscape links das Hauptbild und rechts exakt vier Vorschaubilder aus der Galerie. Die Galerie verwendet eine feste Mosaik-Höhe und ein 2×2-Raster, damit die rechte Bildspalte immer bündig mit dem Hauptbild abschließt. Ab Tablet-Portrait/Smartphone wird die rechte Bildspalte ausgeblendet; alle weiteren Bilder bleiben über den Button „Alle Bilder anzeigen“ im Modal erreichbar.
