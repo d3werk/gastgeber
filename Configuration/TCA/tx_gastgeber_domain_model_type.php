@@ -38,6 +38,7 @@ return array (
   array (
     'visibility' => 
     array (
+      'label' => 'Sichtbarkeit',
       'showitem' => 'hidden',
     ),
   ),

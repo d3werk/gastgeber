@@ -61,14 +61,17 @@ return array (
   array (
     'visibility' => 
     array (
+      'label' => 'Sichtbarkeit',
       'showitem' => 'hidden, --linebreak--, starttime, endtime',
     ),
     'language' => 
     array (
+      'label' => 'Sprache',
       'showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource',
     ),
     'access' => 
     array (
+      'label' => 'Zugriff',
       'showitem' => 'hidden, starttime, endtime',
     ),
   ),
@@ -178,7 +181,6 @@ return array (
         'type' => 'select',
         'renderType' => 'selectSingle',
         'foreign_table' => 'tx_gastgeber_domain_model_type',
-        'foreign_table_where' => 'AND {#tx_gastgeber_domain_model_type}.{#hidden}=0 ORDER BY {#tx_gastgeber_domain_model_type}.{#sorting}',
         'minitems' => 0,
         'maxitems' => 1,
         'default' => 0,
@@ -193,7 +195,6 @@ return array (
         'type' => 'select',
         'renderType' => 'selectSingle',
         'foreign_table' => 'tx_gastgeber_domain_model_district',
-        'foreign_table_where' => 'AND {#tx_gastgeber_domain_model_district}.{#hidden}=0 ORDER BY {#tx_gastgeber_domain_model_district}.{#sorting},{#tx_gastgeber_domain_model_district}.{#title}',
         'items' => 
         array (
           0 => 
@@ -592,7 +593,6 @@ return array (
         'type' => 'select',
         'renderType' => 'selectMultipleSideBySide',
         'foreign_table' => 'tx_gastgeber_domain_model_feature',
-        'foreign_table_where' => 'AND {#tx_gastgeber_domain_model_feature}.{#hidden}=0 ORDER BY {#tx_gastgeber_domain_model_feature}.{#group},{#tx_gastgeber_domain_model_feature}.{#sorting},{#tx_gastgeber_domain_model_feature}.{#title}',
         'MM' => 'tx_gastgeber_host_feature_mm',
         'itemsProcFunc' => 'D3Werk\\Gastgeber\\FormEngine\\ItemsProcFunc\\FeatureItems->addIconLabels',
         'size' => 18,
@@ -623,7 +623,6 @@ return array (
         'type' => 'select',
         'renderType' => 'selectMultipleSideBySide',
         'foreign_table' => 'tx_gastgeber_domain_model_certificate',
-        'foreign_table_where' => 'AND {#tx_gastgeber_domain_model_certificate}.{#hidden}=0 ORDER BY {#tx_gastgeber_domain_model_certificate}.{#sorting},{#tx_gastgeber_domain_model_certificate}.{#title}',
         'MM' => 'tx_gastgeber_host_certificate_mm',
         'size' => 8,
         'autoSizeMax' => 20,

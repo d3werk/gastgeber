@@ -27,6 +27,21 @@ final class FeatureItems
             return;
         }
 
+        // TYPO3 13/14 expects every select item to have a label.
+        // Older item arrays can still be numeric, so normalize them first.
+        foreach ($params['items'] as &$item) {
+            if (!is_array($item)) {
+                continue;
+            }
+            if (!array_key_exists('label', $item)) {
+                $item['label'] = (string)($item[0] ?? '');
+            }
+            if (!array_key_exists('value', $item)) {
+                $item['value'] = $item[1] ?? 0;
+            }
+        }
+        unset($item);
+
         $uids = [];
         foreach ($params['items'] as $item) {
             $value = $item['value'] ?? ($item[1] ?? null);
@@ -85,11 +100,8 @@ final class FeatureItems
                 $newLabel .= '  ·  ' . $group;
             }
 
-            if (array_key_exists('label', $item)) {
-                $item['label'] = $newLabel;
-            } else {
-                $item[0] = $newLabel;
-            }
+            $item['label'] = $newLabel;
+            $item[0] = $newLabel;
         }
         unset($item);
     }

@@ -51,10 +51,13 @@ foreach ($plugins as $pluginName => $configuration) {
 
     // TYPO3 13/14: Die FlexForm wird bewusst direkt am CType gesetzt.
     // Dadurch kann keine fremde Default-FlexForm (z. B. aus EXT:news) auf diesen CType fallen.
-    $GLOBALS['TCA']['tt_content']['types'][$ctypeKey]['columnsOverrides']['pi_flexform']['config'] = [
-        'type' => 'flex',
-        'ds' => [
-            'default' => $configuration['flexForm'],
+    $GLOBALS['TCA']['tt_content']['types'][$ctypeKey]['columnsOverrides']['pi_flexform'] = [
+        'label' => 'Plugin-Einstellungen',
+        'config' => [
+            'type' => 'flex',
+            'ds' => [
+                'default' => $configuration['flexForm'],
+            ],
         ],
     ];
 

@@ -35,7 +35,6 @@
               <type>select</type>
               <renderType>selectMultipleSideBySide</renderType>
               <foreign_table>tx_gastgeber_domain_model_type</foreign_table>
-              <foreign_table_where>AND {tx_gastgeber_domain_model_type}.{hidden}=0 ORDER BY {tx_gastgeber_domain_model_type}.{sorting},{tx_gastgeber_domain_model_type}.{title}</foreign_table_where>
               <minitems>0</minitems>
               <maxitems>99</maxitems>
               <size>8</size>
@@ -47,7 +46,6 @@
               <type>select</type>
               <renderType>selectMultipleSideBySide</renderType>
               <foreign_table>tx_gastgeber_domain_model_featuregroup</foreign_table>
-              <foreign_table_where>AND {tx_gastgeber_domain_model_featuregroup}.{hidden}=0 ORDER BY {tx_gastgeber_domain_model_featuregroup}.{sorting},{tx_gastgeber_domain_model_featuregroup}.{title}</foreign_table_where>
               <minitems>0</minitems>
               <maxitems>99</maxitems>
               <size>8</size>

@@ -38,6 +38,7 @@ return array (
   array (
     'visibility' => 
     array (
+      'label' => 'Sichtbarkeit',
       'showitem' => 'hidden',
     ),
   ),
@@ -130,7 +131,6 @@ return array (
         'type' => 'select',
         'renderType' => 'selectSingle',
         'foreign_table' => 'tx_gastgeber_domain_model_featuregroup',
-        'foreign_table_where' => 'AND {#tx_gastgeber_domain_model_featuregroup}.{#hidden}=0 ORDER BY {#tx_gastgeber_domain_model_featuregroup}.{#sorting},{#tx_gastgeber_domain_model_featuregroup}.{#title}',
         'items' => 
         array (
           0 => 
