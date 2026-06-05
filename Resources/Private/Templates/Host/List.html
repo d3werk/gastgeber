@@ -9,6 +9,11 @@
       <p class="gastgeber-eyebrow mb-1">Gastgeberverzeichnis</p>
       <h2>Unterkünfte finden</h2>
       <p class="gastgeber-toolbar__text"><f:count subject="{hosts}" /> Gastgeber gefunden</p>
+      <f:if condition="{settings.introText}">
+        <div class="gastgeber-toolbar__bodytext">
+          <f:format.html>{settings.introText}</f:format.html>
+        </div>
+      </f:if>
     </div>
     <div class="gastgeber-toolbar__actions">
       <f:if condition="{settings.showViewSwitch}">

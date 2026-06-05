@@ -3,6 +3,7 @@ plugin:
     persistence:
       storagePid: ''
     settings:
+      introText: ''
       detailPid: ''
       listPid: ''
       showMap: '1'

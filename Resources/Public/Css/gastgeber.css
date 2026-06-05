@@ -44,6 +44,27 @@
 }
 .gastgeber-toolbar__text { margin: .5rem 0 0; color: var(--gastgeber-muted); }
 
+.gastgeber-toolbar__intro {
+  flex: 1 1 620px;
+  min-width: 0;
+}
+.gastgeber-toolbar__bodytext {
+  margin-top: 1rem;
+  max-width: 62rem;
+  color: var(--gastgeber-text);
+}
+.gastgeber-toolbar__bodytext > :last-child {
+  margin-bottom: 0;
+}
+.gastgeber-toolbar__bodytext a {
+  color: var(--gastgeber-primary);
+  text-decoration: underline;
+}
+.gastgeber-toolbar__bodytext ul,
+.gastgeber-toolbar__bodytext ol {
+  padding-left: 1.25rem;
+}
+
 .gastgeber-layout {
   display: grid;
   grid-template-columns: minmax(260px, 330px) minmax(0, 1fr);

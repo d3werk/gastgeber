@@ -11,6 +11,7 @@ plugin.tx_gastgeber {
     itemsPerPage = 24
     detailPid =
     listPid =
+    introText =
     defaultView = cards
     showFilter = 1
     showViewSwitch = 1
