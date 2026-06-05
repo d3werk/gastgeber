@@ -1,0 +1,65 @@
+# Route-Enhancer für sprechende Gastgeber-Detail-URLs.
+#
+# Diese Datei ist eine Copy-&-Paste-Vorlage für:
+#   config/sites/<site-identifier>/config.yaml
+#
+# WICHTIG für die aktuell gemeldete URL:
+# Die URL enthält tx_gastgeber_list[...]. Deshalb muss der Route-Enhancer
+# für das Plugin "List" aktiv sein. Ein Route-Enhancer für das Plugin
+# "Detail" greift bei dieser URL nicht.
+#
+# Ziel-URL:
+#   /gastgeber/hotel-acht-linden
+#
+# Einbau:
+# - Diesen Block in die bestehende Site-Config unter routeEnhancers kopieren.
+# - Falls routeEnhancers dort schon existiert, nur den Block GastgeberListDetail
+#   unterhalb von routeEnhancers einfügen.
+# - Optional limitToPages auf die UID der Seite mit dem Pfad /gastgeber setzen.
+
+routeEnhancers:
+  # AKTIVE VARIANTE für deine aktuelle URL:
+  # /gastgeber?tx_gastgeber_list[action]=detail&tx_gastgeber_list[controller]=Host&tx_gastgeber_list[host]=2
+  GastgeberListDetail:
+    type: Extbase
+    extension: Gastgeber
+    plugin: List
+    # Optional empfohlen, sobald die Seiten-UID sicher ist:
+    # limitToPages:
+    #   - 514
+    routes:
+      -
+        routePath: '/{host}'
+        _controller: 'Host::detail'
+        _arguments:
+          host: host
+    defaultController: 'Host::list'
+    aspects:
+      host:
+        type: PersistedAliasMapper
+        tableName: tx_gastgeber_domain_model_host
+        routeFieldName: slug
+
+  # Alternative nur verwenden, wenn die Detailseite ein eigenes Plugin
+  # "Gastgeber: Detailansicht" verwendet und die Links dadurch tx_gastgeber_detail
+  # enthalten. Für die aktuell gemeldete tx_gastgeber_list-URL ist diese Variante
+  # NICHT ausreichend.
+  #
+  # GastgeberDetail:
+  #   type: Extbase
+  #   extension: Gastgeber
+  #   plugin: Detail
+  #   limitToPages:
+  #     - 514
+  #   routes:
+  #     -
+  #       routePath: '/{host}'
+  #       _controller: 'Host::detail'
+  #       _arguments:
+  #         host: host
+  #   defaultController: 'Host::detail'
+  #   aspects:
+  #     host:
+  #       type: PersistedAliasMapper
+  #       tableName: tx_gastgeber_domain_model_host
+  #       routeFieldName: slug

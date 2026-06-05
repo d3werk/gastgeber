@@ -31,10 +31,10 @@
         <strong>
           <f:if condition="{settings.detailPid}">
             <f:then>
-              <f:link.action action="detail" controller="Host" extensionName="Gastgeber" pluginName="Detail" pageUid="{settings.detailPid}" arguments="{host: host}">{host.title}</f:link.action>
+              <f:link.action action="detail" controller="Host" extensionName="Gastgeber" pluginName="Detail" pageUid="{settings.detailPid}" arguments="{host: host.uid}">{host.title}</f:link.action>
             </f:then>
             <f:else>
-              <f:link.action action="detail" arguments="{host: host}">{host.title}</f:link.action>
+              <f:link.action action="detail" arguments="{host: host.uid}">{host.title}</f:link.action>
             </f:else>
           </f:if>
         </strong>

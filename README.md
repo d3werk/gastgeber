@@ -258,3 +258,26 @@ EXT:gastgeber/Configuration/Routes/Gastgeber.yaml
 ```
 
 Den passenden Block in `config/sites/<site-identifier>/config.yaml` einfügen und `limitToPages` auf die UID der Gastgeber-/Detailseite setzen. Danach Cache leeren.
+
+## Sprechende Detail-URLs / Slug im Browserpfad
+
+Wenn der Browser noch eine URL wie diese anzeigt:
+
+```text
+/gastgeber?tx_gastgeber_list%5Baction%5D=detail&tx_gastgeber_list%5Bcontroller%5D=Host&tx_gastgeber_list%5Bhost%5D=2&cHash=...
+```
+
+dann ist der Route-Enhancer für das aktuell verwendete Extbase-Plugin nicht aktiv.
+Die Zeichenfolge `tx_gastgeber_list` zeigt, dass der Detailaufruf über das Plugin **List** läuft.
+Dafür muss in der TYPO3-Site-Config der Route-Enhancer **GastgeberListDetail** verwendet werden.
+Die passende Vorlage liegt hier:
+
+```text
+EXT:gastgeber/Configuration/Routes/GastgeberListSamePage.example.yaml
+```
+
+Nach dem Einfügen in `config/sites/<site-identifier>/config.yaml` und Cache-Flush wird aus dem Datensatz-Slug z. B.:
+
+```text
+/gastgeber/hotel-acht-linden
+```

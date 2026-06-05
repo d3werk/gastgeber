@@ -1,15 +1,21 @@
 # Beispiel für config/sites/<site>/config.yaml
-# UID-Werte anpassen:
-# - 407 = Detailseite mit Plugin "Gastgeber: Detailansicht"
 #
-# Danach sollte die Listenansicht im FlexForm-Feld "Detailseite" ebenfalls auf diese Seite zeigen.
+# Nur verwenden, wenn die Detailseite ein eigenes Plugin
+# "Gastgeber: Detailansicht" enthält und die erzeugte URL tx_gastgeber_detail
+# enthält. Wenn die URL tx_gastgeber_list enthält, muss stattdessen
+# GastgeberListSamePage.example.yaml verwendet werden.
+#
+# Ziel:
+#   /gastgeber/hotel-acht-linden
+
 routeEnhancers:
   GastgeberDetail:
     type: Extbase
     extension: Gastgeber
     plugin: Detail
-    limitToPages:
-      - 407
+    # Optional: UID der Seite mit dem Detail-Plugin.
+    # limitToPages:
+    #   - 514
     routes:
       -
         routePath: '/{host}'
