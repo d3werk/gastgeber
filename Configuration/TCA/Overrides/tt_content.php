@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 $plugins = [
     'List' => [
@@ -61,11 +62,27 @@ foreach ($plugins as $pluginName => $configuration) {
         ],
     ];
 
+    $generalFields = $pluginName === 'List'
+        ? 'header, subheader, bodytext, pi_flexform,'
+        : 'header, pi_flexform,';
+
+    if ($pluginName === 'List') {
+        $GLOBALS['TCA']['tt_content']['types'][$ctypeKey]['columnsOverrides']['bodytext'] = [
+            'label' => 'Einleitungstext',
+            'description' => 'Optionaler RTE-Text für die Gastgeber-Liste. Der Text wird oberhalb von Filter und Ergebnissen ausgegeben.',
+            'config' => [
+                'enableRichtext' => true,
+                'richtextConfiguration' => 'default',
+                'cols' => 40,
+                'rows' => 10,
+            ],
+        ];
+    }
+
     $GLOBALS['TCA']['tt_content']['types'][$ctypeKey]['showitem'] = '
         --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
             --palette--;;general,
-            header,
-            pi_flexform,
+            ' . $generalFields . '
         --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.appearance,
             --palette--;;frames,
             --palette--;;appearanceLinks,
@@ -80,4 +97,28 @@ foreach ($plugins as $pluginName => $configuration) {
             rowDescription,
         --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended
     ';
+}
+
+// Kompatibilität für Installationen, in denen das Plugin noch als altes
+// "Allgemeines Plugin [list]" mit list_type=gastgeber_list eingebunden ist.
+// Das RTE-Feld erscheint dort im Reiter "Allgemein" direkt unter der Unterüberschrift.
+if (isset($GLOBALS['TCA']['tt_content']['types']['list'])) {
+    ExtensionManagementUtility::addToAllTCAtypes(
+        'tt_content',
+        'bodytext',
+        'list',
+        'after:subheader'
+    );
+
+    $GLOBALS['TCA']['tt_content']['types']['list']['columnsOverrides']['bodytext'] = [
+        'label' => 'Einleitungstext',
+        'description' => 'Optionaler RTE-Text für die Gastgeber-Liste. Der Text wird oberhalb von Filter und Ergebnissen ausgegeben.',
+        'displayCond' => 'FIELD:list_type:=:gastgeber_list',
+        'config' => [
+            'enableRichtext' => true,
+            'richtextConfiguration' => 'default',
+            'cols' => 40,
+            'rows' => 10,
+        ],
+    ];
 }

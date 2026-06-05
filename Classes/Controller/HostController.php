@@ -13,6 +13,7 @@ use D3Werk\Gastgeber\Domain\Repository\HostTypeRepository;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 class HostController extends ActionController
@@ -25,6 +26,7 @@ class HostController extends ActionController
         private readonly DistrictRepository $districtRepository,
         private readonly PageRenderer $pageRenderer,
         private readonly MetaTagManagerRegistry $metaTagManagerRegistry,
+        private readonly ConfigurationManagerInterface $configurationManager,
     ) {}
 
     public function listAction(): ResponseInterface
@@ -104,7 +106,23 @@ class HostController extends ActionController
             'activeFeatureMap' => array_fill_keys($filters['features'] ?? [], true),
             'activeDistrictMap' => array_fill_keys($filters['districts'] ?? [], true),
             'settings' => $this->settings,
+            'introText' => $this->resolveIntroText(),
         ];
+    }
+
+    private function resolveIntroText(): string
+    {
+        $contentObject = $this->configurationManager->getContentObject();
+        $contentData = is_array($contentObject->data ?? null) ? $contentObject->data : [];
+
+        // Das RTE-Feld im Reiter "Allgemein" ist das TYPO3-Standardfeld bodytext.
+        // Der ältere FlexForm-Wert settings.introText bleibt als Fallback erhalten.
+        $bodytext = trim((string)($contentData['bodytext'] ?? ''));
+        if ($bodytext !== '') {
+            return $bodytext;
+        }
+
+        return trim((string)($this->settings['introText'] ?? ''));
     }
 
     /** @return array<string,mixed> */
