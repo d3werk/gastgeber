@@ -11,8 +11,10 @@ use D3Werk\Gastgeber\Domain\Repository\FeatureRepository;
 use D3Werk\Gastgeber\Domain\Repository\HostRepository;
 use D3Werk\Gastgeber\Domain\Repository\HostTypeRepository;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
@@ -111,29 +113,78 @@ class HostController extends ActionController
 
     private function resolveIntroText(): string
     {
-        $contentData = [];
-
-        // TYPO3 13+: Der aktuelle ContentObjectRenderer wird über das Extbase-Request-Attribut
-        // "currentContentObject" bereitgestellt. ConfigurationManager->getContentObject()
-        // wurde in TYPO3 13 entfernt und darf hier nicht mehr verwendet werden.
-        $contentObject = method_exists($this->request, 'getAttribute')
-            ? $this->request->getAttribute('currentContentObject')
-            : null;
-
-        if ($contentObject instanceof ContentObjectRenderer && is_array($contentObject->data)) {
-            $contentData = $contentObject->data;
-        } elseif (is_object($contentObject) && isset($contentObject->data) && is_array($contentObject->data)) {
-            $contentData = $contentObject->data;
-        }
+        $contentData = $this->resolveCurrentContentData();
 
         // Das RTE-Feld im Reiter "Allgemein" ist das TYPO3-Standardfeld bodytext.
-        // Der ältere FlexForm-Wert settings.introText bleibt als Fallback erhalten.
+        // Es hat Vorrang vor einem eventuell noch gespeicherten Altwert aus der FlexForm.
         $bodytext = trim((string)($contentData['bodytext'] ?? ''));
         if ($bodytext !== '') {
             return $bodytext;
         }
 
+        // Fallback: Bei einzelnen Installationen enthält der aktuelle ContentObjectRenderer
+        // nicht alle Spalten. Wenn die UID bekannt ist, lesen wir bodytext deshalb nochmals
+        // direkt aus tt_content. So funktioniert das Feld zuverlässig auch beim klassischen
+        // "Allgemeines Plugin [list]" mit list_type=gastgeber_list.
+        $contentUid = (int)($contentData['uid'] ?? 0);
+        if ($contentUid > 0) {
+            $bodytext = $this->fetchBodytextFromContentElement($contentUid);
+            if ($bodytext !== '') {
+                return $bodytext;
+            }
+        }
+
+        // Kompatibilität: Ältere Datensätze können noch settings.introText gespeichert haben.
+        // Das Feld wird nicht mehr im Plugin-Reiter angezeigt, vorhandene Inhalte gehen aber
+        // nicht verloren.
         return trim((string)($this->settings['introText'] ?? ''));
+    }
+
+    /** @return array<string,mixed> */
+    private function resolveCurrentContentData(): array
+    {
+        $contentObjects = [];
+
+        if (method_exists($this->request, 'getAttribute')) {
+            $contentObjects[] = $this->request->getAttribute('currentContentObject');
+        }
+
+        $globalRequest = $GLOBALS['TYPO3_REQUEST'] ?? null;
+        if (is_object($globalRequest) && method_exists($globalRequest, 'getAttribute')) {
+            $contentObjects[] = $globalRequest->getAttribute('currentContentObject');
+        }
+
+        $frontendController = $GLOBALS['TSFE'] ?? null;
+        if (is_object($frontendController) && isset($frontendController->cObj)) {
+            $contentObjects[] = $frontendController->cObj;
+        }
+
+        foreach ($contentObjects as $contentObject) {
+            if ($contentObject instanceof ContentObjectRenderer && is_array($contentObject->data)) {
+                return $contentObject->data;
+            }
+            if (is_object($contentObject) && isset($contentObject->data) && is_array($contentObject->data)) {
+                return $contentObject->data;
+            }
+        }
+
+        return [];
+    }
+
+    private function fetchBodytextFromContentElement(int $contentUid): string
+    {
+        try {
+            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('tt_content');
+            $row = $connection->select(
+                ['bodytext'],
+                'tt_content',
+                ['uid' => $contentUid]
+            )->fetchAssociative();
+        } catch (\Throwable) {
+            return '';
+        }
+
+        return trim((string)($row['bodytext'] ?? ''));
     }
 
     /** @return array<string,mixed> */

@@ -37,17 +37,6 @@
             </config>
           </settings.detailPid>
 
-          <settings.introText>
-            <label>Einleitungstext</label>
-            <description>Optionaler RTE-Text für die Gastgeber-Liste. Der Text wird in der Listenansicht oberhalb von Filter und Ergebnissen unter der Überschrift ausgegeben.</description>
-            <config>
-              <type>text</type>
-              <enableRichtext>true</enableRichtext>
-              <richtextConfiguration>default</richtextConfiguration>
-              <cols>40</cols>
-              <rows>8</rows>
-            </config>
-          </settings.introText>
 
           <settings.defaultView>
             <label>Standardansicht</label>

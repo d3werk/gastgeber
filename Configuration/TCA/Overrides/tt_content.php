@@ -118,14 +118,24 @@ if (isset($GLOBALS['TCA']['tt_content']['types']['list'])) {
         );
     }
 
-    // Zusätzlich für klassische list_type-Plugins vormerken. Das ist wichtig für
-    // ältere Datensätze mit CType=list und list_type=gastgeber_list.
+    // Wichtig: bodytext darf NICHT in subtypes_addlist stehen.
+    // subtypes_addlist wird beim klassischen "Allgemeines Plugin [list]" im Reiter
+    // "Plugin" ausgegeben. Der Einleitungstext soll ausschließlich im Reiter
+    // "Allgemein" stehen. Falls eine ältere Version ihn dort ergänzt hat,
+    // wird er hier beim TCA-Aufbau wieder entfernt.
     $existingSubtypeFields = (string)($GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['gastgeber_list'] ?? '');
-    $subtypeFields = array_values(array_filter(array_map('trim', explode(',', $existingSubtypeFields))));
-    if (!in_array('bodytext', $subtypeFields, true)) {
-        $subtypeFields[] = 'bodytext';
+    if ($existingSubtypeFields !== '') {
+        $subtypeFields = array_values(array_filter(array_map('trim', explode(',', $existingSubtypeFields))));
+        $subtypeFields = array_values(array_filter($subtypeFields, static fn(string $field): bool => $field !== 'bodytext'));
+        $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['gastgeber_list'] = implode(',', $subtypeFields);
     }
-    $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['gastgeber_list'] = implode(',', $subtypeFields);
+
+    $existingSubtypeExcludes = (string)($GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['gastgeber_list'] ?? '');
+    if ($existingSubtypeExcludes !== '') {
+        $excludeFields = array_values(array_filter(array_map('trim', explode(',', $existingSubtypeExcludes))));
+        $excludeFields = array_values(array_filter($excludeFields, static fn(string $field): bool => $field !== 'bodytext'));
+        $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['gastgeber_list'] = implode(',', $excludeFields);
+    }
 
     $GLOBALS['TCA']['tt_content']['types']['list']['columnsOverrides']['bodytext'] = [
         'label' => 'Einleitungstext',
