@@ -242,3 +242,19 @@ Für andere Symbolgrößen müssen Breite, Höhe und Anker passend gesetzt werde
 ### Webseiten-Link in der Detailansicht
 
 Der Webseiten-Link in der Kontaktbox der Detailansicht wird nicht mehr mit dem generischen Text „Webseite öffnen“ ausgegeben. Stattdessen erscheint der im Gastgeber-Datensatz gepflegte Linkpfad als sichtbarer Linktext. Beispiel: Wird im Feld „Webseite“ `https://www.beispiel.de/ferienwohnung` eingetragen, erscheint genau dieser Pfad als klickbarer Link.
+
+## Sprechende Detail-URLs mit Gastgeber-Slug
+
+Der Datensatz besitzt das Feld **URL-Segment / Slug** (`slug`). Damit daraus eine sichtbare Browser-URL wie
+
+```text
+/gastgeber/hotel-acht-linden
+```
+
+wird, muss in der TYPO3-Site-Config ein Route-Enhancer gesetzt werden. Die fertige Vorlage liegt unter:
+
+```text
+EXT:gastgeber/Configuration/Routes/Gastgeber.yaml
+```
+
+Den passenden Block in `config/sites/<site-identifier>/config.yaml` einfügen und `limitToPages` auf die UID der Gastgeber-/Detailseite setzen. Danach Cache leeren.
