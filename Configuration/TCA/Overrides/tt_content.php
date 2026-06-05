@@ -71,6 +71,7 @@ foreach ($plugins as $pluginName => $configuration) {
             'label' => 'Einleitungstext',
             'description' => 'Optionaler RTE-Text für die Gastgeber-Liste. Der Text wird oberhalb von Filter und Ergebnissen ausgegeben.',
             'config' => [
+                'type' => 'text',
                 'enableRichtext' => true,
                 'richtextConfiguration' => 'default',
                 'cols' => 40,
@@ -103,18 +104,35 @@ foreach ($plugins as $pluginName => $configuration) {
 // "Allgemeines Plugin [list]" mit list_type=gastgeber_list eingebunden ist.
 // Das RTE-Feld erscheint dort im Reiter "Allgemein" direkt unter der Unterüberschrift.
 if (isset($GLOBALS['TCA']['tt_content']['types']['list'])) {
-    ExtensionManagementUtility::addToAllTCAtypes(
-        'tt_content',
-        'bodytext',
-        'list',
-        'after:subheader'
-    );
+    $listShowitem = (string)($GLOBALS['TCA']['tt_content']['types']['list']['showitem'] ?? '');
+    $bodytextAlreadyInListType = preg_match('/(^|[,\s])bodytext([,;\s]|$)/', $listShowitem) === 1;
+
+    // bodytext nur ergänzen, wenn es im CType "list" noch nicht vorhanden ist.
+    // So vermeiden wir doppelte Felder im FormEngine-Showitem.
+    if (!$bodytextAlreadyInListType) {
+        ExtensionManagementUtility::addToAllTCAtypes(
+            'tt_content',
+            'bodytext',
+            'list',
+            'after:subheader'
+        );
+    }
+
+    // Zusätzlich für klassische list_type-Plugins vormerken. Das ist wichtig für
+    // ältere Datensätze mit CType=list und list_type=gastgeber_list.
+    $existingSubtypeFields = (string)($GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['gastgeber_list'] ?? '');
+    $subtypeFields = array_values(array_filter(array_map('trim', explode(',', $existingSubtypeFields))));
+    if (!in_array('bodytext', $subtypeFields, true)) {
+        $subtypeFields[] = 'bodytext';
+    }
+    $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['gastgeber_list'] = implode(',', $subtypeFields);
 
     $GLOBALS['TCA']['tt_content']['types']['list']['columnsOverrides']['bodytext'] = [
         'label' => 'Einleitungstext',
         'description' => 'Optionaler RTE-Text für die Gastgeber-Liste. Der Text wird oberhalb von Filter und Ergebnissen ausgegeben.',
         'displayCond' => 'FIELD:list_type:=:gastgeber_list',
         'config' => [
+            'type' => 'text',
             'enableRichtext' => true,
             'richtextConfiguration' => 'default',
             'cols' => 40,

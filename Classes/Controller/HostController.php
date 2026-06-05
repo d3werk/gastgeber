@@ -13,8 +13,8 @@ use D3Werk\Gastgeber\Domain\Repository\HostTypeRepository;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 class HostController extends ActionController
 {
@@ -26,7 +26,6 @@ class HostController extends ActionController
         private readonly DistrictRepository $districtRepository,
         private readonly PageRenderer $pageRenderer,
         private readonly MetaTagManagerRegistry $metaTagManagerRegistry,
-        private readonly ConfigurationManagerInterface $configurationManager,
     ) {}
 
     public function listAction(): ResponseInterface
@@ -112,8 +111,20 @@ class HostController extends ActionController
 
     private function resolveIntroText(): string
     {
-        $contentObject = $this->configurationManager->getContentObject();
-        $contentData = is_array($contentObject->data ?? null) ? $contentObject->data : [];
+        $contentData = [];
+
+        // TYPO3 13+: Der aktuelle ContentObjectRenderer wird über das Extbase-Request-Attribut
+        // "currentContentObject" bereitgestellt. ConfigurationManager->getContentObject()
+        // wurde in TYPO3 13 entfernt und darf hier nicht mehr verwendet werden.
+        $contentObject = method_exists($this->request, 'getAttribute')
+            ? $this->request->getAttribute('currentContentObject')
+            : null;
+
+        if ($contentObject instanceof ContentObjectRenderer && is_array($contentObject->data)) {
+            $contentData = $contentObject->data;
+        } elseif (is_object($contentObject) && isset($contentObject->data) && is_array($contentObject->data)) {
+            $contentData = $contentObject->data;
+        }
 
         // Das RTE-Feld im Reiter "Allgemein" ist das TYPO3-Standardfeld bodytext.
         // Der ältere FlexForm-Wert settings.introText bleibt als Fallback erhalten.
