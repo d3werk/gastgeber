@@ -38,6 +38,42 @@ $plugins = [
     ],
 ];
 
+
+$removeFieldsFromTcaList = static function (string $fieldList, array $fieldNamesToRemove): string {
+    if (trim($fieldList) === '') {
+        return '';
+    }
+
+    $removeMap = array_fill_keys(array_map('strtolower', $fieldNamesToRemove), true);
+    $cleanedFields = [];
+
+    foreach (array_filter(array_map('trim', explode(',', $fieldList))) as $fieldDefinition) {
+        // TCA field definitions may contain additional semicolon parts, for example:
+        // bodytext;Einleitungstext;;;richtext:rte_transform
+        // For removal we only compare the actual database field name before the first semicolon.
+        $fieldName = strtolower(trim(explode(';', $fieldDefinition, 2)[0] ?? $fieldDefinition));
+        if ($fieldName === '' || isset($removeMap[$fieldName])) {
+            continue;
+        }
+        $cleanedFields[] = $fieldDefinition;
+    }
+
+    return implode(',', array_values(array_unique($cleanedFields)));
+};
+
+// Compatibility for older content elements using "Allgemeines Plugin [list]".
+// New TYPO3 13 content elements use their own CType (for example "gastgeber_list"),
+// but existing migrated elements may still use CType=list with list_type=gastgeber_list.
+// Register the FlexForms explicitly for these legacy list plugins and clean up the subtype
+// field lists afterwards, so bodytext can never appear inside the "Plugin" tab.
+foreach ($plugins as $pluginName => $configuration) {
+    ExtensionManagementUtility::addPiFlexFormValue(
+        'gastgeber_' . strtolower($pluginName),
+        $configuration['flexForm'],
+        'list'
+    );
+}
+
 foreach ($plugins as $pluginName => $configuration) {
     $ctypeKey = 'gastgeber_' . strtolower($pluginName);
 
@@ -105,10 +141,10 @@ foreach ($plugins as $pluginName => $configuration) {
 // Das RTE-Feld erscheint dort im Reiter "Allgemein" direkt unter der Unterüberschrift.
 if (isset($GLOBALS['TCA']['tt_content']['types']['list'])) {
     $listShowitem = (string)($GLOBALS['TCA']['tt_content']['types']['list']['showitem'] ?? '');
-    $bodytextAlreadyInListType = preg_match('/(^|[,\s])bodytext([,;\s]|$)/', $listShowitem) === 1;
+    $bodytextAlreadyInListType = preg_match('/(?:^|[,;\\s])bodytext(?:[,;\\s]|$)/', $listShowitem) === 1;
 
-    // bodytext nur ergänzen, wenn es im CType "list" noch nicht vorhanden ist.
-    // So vermeiden wir doppelte Felder im FormEngine-Showitem.
+    // bodytext nur in den normalen CType=list-Showitems ergänzen, nicht in subtypes_addlist.
+    // addToAllTCAtypes platziert das Feld im Reiter "Allgemein" an der Stelle nach subheader.
     if (!$bodytextAlreadyInListType) {
         ExtensionManagementUtility::addToAllTCAtypes(
             'tt_content',
@@ -120,21 +156,38 @@ if (isset($GLOBALS['TCA']['tt_content']['types']['list'])) {
 
     // Wichtig: bodytext darf NICHT in subtypes_addlist stehen.
     // subtypes_addlist wird beim klassischen "Allgemeines Plugin [list]" im Reiter
-    // "Plugin" ausgegeben. Der Einleitungstext soll ausschließlich im Reiter
-    // "Allgemein" stehen. Falls eine ältere Version ihn dort ergänzt hat,
-    // wird er hier beim TCA-Aufbau wieder entfernt.
-    $existingSubtypeFields = (string)($GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['gastgeber_list'] ?? '');
-    if ($existingSubtypeFields !== '') {
-        $subtypeFields = array_values(array_filter(array_map('trim', explode(',', $existingSubtypeFields))));
-        $subtypeFields = array_values(array_filter($subtypeFields, static fn(string $field): bool => $field !== 'bodytext'));
-        $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['gastgeber_list'] = implode(',', $subtypeFields);
+    // "Plugin" ausgegeben. Frühere Zwischenstände konnten bodytext dort mit Label- oder
+    // RTE-Zusätzen eintragen, z. B. "bodytext;Einleitungstext". Deshalb entfernen wir
+    // nicht nur den exakten String "bodytext", sondern alle Einträge, deren Feldname vor
+    // dem ersten Semikolon "bodytext" ist.
+    foreach (['subtypes_addlist', 'subtypes_excludelist'] as $subtypeListName) {
+        if (!isset($GLOBALS['TCA']['tt_content']['types']['list'][$subtypeListName])
+            || !is_array($GLOBALS['TCA']['tt_content']['types']['list'][$subtypeListName])
+        ) {
+            continue;
+        }
+
+        foreach ($GLOBALS['TCA']['tt_content']['types']['list'][$subtypeListName] as $subtype => $fieldList) {
+            $subtype = (string)$subtype;
+            if ($subtype !== 'gastgeber_list' && !str_starts_with($subtype, 'gastgeber_')) {
+                continue;
+            }
+
+            $GLOBALS['TCA']['tt_content']['types']['list'][$subtypeListName][$subtype]
+                = $removeFieldsFromTcaList((string)$fieldList, ['bodytext']);
+        }
     }
 
-    $existingSubtypeExcludes = (string)($GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['gastgeber_list'] ?? '');
-    if ($existingSubtypeExcludes !== '') {
-        $excludeFields = array_values(array_filter(array_map('trim', explode(',', $existingSubtypeExcludes))));
-        $excludeFields = array_values(array_filter($excludeFields, static fn(string $field): bool => $field !== 'bodytext'));
-        $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['gastgeber_list'] = implode(',', $excludeFields);
+    // Nochmals explizit für die Listenansicht setzen: Im Plugin-Reiter bleibt nur die
+    // FlexForm. Der Einleitungstext bleibt ausschließlich bodytext im Reiter Allgemein.
+    $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['gastgeber_list']
+        = $removeFieldsFromTcaList(
+            (string)($GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['gastgeber_list'] ?? 'pi_flexform'),
+            ['bodytext']
+        );
+
+    if ($GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['gastgeber_list'] === '') {
+        $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['gastgeber_list'] = 'pi_flexform';
     }
 
     $GLOBALS['TCA']['tt_content']['types']['list']['columnsOverrides']['bodytext'] = [
