@@ -281,3 +281,12 @@ Nach dem Einfügen in `config/sites/<site-identifier>/config.yaml` und Cache-Flu
 ```text
 /gastgeber/hotel-acht-linden
 ```
+
+## Sprechende Gastgeber-URLs ohne sichtbare Extbase-Parameter
+
+Die Gastgeber-Detailansicht kann URLs wie `/gastgeber/hotel-acht-linden` verwenden. Wenn TYPO3 noch eine alte Extbase-URL wie
+`/gastgeber?tx_gastgeber_list[action]=detail&tx_gastgeber_list[host]=2&cHash=...` erzeugt, wird die Browser-Adresszeile im Frontend automatisch auf den sauberen Slug-Pfad umgestellt.
+
+Zusätzlich ist eine Frontend-Middleware enthalten. Sie löst saubere URLs wie `/gastgeber/hotel-acht-linden` intern auf das Listen-Plugin auf, damit die Detailansicht auch ohne sichtbare Query-Parameter geladen werden kann. Der empfohlene Weg bleibt weiterhin ein sauber eingerichteter TYPO3 Route-Enhancer in der Site-Config; die Middleware dient als robustes Sicherheitsnetz für bestehende Installationen.
+
+Die Listenansicht entfernt leere Standardparameter wie `tx_gastgeber_list[action]=list`, leere Suche und `view=cards` aus der Adresszeile, so dass bei der Rückkehr zur Liste wieder `/gastgeber` angezeigt wird.
