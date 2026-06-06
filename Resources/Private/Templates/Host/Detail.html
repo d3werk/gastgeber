@@ -3,7 +3,7 @@
 <f:section name="Main">
 <f:if condition="{host}">
   <f:then>
-    <article class="gastgeber-detail" itemscope="itemscope" itemtype="https://schema.org/LodgingBusiness">
+    <article class="gastgeber-detail" data-gastgeber-detail="1" data-gastgeber-detail-slug="{host.slug}" itemscope="itemscope" itemtype="https://schema.org/LodgingBusiness">
       <header class="gastgeber-detail__headline">
         <div class="gastgeber-detail__meta">
           <f:if condition="{host.type}"><span class="gastgeber-badge gastgeber-badge--type"><f:render partial="Category/Icon" arguments="{item: host.type}" /> {host.type.title}</span></f:if>

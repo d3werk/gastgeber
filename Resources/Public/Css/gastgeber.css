@@ -28,10 +28,17 @@
   background: var(--gastgeber-primary-soft);
   padding: 2rem;
   margin-bottom: 2rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+.gastgeber-toolbar__top {
+  order: 2;
   display: flex;
   justify-content: space-between;
   gap: 1.5rem;
-  align-items: center;
+  align-items: flex-start;
   flex-wrap: wrap;
 }
 .gastgeber-toolbar h2,
@@ -45,11 +52,15 @@
 .gastgeber-toolbar__text { margin: .5rem 0 0; color: var(--gastgeber-muted); }
 
 .gastgeber-toolbar__intro {
-  flex: 1 1 620px;
+  flex: 1 1 360px;
   min-width: 0;
 }
+.gastgeber-toolbar__actions {
+  flex: 0 0 auto;
+}
 .gastgeber-toolbar__bodytext {
-  margin-top: 1rem;
+  order: 1;
+  width: 100%;
   max-width: 62rem;
   color: var(--gastgeber-text);
 }
@@ -546,6 +557,9 @@
 
 @media (max-width: 991px) {
   .gastgeber-toolbar {
+    gap: 1rem;
+  }
+  .gastgeber-toolbar__top {
     display: grid;
     grid-template-columns: 1fr;
     gap: 1rem;

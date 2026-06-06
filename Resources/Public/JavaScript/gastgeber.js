@@ -168,10 +168,112 @@
         event.preventDefault();
         setListView(directory, viewMode);
         if (toggle.href && window.history && window.history.pushState) {
-          window.history.pushState({gastgeberViewMode: viewMode}, '', toggle.href);
+          window.history.pushState({gastgeberViewMode: viewMode}, '', cleanHrefForPushState(toggle.href));
         }
       });
     });
+  }
+
+  function hasGastgeberQueryParameters(url) {
+    var found = false;
+    url.searchParams.forEach(function (value, key) {
+      if (key.indexOf('tx_gastgeber_') === 0) {
+        found = true;
+      }
+    });
+    return found;
+  }
+
+  function getGastgeberListParam(url, name) {
+    return url.searchParams.get('tx_gastgeber_list[' + name + ']') || '';
+  }
+
+  function hasActiveListArguments(url) {
+    if ((getGastgeberListParam(url, 'search') || '').trim() !== '') {
+      return true;
+    }
+    if ((getGastgeberListParam(url, 'sort') || '').trim() !== '') {
+      return true;
+    }
+
+    var view = (getGastgeberListParam(url, 'view') || '').trim();
+    if (view !== '' && view !== 'cards') {
+      return true;
+    }
+
+    var hasActiveFilter = false;
+    url.searchParams.forEach(function (value, key) {
+      if (value === '') {
+        return;
+      }
+      if (key.indexOf('tx_gastgeber_list[types]') === 0 ||
+          key.indexOf('tx_gastgeber_list[features]') === 0 ||
+          key.indexOf('tx_gastgeber_list[districts]') === 0) {
+        hasActiveFilter = true;
+      }
+    });
+
+    return hasActiveFilter;
+  }
+
+  function replaceBrowserUrl(cleanUrl) {
+    if (!cleanUrl || !window.history || !window.history.replaceState) {
+      return;
+    }
+    if (cleanUrl === window.location.href) {
+      return;
+    }
+    window.history.replaceState(window.history.state || {}, document.title, cleanUrl);
+  }
+
+  function cleanupGastgeberBrowserUrls(root) {
+    if (!window.URL) {
+      return;
+    }
+
+    var currentUrl;
+    try {
+      currentUrl = new URL(window.location.href);
+    } catch (e) {
+      return;
+    }
+
+    var detailElement = (root || document).querySelector('[data-gastgeber-detail-slug]');
+    if (detailElement) {
+      var slug = (detailElement.dataset.gastgeberDetailSlug || '').trim();
+      if (slug !== '' && hasGastgeberQueryParameters(currentUrl)) {
+        var path = currentUrl.pathname.replace(/\/+$/, '');
+        if (path === '') {
+          path = '/';
+        }
+        if (path.slice(-1 * (slug.length + 1)) !== '/' + slug) {
+          path = path.replace(/\/+$/, '') + '/' + encodeURIComponent(slug);
+        }
+        replaceBrowserUrl(currentUrl.origin + path + currentUrl.hash);
+      }
+      return;
+    }
+
+    var directory = (root || document).querySelector('[data-gastgeber-directory]');
+    if (directory && hasGastgeberQueryParameters(currentUrl) && !hasActiveListArguments(currentUrl)) {
+      replaceBrowserUrl(currentUrl.origin + currentUrl.pathname + currentUrl.hash);
+    }
+  }
+
+  function cleanHrefForPushState(href) {
+    if (!href || !window.URL) {
+      return href;
+    }
+
+    try {
+      var url = new URL(href, window.location.href);
+      if (hasGastgeberQueryParameters(url) && !hasActiveListArguments(url)) {
+        return url.origin + url.pathname + url.hash;
+      }
+      return url.href;
+    } catch (e) {
+      return href;
+    }
   }
 
   function initBackButtons(root) {
@@ -188,11 +290,17 @@
 
         var referrer = document.referrer || '';
         var hasSameOriginReferrer = false;
+        var referrerHasGastgeberQuery = false;
         try {
-          hasSameOriginReferrer = referrer !== '' && new URL(referrer).origin === window.location.origin;
+          var referrerUrl = new URL(referrer);
+          hasSameOriginReferrer = referrer !== '' && referrerUrl.origin === window.location.origin;
+          referrerHasGastgeberQuery = hasGastgeberQueryParameters(referrerUrl);
         } catch (e) {}
 
-        if (window.history && window.history.length > 1 && hasSameOriginReferrer) {
+        // Wenn die vorherige Seite eine alte Extbase-URL war, nicht per Browser-History
+        // zurückspringen, weil sonst wieder ?tx_gastgeber_list[...] in der Adresszeile steht.
+        // In diesem Fall wird der saubere href des Buttons verwendet.
+        if (window.history && window.history.length > 1 && hasSameOriginReferrer && !referrerHasGastgeberQuery) {
           event.preventDefault();
           window.history.back();
           return;
@@ -209,6 +317,7 @@
     initViewSwitches(document);
     initBackButtons(document);
     initMaps(document);
+    cleanupGastgeberBrowserUrls(document);
   });
 
   window.addEventListener('popstate', function (event) {
@@ -218,6 +327,7 @@
     document.querySelectorAll('[data-gastgeber-directory]').forEach(function (directory) {
       setListView(directory, event.state.gastgeberViewMode);
     });
+    cleanupGastgeberBrowserUrls(document);
   });
 
   document.addEventListener('shown.bs.modal', function (event) {

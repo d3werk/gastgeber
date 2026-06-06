@@ -1,0 +1,24 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+<header class="gastgeber-toolbar">
+  <f:if condition="{introText}">
+    <div class="gastgeber-toolbar__bodytext">
+      <f:format.html>{introText}</f:format.html>
+    </div>
+  </f:if>
+
+  <div class="gastgeber-toolbar__top">
+    <div class="gastgeber-toolbar__intro">
+      <p class="gastgeber-eyebrow mb-1">Gastgeberverzeichnis</p>
+      <h2>Unterkünfte finden</h2>
+      <p class="gastgeber-toolbar__text"><f:count subject="{hosts}" /> Gastgeber gefunden</p>
+    </div>
+
+    <f:if condition="{settings.showViewSwitch}">
+      <div class="gastgeber-toolbar__actions">
+        <f:render partial="List/ViewSwitch" arguments="{_all}" />
+      </div>
+    </f:if>
+  </div>
+</header>
+</html>
