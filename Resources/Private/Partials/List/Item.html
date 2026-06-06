@@ -30,8 +30,8 @@
       </f:else>
     </f:if>
     <f:if condition="{host.hasStarRating}">
-      <div class="gastgeber-card__rating">
-        <f:render partial="Host/RatingBadge" arguments="{host: host.uid}" />
+      <div class="gastgeber-gallery-hero__rating">
+        <f:render partial="Host/RatingBadge" arguments="{host: host}" />
       </div>
     </f:if>
   </div>
@@ -55,7 +55,6 @@
       </f:if>
     </h3>
 
-    <f:if condition="{host.shortAddress}"><p class="gastgeber-address" itemprop="address">{host.shortAddress}</p></f:if>
 
     <f:if condition="{host.teaser}">
       <div class="gastgeber-card__teaser" itemprop="description">
