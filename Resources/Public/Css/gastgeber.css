@@ -205,6 +205,28 @@
 .gastgeber-rating-badge { display: inline-flex; align-items: center; gap: .45rem; background: var(--gastgeber-primary); color: #fff; padding: .5rem .7rem; font-weight: 800; box-shadow: 0 .5rem 1rem rgba(0,0,0,.18); }
 .gastgeber-rating-badge__stars { color: var(--gastgeber-star); letter-spacing: .08em; white-space: nowrap; }
 .gastgeber-rating-badge__label { font-size: .85rem; }
+
+/* Smaller rating badge inside the Gastgeber card/grid view.
+   The detail gallery keeps the larger hero rating badge. */
+.gastgeber-card:not(.gastgeber-card--list) .gastgeber-gallery-hero__rating {
+  top: .6rem;
+  right: .6rem;
+  max-width: calc(100% - 1.2rem);
+}
+.gastgeber-card:not(.gastgeber-card--list) .gastgeber-rating-badge,
+.gastgeber-card:not(.gastgeber-card--list) .gastgeber-gallery-hero__rating .gastgeber-rating-badge {
+  gap: .28rem;
+  padding: .32rem .45rem;
+  font-size: .78rem;
+  line-height: 1.1;
+  box-shadow: 0 .25rem .55rem rgba(0,0,0,.14);
+}
+.gastgeber-card:not(.gastgeber-card--list) .gastgeber-rating-badge__stars {
+  letter-spacing: .04em;
+}
+.gastgeber-card:not(.gastgeber-card--list) .gastgeber-rating-badge__label {
+  font-size: .7rem;
+}
 .gastgeber-feature-strip,
 .gastgeber-feature-grid { list-style: none; padding: 0; margin: 0; }
 .gastgeber-feature-strip { display: flex; flex-wrap: wrap; gap: .55rem .85rem; }
