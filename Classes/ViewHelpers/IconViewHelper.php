@@ -4,60 +4,69 @@ declare(strict_types=1);
 
 namespace D3Werk\Gastgeber\ViewHelpers;
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
- * Renders uploaded category/feature icons without TYPO3 image processing.
+ * Renders uploaded icons for host types, feature groups, features and certificates.
  *
- * The icon fields are editor fields and may contain FAL file references, an
- * ObjectStorage with one file reference, a public URL/path or a CSS icon class.
- * Using f:image for these small SVG/PNG pictograms is fragile because TYPO3's
- * image processing can fail on SVGs or unexpected relation shapes. This
- * ViewHelper keeps the detail view stable and falls back gracefully.
+ * Uploaded equipment icons are small SVG/PNG pictograms. They must not be sent
+ * through TYPO3 image processing, because SVG processing or an unexpected FAL
+ * relation shape can otherwise break list/detail views. This ViewHelper resolves
+ * the public URL directly and falls back to icon_class or a neutral placeholder.
  */
 final class IconViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     protected $escapeOutput = false;
+
+    /** @var array<string,string> */
+    private static array $relationUrlCache = [];
 
     public function initializeArguments(): void
     {
-        $this->registerArgument('item', 'mixed', 'Object with icon/iconClass properties', true);
+        $this->registerArgument('item', 'mixed', 'Object or array with icon and iconClass/icon_class properties', true);
         $this->registerArgument('imgClass', 'string', 'CSS class for uploaded/path icons', false, 'gastgeber-icon-img');
         $this->registerArgument('iconClass', 'string', 'Base CSS class for CSS icons', false, 'gastgeber-icon');
         $this->registerArgument('fallbackClass', 'string', 'Fallback CSS class', false, 'gastgeber-icon gastgeber-icon--fallback');
     }
 
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
-        $item = $arguments['item'] ?? null;
-        $imgClass = self::sanitizeClassList((string)($arguments['imgClass'] ?? 'gastgeber-icon-img'));
-        $iconBaseClass = self::sanitizeClassList((string)($arguments['iconClass'] ?? 'gastgeber-icon'));
-        $fallbackClass = self::sanitizeClassList((string)($arguments['fallbackClass'] ?? 'gastgeber-icon gastgeber-icon--fallback'));
+        $item = $this->arguments['item'] ?? null;
+        $imgClass = self::sanitizeClassList((string)($this->arguments['imgClass'] ?? 'gastgeber-icon-img')) ?: 'gastgeber-icon-img';
+        $iconBaseClass = self::sanitizeClassList((string)($this->arguments['iconClass'] ?? 'gastgeber-icon')) ?: 'gastgeber-icon';
+        $fallbackClass = self::sanitizeClassList((string)($this->arguments['fallbackClass'] ?? 'gastgeber-icon gastgeber-icon--fallback')) ?: 'gastgeber-icon gastgeber-icon--fallback';
 
         $icon = self::readProperty($item, 'icon');
-        $iconClassOrPath = trim((string)self::readProperty($item, 'iconClass'));
+        $configuredClassOrPath = trim((string)(self::readProperty($item, 'iconClass') ?: self::readProperty($item, 'icon_class')));
 
         $url = self::resolveIconUrl($icon);
-        if ($url === '' && self::looksLikeImageReference($iconClassOrPath)) {
-            $url = self::normalizeIconPath($iconClassOrPath);
-            $iconClassOrPath = '';
+
+        // If getIcon() cannot safely return the FAL relation because the hydrated
+        // value has a different shape, resolve the file reference directly via
+        // sys_file_reference. This keeps the frontend stable even with old caches
+        // or records created by previous extension versions.
+        if ($url === '') {
+            $url = self::resolveIconUrlFromFileReferenceRelation($item);
+        }
+
+        // Editors sometimes paste /fileadmin/... or EXT:... into the Icon-CSS field.
+        // Treat image-looking values as image paths, not as CSS classes.
+        if ($url === '' && self::looksLikeImageReference($configuredClassOrPath)) {
+            $url = self::normalizeIconPath($configuredClassOrPath);
+            $configuredClassOrPath = '';
         }
 
         if ($url !== '') {
             return '<img src="' . self::escape($url) . '" class="' . self::escape($imgClass) . '" alt="" loading="lazy" aria-hidden="true" />';
         }
 
-        if ($iconClassOrPath !== '') {
-            $classes = trim($iconBaseClass . ' ' . self::sanitizeClassList($iconClassOrPath));
-            if ($classes !== $iconBaseClass) {
-                return '<span class="' . self::escape($classes) . '" aria-hidden="true"></span>';
-            }
+        $configuredClass = self::sanitizeClassList($configuredClassOrPath);
+        if ($configuredClass !== '') {
+            return '<span class="' . self::escape(trim($iconBaseClass . ' ' . $configuredClass)) . '" aria-hidden="true"></span>';
         }
 
         return '<span class="' . self::escape($fallbackClass) . '" aria-hidden="true"></span>';
@@ -73,14 +82,27 @@ final class IconViewHelper extends AbstractViewHelper
             return $item[$property] ?? null;
         }
 
-        if (is_object($item)) {
-            $method = 'get' . ucfirst($property);
-            if (method_exists($item, $method)) {
-                try {
-                    return $item->{$method}();
-                } catch (\Throwable) {
-                    return null;
+        if (!is_object($item)) {
+            return null;
+        }
+
+        $method = 'get' . str_replace(' ', '', ucwords(str_replace('_', ' ', $property)));
+        if (method_exists($item, $method)) {
+            try {
+                return $item->{$method}();
+            } catch (\Throwable) {
+                return null;
+            }
+        }
+
+        if (method_exists($item, '_loadRealInstance')) {
+            try {
+                $realInstance = $item->_loadRealInstance();
+                if ($realInstance !== $item) {
+                    return self::readProperty($realInstance, $property);
                 }
+            } catch (\Throwable) {
+                return null;
             }
         }
 
@@ -99,7 +121,7 @@ final class IconViewHelper extends AbstractViewHelper
 
         if (is_array($icon)) {
             foreach (['originalResource', 'publicUrl', 'url', 'src'] as $key) {
-                if (isset($icon[$key])) {
+                if (array_key_exists($key, $icon)) {
                     $resolved = self::resolveIconUrl($icon[$key]);
                     if ($resolved !== '') {
                         return $resolved;
@@ -125,35 +147,120 @@ final class IconViewHelper extends AbstractViewHelper
             return '';
         }
 
-        if (is_object($icon)) {
-            foreach (['getOriginalResource', 'getOriginalFile', 'getFile'] as $method) {
-                if (method_exists($icon, $method)) {
-                    try {
-                        $resolved = self::resolveIconUrl($icon->{$method}());
-                        if ($resolved !== '') {
-                            return $resolved;
-                        }
-                    } catch (\Throwable) {
-                        // Try the next possible accessor.
+        if (!is_object($icon)) {
+            return '';
+        }
+
+        foreach (['getOriginalResource', 'getOriginalFile', 'getFile'] as $method) {
+            if (method_exists($icon, $method)) {
+                try {
+                    $resolved = self::resolveIconUrl($icon->{$method}());
+                    if ($resolved !== '') {
+                        return $resolved;
                     }
+                } catch (\Throwable) {
+                    // Try next accessor.
                 }
             }
+        }
 
-            foreach (['getPublicUrl', 'getUrl'] as $method) {
-                if (method_exists($icon, $method)) {
-                    try {
-                        $url = (string)$icon->{$method}();
-                        if (trim($url) !== '') {
-                            return self::normalizeIconPath($url);
-                        }
-                    } catch (\Throwable) {
-                        // Graceful fallback instead of a broken detail view.
+        foreach (['getPublicUrl', 'getUrl'] as $method) {
+            if (method_exists($icon, $method)) {
+                try {
+                    $url = trim((string)$icon->{$method}());
+                    if ($url !== '') {
+                        return self::normalizeIconPath($url);
                     }
+                } catch (\Throwable) {
+                    // Graceful fallback instead of a broken frontend view.
                 }
             }
         }
 
         return '';
+    }
+
+    private static function resolveIconUrlFromFileReferenceRelation(mixed $item): string
+    {
+        if (!is_object($item)) {
+            return '';
+        }
+
+        $uid = self::readUid($item);
+        $tableName = self::resolveTableName($item);
+        if ($uid <= 0 || $tableName === '') {
+            return '';
+        }
+
+        $cacheKey = $tableName . ':' . $uid;
+        if (array_key_exists($cacheKey, self::$relationUrlCache)) {
+            return self::$relationUrlCache[$cacheKey];
+        }
+
+        try {
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file_reference');
+            $row = $queryBuilder
+                ->select('uid')
+                ->from('sys_file_reference')
+                ->where(
+                    $queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter($tableName)),
+                    $queryBuilder->expr()->eq('fieldname', $queryBuilder->createNamedParameter('icon')),
+                    $queryBuilder->expr()->eq('uid_foreign', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
+                )
+                ->orderBy('sorting_foreign', 'ASC')
+                ->setMaxResults(1)
+                ->executeQuery()
+                ->fetchAssociative();
+
+            if (!is_array($row) || empty($row['uid'])) {
+                return self::$relationUrlCache[$cacheKey] = '';
+            }
+
+            $fileReference = GeneralUtility::makeInstance(ResourceFactory::class)->getFileReferenceObject((int)$row['uid']);
+            $url = self::resolveIconUrl($fileReference);
+            return self::$relationUrlCache[$cacheKey] = $url;
+        } catch (\Throwable) {
+            return self::$relationUrlCache[$cacheKey] = '';
+        }
+    }
+
+    private static function readUid(object $item): int
+    {
+        foreach (['getUid', 'getLocalizedUid'] as $method) {
+            if (method_exists($item, $method)) {
+                try {
+                    return (int)$item->{$method}();
+                } catch (\Throwable) {
+                    // Try next accessor.
+                }
+            }
+        }
+        return 0;
+    }
+
+    private static function resolveTableName(object $item): string
+    {
+        if (method_exists($item, '_loadRealInstance')) {
+            try {
+                $realInstance = $item->_loadRealInstance();
+                if (is_object($realInstance) && $realInstance !== $item) {
+                    return self::resolveTableName($realInstance);
+                }
+            } catch (\Throwable) {
+                // Continue with proxy class name.
+            }
+        }
+
+        $className = get_class($item);
+        $shortName = substr(strrchr($className, '\\') ?: $className, 1) ?: $className;
+
+        return match ($shortName) {
+            'Feature' => 'tx_gastgeber_domain_model_feature',
+            'FeatureGroup' => 'tx_gastgeber_domain_model_featuregroup',
+            'HostType' => 'tx_gastgeber_domain_model_type',
+            'Certificate' => 'tx_gastgeber_domain_model_certificate',
+            default => '',
+        };
     }
 
     private static function normalizeIconPath(string $value): string
