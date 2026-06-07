@@ -1,14 +1,14 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
-<f:if condition="{host.remainingFeatureCount} &gt; 0">
+<f:if condition="{host.detailFeatureCount} &gt; 0">
   <div class="modal fade gastgeber-modal gastgeber-feature-modal" id="gastgeber-features-{host.uid}" tabindex="-1" aria-labelledby="gastgeber-features-title-{host.uid}" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered modal-fullscreen-sm-down">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable modal-dialog-centered modal-fullscreen-sm-down">
       <div class="modal-content">
         <div class="modal-header">
-          <h2 class="modal-title h4" id="gastgeber-features-title-{host.uid}">Weitere Ausstattungsmerkmale</h2>
+          <h2 class="modal-title h4" id="gastgeber-features-title-{host.uid}">Alle Merkmale &amp; Ausstattungen</h2>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
         </div>
         <div class="modal-body">
-          <f:for each="{host.groupedRemainingDetailFeatures}" as="featureGroup">
+          <f:for each="{host.groupedDetailFeatures}" as="featureGroup">
             <section class="gastgeber-feature-modal__group">
               <h3 class="h5">
                 <f:render partial="Category/Icon" arguments="{item: featureGroup}" />

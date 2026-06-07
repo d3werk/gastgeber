@@ -6,10 +6,10 @@
         <p class="gastgeber-eyebrow mb-1">Ausstattung</p>
         <h3>Merkmale &amp; Ausstattung auf einen Blick</h3>
       </div>
-      <f:if condition="{host.remainingFeatureCount} &gt; 0">
+      <f:if condition="{host.detailFeatureCount} &gt; 0">
         <button type="button" class="btn btn-outline-primary gastgeber-feature-more" data-bs-toggle="modal" data-bs-target="#gastgeber-features-{host.uid}">
           <span class="gastgeber-feature-more__icon" aria-hidden="true">▦</span>
-          <span>Weitere {host.remainingFeatureCount} Merkmale anzeigen</span>
+          <span>Alle {host.detailFeatureCount} Merkmale anzeigen</span>
         </button>
       </f:if>
     </div>
