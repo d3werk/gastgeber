@@ -41,7 +41,7 @@ class HostController extends ActionController
         if (!$this->hasRequestArguments(['search', 'types', 'features', 'districts', 'sort', 'view', 'host', 'slug'])) {
             $hostFromPath = $this->resolveHostFromCurrentRequestPath();
             if ($hostFromPath instanceof Host) {
-                return $this->renderDetailResponse($hostFromPath);
+                return $this->renderDetailResponse($hostFromPath, true);
             }
         }
 
@@ -102,13 +102,23 @@ class HostController extends ActionController
         return $this->renderDetailResponse($host);
     }
 
-    private function renderDetailResponse(Host $host): ResponseInterface
+    private function renderDetailResponse(Host $host, bool $forceDetailTemplate = false): ResponseInterface
     {
         $this->applySeo($host);
         $this->view->assignMultiple([
             'host' => $host,
             'settings' => $this->settings,
         ]);
+
+        // Wichtig für F5/Strg+F5 auf bereinigten URLs wie /gastgeber/hotel-acht-linden:
+        // Wenn TYPO3 die Seite als Listen-Plugin ausführt und die Extension den Slug
+        // erst in listAction() aus dem Pfad erkennt, würde htmlResponse() sonst das
+        // Template Host/List.html rendern. Dieses Template erwartet eine Gastgeberliste
+        // und wirkt deshalb leer. In diesem Fall wird explizit Host/Detail.html gerendert.
+        if ($forceDetailTemplate) {
+            return $this->htmlResponse($this->view->render('Detail'));
+        }
+
         return $this->htmlResponse();
     }
 
