@@ -11,7 +11,7 @@
           <f:for each="{host.groupedRemainingDetailFeatures}" as="featureGroup">
             <section class="gastgeber-feature-modal__group">
               <h3 class="h5">
-                <f:if condition="{featureGroup.iconClass}"><span class="{featureGroup.iconClass}" aria-hidden="true"></span></f:if>
+                <f:render partial="Category/Icon" arguments="{item: featureGroup}" />
                 {featureGroup.title}
               </h3>
               <ul class="gastgeber-feature-grid gastgeber-feature-grid--modal">
