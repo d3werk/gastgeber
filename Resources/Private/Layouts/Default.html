@@ -1,3 +1,11 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<!-- GASTGEBER_MAP_ASSET_INCLUDE_FINAL_2026_06_07
+     Die Karten-Assets werden zusätzlich direkt aus dem Fluid-Layout geladen.
+     Das ist bewusst redundant zur TypoScript-Einbindung, weil Site-Sets/TypoScript
+     je nach TYPO3-Installation nicht automatisch geladen sein können. -->
+<f:asset.css identifier="gastgeber-leaflet-css" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<f:asset.css identifier="gastgeber-extension-css" href="EXT:gastgeber/Resources/Public/Css/gastgeber.css" />
+<f:asset.script identifier="gastgeber-leaflet-js" src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" />
+<f:asset.script identifier="gastgeber-extension-js" src="EXT:gastgeber/Resources/Public/JavaScript/gastgeber.js" />
 <f:render section="Main" />
 </html>
