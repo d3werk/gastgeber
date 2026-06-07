@@ -2,3 +2,6 @@ name: d3-werk/gastgeber
 label: 'Gastgeber'
 dependencies:
   - typo3/fluid-styled-content
+
+imports:
+  - { resource: "EXT:gastgeber/Configuration/Routes/Gastgeber.yaml" }
