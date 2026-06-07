@@ -46,8 +46,9 @@ class HostController extends ActionController
         }
 
         $filters = $this->readFilters();
-        $viewMode = $this->readViewMode((string)($this->settings['defaultView'] ?? 'cards'), (bool)($this->settings['showMap'] ?? true));
-        $hosts = $this->hostRepository->findDemanded($this->settings, $filters);
+        $settings = $this->getNormalizedSettings();
+        $viewMode = $this->readViewMode((string)($settings['defaultView'] ?? 'cards'), $this->getBooleanSetting('showMap', true));
+        $hosts = $this->hostRepository->findDemanded($settings, $filters);
         $this->view->assignMultiple($this->buildListAssignments($hosts, $filters, $viewMode));
         return $this->htmlResponse();
     }
@@ -55,14 +56,15 @@ class HostController extends ActionController
     public function mapAction(): ResponseInterface
     {
         $filters = $this->readFilters();
-        $hosts = $this->hostRepository->findDemanded($this->settings, $filters);
+        $settings = $this->getNormalizedSettings();
+        $hosts = $this->hostRepository->findDemanded($settings, $filters);
         $this->view->assignMultiple($this->buildListAssignments($hosts, $filters, 'map'));
         return $this->htmlResponse();
     }
 
     public function teaserAction(): ResponseInterface
     {
-        $settings = $this->settings;
+        $settings = $this->getNormalizedSettings();
         $settings['featuredOnly'] = (bool)($settings['featuredOnly'] ?? true);
         $hosts = $this->hostRepository->findDemanded($settings, []);
         $this->view->assignMultiple(['hosts' => $hosts, 'settings' => $settings]);
@@ -73,7 +75,7 @@ class HostController extends ActionController
     {
         $this->view->assignMultiple([
             'types' => $this->hostTypeRepository->findAllIgnoringStorage(),
-            'settings' => $this->settings,
+            'settings' => $this->getNormalizedSettings(),
         ]);
         return $this->htmlResponse();
     }
@@ -107,7 +109,7 @@ class HostController extends ActionController
         $this->applySeo($host);
         $this->view->assignMultiple([
             'host' => $host,
-            'settings' => $this->settings,
+            'settings' => $this->getNormalizedSettings(),
         ]);
 
         // Wichtig für F5/Strg+F5 auf bereinigten URLs wie /gastgeber/hotel-acht-linden:
@@ -243,6 +245,74 @@ class HostController extends ActionController
     }
 
     /** @return array<string,mixed> */
+    private function getNormalizedSettings(): array
+    {
+        $settings = $this->settings;
+
+        $defaults = [
+            'defaultView' => 'cards',
+            'showFilter' => '1',
+            'showViewSwitch' => '1',
+            'showMap' => '1',
+            'mapCenterLat' => '53.1966000',
+            'mapCenterLng' => '9.9762000',
+            'mapZoom' => '13',
+            'mapMarkerIconUrl' => '',
+            'mapMarkerIconRetinaUrl' => '',
+            'mapMarkerShadowUrl' => '',
+            'mapMarkerIconWidth' => '38',
+            'mapMarkerIconHeight' => '46',
+            'mapMarkerIconAnchorX' => '19',
+            'mapMarkerIconAnchorY' => '46',
+            'mapMarkerPopupAnchorX' => '0',
+            'mapMarkerPopupAnchorY' => '-42',
+            'mapMarkerShadowWidth' => '41',
+            'mapMarkerShadowHeight' => '41',
+            'mapMarkerShadowAnchorX' => '12',
+            'mapMarkerShadowAnchorY' => '41',
+        ];
+
+        foreach ($defaults as $key => $defaultValue) {
+            if (!array_key_exists($key, $settings) || $settings[$key] === null || $settings[$key] === '') {
+                $settings[$key] = $defaultValue;
+            }
+        }
+
+        // GASTGEBER_MAP_RESTORE_FINAL_2026_06_07:
+        // Leere FlexForm-Werte dürfen die Kartenansicht nicht versehentlich deaktivieren.
+        // Nur ein echter Wert 0/false/no/off deaktiviert die Kartenfunktion.
+        $settings['showMap'] = $this->getBooleanSetting('showMap', true) ? '1' : '0';
+        $settings['showFilter'] = $this->getBooleanSetting('showFilter', true) ? '1' : '0';
+        $settings['showViewSwitch'] = $this->getBooleanSetting('showViewSwitch', true) ? '1' : '0';
+
+        return $settings;
+    }
+
+    private function getBooleanSetting(string $key, bool $default): bool
+    {
+        $value = $this->settings[$key] ?? null;
+        if ($value === null || $value === '') {
+            return $default;
+        }
+        if (is_bool($value)) {
+            return $value;
+        }
+        if (is_int($value)) {
+            return $value !== 0;
+        }
+
+        $normalized = strtolower(trim((string)$value));
+        if (in_array($normalized, ['1', 'true', 'yes', 'on'], true)) {
+            return true;
+        }
+        if (in_array($normalized, ['0', 'false', 'no', 'off'], true)) {
+            return false;
+        }
+
+        return $default;
+    }
+
+    /** @return array<string,mixed> */
     private function buildListAssignments(iterable $hosts, array $filters, string $viewMode): array
     {
         return [
@@ -257,7 +327,7 @@ class HostController extends ActionController
             'activeTypeMap' => array_fill_keys($filters['types'] ?? [], true),
             'activeFeatureMap' => array_fill_keys($filters['features'] ?? [], true),
             'activeDistrictMap' => array_fill_keys($filters['districts'] ?? [], true),
-            'settings' => $this->settings,
+            'settings' => $this->getNormalizedSettings(),
             'introText' => $this->resolveIntroText(),
         ];
     }
