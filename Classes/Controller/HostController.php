@@ -32,6 +32,19 @@ class HostController extends ActionController
 
     public function listAction(): ResponseInterface
     {
+        // Absicherung für bereinigte Detail-URLs wie /gastgeber/hotel-acht-linden.
+        // In einigen Installationen wird die Route zwar auf die Listen-Seite aufgelöst,
+        // Extbase erhält beim harten Browser-Reload aber keine tx_gastgeber_* Argumente.
+        // Dann würde die normale Liste statt der Detailansicht gerendert oder der Inhalt
+        // leer wirken. Wenn der letzte Pfadbestandteil eindeutig ein Gastgeber-Slug ist,
+        // rendern wir deshalb direkt die Detailansicht.
+        if (!$this->hasRequestArguments(['search', 'types', 'features', 'districts', 'sort', 'view', 'host', 'slug'])) {
+            $hostFromPath = $this->resolveHostFromCurrentRequestPath();
+            if ($hostFromPath instanceof Host) {
+                return $this->renderDetailResponse($hostFromPath);
+            }
+        }
+
         $filters = $this->readFilters();
         $viewMode = $this->readViewMode((string)($this->settings['defaultView'] ?? 'cards'), (bool)($this->settings['showMap'] ?? true));
         $hosts = $this->hostRepository->findDemanded($this->settings, $filters);
@@ -79,16 +92,123 @@ class HostController extends ActionController
             $host = $this->hostRepository->findOneBySlug((string)$this->request->getArgument('slug'));
         }
         if (!$host instanceof Host) {
+            $host = $this->resolveHostFromCurrentRequestPath();
+        }
+        if (!$host instanceof Host) {
             $this->view->assign('host', null);
             return $this->htmlResponse();
         }
 
+        return $this->renderDetailResponse($host);
+    }
+
+    private function renderDetailResponse(Host $host): ResponseInterface
+    {
         $this->applySeo($host);
         $this->view->assignMultiple([
             'host' => $host,
             'settings' => $this->settings,
         ]);
         return $this->htmlResponse();
+    }
+
+    /** @param array<int,string> $argumentNames */
+    private function hasRequestArguments(array $argumentNames): bool
+    {
+        foreach ($argumentNames as $argumentName) {
+            if ($this->request->hasArgument($argumentName)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function resolveHostFromCurrentRequestPath(): ?Host
+    {
+        $slug = $this->extractSlugFromCurrentRequestPath();
+        if ($slug === '') {
+            return null;
+        }
+
+        try {
+            $host = $this->hostRepository->findOneBySlug($slug);
+        } catch (\Throwable) {
+            return null;
+        }
+
+        return $host instanceof Host ? $host : null;
+    }
+
+    private function extractSlugFromCurrentRequestPath(): string
+    {
+        $paths = [];
+        $requests = [$this->request, $GLOBALS['TYPO3_REQUEST'] ?? null];
+
+        foreach ($requests as $request) {
+            if (!is_object($request)) {
+                continue;
+            }
+
+            try {
+                if (method_exists($request, 'getUri')) {
+                    $uri = $request->getUri();
+                    if (is_object($uri) && method_exists($uri, 'getPath')) {
+                        $paths[] = (string)$uri->getPath();
+                    }
+                }
+            } catch (\Throwable) {
+                // Ignore non-PSR request variants.
+            }
+
+            try {
+                if (method_exists($request, 'getAttribute')) {
+                    $normalizedParams = $request->getAttribute('normalizedParams');
+                    if (is_object($normalizedParams) && method_exists($normalizedParams, 'getRequestUri')) {
+                        $requestUri = (string)$normalizedParams->getRequestUri();
+                        $paths[] = (string)(parse_url($requestUri, PHP_URL_PATH) ?: '');
+                    }
+                }
+            } catch (\Throwable) {
+                // Ignore unavailable normalized params.
+            }
+        }
+
+        foreach ($paths as $path) {
+            $slug = $this->extractSlugFromPath($path);
+            if ($slug !== '') {
+                return $slug;
+            }
+        }
+
+        return '';
+    }
+
+    private function extractSlugFromPath(string $path): string
+    {
+        $path = rawurldecode((string)(parse_url($path, PHP_URL_PATH) ?: $path));
+        $path = trim($path, '/');
+        if ($path === '') {
+            return '';
+        }
+
+        $segments = array_values(array_filter(explode('/', $path), static fn (string $segment): bool => $segment !== ''));
+        if ($segments === []) {
+            return '';
+        }
+
+        $slug = (string)end($segments);
+        if ($slug === '' || strlen($slug) > 180) {
+            return '';
+        }
+        if (str_contains($slug, '.') || str_contains($slug, '?') || str_contains($slug, '&')) {
+            return '';
+        }
+        if (preg_match('/^[a-z0-9][a-z0-9\-_]*$/i', $slug) !== 1) {
+            return '';
+        }
+
+        return $slug;
     }
 
     /** @return array<string,mixed> */
