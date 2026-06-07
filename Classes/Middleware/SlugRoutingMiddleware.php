@@ -14,23 +14,17 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Unterstützt sprechende Gastgeber-Detailpfade wie /gastgeber/hotel-acht-linden
- * auch dann, wenn der Site-Route-Enhancer noch nicht aktiv greift.
+ * und /detailseite/hotel-acht-linden auch dann, wenn der Site-Route-Enhancer
+ * noch nicht aktiv greift.
  *
  * Die Middleware läuft vor dem TYPO3 PageResolver. Sie erkennt den letzten
  * Pfadbestandteil als Gastgeber-Slug, entfernt ihn für die interne Seitenauflösung
- * und ergänzt intern die Extbase-Argumente für das Listen-Plugin.
+ * und ergänzt intern die Extbase-Argumente für Listen- und Detail-Plugin.
  */
 final class SlugRoutingMiddleware implements MiddlewareInterface
 {
-    private const PLUGIN_NAMESPACE = 'tx_gastgeber_list';
-
-    /** @var array<int,string> */
-    private const ALLOWED_PARENT_SEGMENTS = [
-        'gastgeber',
-        'gastgeberverzeichnis',
-        'unterkuenfte',
-        'unterkünfte',
-    ];
+    private const PLUGIN_NAMESPACE_LIST = 'tx_gastgeber_list';
+    private const PLUGIN_NAMESPACE_DETAIL = 'tx_gastgeber_detail';
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -57,11 +51,6 @@ final class SlugRoutingMiddleware implements MiddlewareInterface
             return $handler->handle($request);
         }
 
-        $parentSegment = strtolower((string)($segments[count($segments) - 2] ?? ''));
-        if (!in_array($parentSegment, self::ALLOWED_PARENT_SEGMENTS, true)) {
-            return $handler->handle($request);
-        }
-
         $hostUid = $this->findHostUidBySlug($slug);
         if ($hostUid <= 0) {
             return $handler->handle($request);
@@ -73,11 +62,7 @@ final class SlugRoutingMiddleware implements MiddlewareInterface
             return $handler->handle($request);
         }
 
-        $queryParams[self::PLUGIN_NAMESPACE] = [
-            'action' => 'detail',
-            'controller' => 'Host',
-            'host' => (string)$hostUid,
-        ];
+        $queryParams = $this->withDetailArguments($queryParams, $hostUid);
         unset($queryParams['cHash']);
 
         $queryStringWithoutHash = http_build_query($queryParams, '', '&', PHP_QUERY_RFC3986);
@@ -100,6 +85,31 @@ final class SlugRoutingMiddleware implements MiddlewareInterface
                 ->withUri($newUri)
                 ->withQueryParams($queryParams)
         );
+    }
+
+    /**
+     * @param array<string,mixed> $queryParams
+     * @return array<string,mixed>
+     */
+    private function withDetailArguments(array $queryParams, int $hostUid): array
+    {
+        $arguments = [
+            'action' => 'detail',
+            'controller' => 'Host',
+            'host' => (string)$hostUid,
+        ];
+
+        // Wichtig: In den Installationen werden je nach Seitentyp entweder
+        // das Listen-Plugin (tx_gastgeber_list) oder das Detail-Plugin
+        // (tx_gastgeber_detail) für die Detailseite verwendet.
+        // Wenn die Browser-URL per JavaScript auf /seite/slug bereinigt wurde,
+        // ist beim Neuladen nicht mehr erkennbar, welcher Namespace benötigt wird.
+        // Deshalb werden beide Namespaces gesetzt. Das jeweils vorhandene Plugin
+        // liest seine Argumente, der andere Namespace bleibt wirkungslos.
+        $queryParams[self::PLUGIN_NAMESPACE_LIST] = $arguments;
+        $queryParams[self::PLUGIN_NAMESPACE_DETAIL] = $arguments;
+
+        return $queryParams;
     }
 
     /** @param array<string,mixed> $queryParams */
