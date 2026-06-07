@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace D3Werk\Gastgeber\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
+
 class Feature extends AbstractEntity
 {
     protected string $title = '';
     protected string $slug = '';
     protected string $description = '';
     protected ?FeatureGroup $group = null;
-    /** @var \TYPO3\CMS\Extbase\Domain\Model\FileReference|\TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference>|mixed|null */
-    protected mixed $icon = null;
+    protected ?FileReference $icon = null;
     protected string $iconClass = '';
     protected bool $filterable = true;
     protected bool $showInCard = true;
@@ -27,8 +28,8 @@ class Feature extends AbstractEntity
     public function setDescription(string $description): void { $this->description = $description; }
     public function getGroup(): ?FeatureGroup { return $this->group; }
     public function setGroup(?FeatureGroup $group): void { $this->group = $group; }
-    public function getIcon(): mixed { return $this->icon; }
-    public function setIcon(mixed $icon): void { $this->icon = $icon; }
+    public function getIcon(): ?FileReference { return $this->icon; }
+    public function setIcon(?FileReference $icon): void { $this->icon = $icon; }
     public function getIconClass(): string { return $this->iconClass; }
     public function setIconClass(string $iconClass): void { $this->iconClass = $iconClass; }
     public function getFilterable(): bool { return $this->filterable; }
