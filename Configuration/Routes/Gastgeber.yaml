@@ -33,7 +33,9 @@ routeEnhancers:
         _controller: 'Host::detail'
         _arguments:
           host: host
+
     defaultController: 'Host::list'
+    
     aspects:
       host:
         type: PersistedAliasMapper
