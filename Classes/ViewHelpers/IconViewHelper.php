@@ -4,22 +4,32 @@ declare(strict_types=1);
 
 namespace D3Werk\Gastgeber\ViewHelpers;
 
+use D3Werk\Gastgeber\Domain\Model\Certificate;
+use D3Werk\Gastgeber\Domain\Model\Feature;
+use D3Werk\Gastgeber\Domain\Model\FeatureGroup;
+use D3Werk\Gastgeber\Domain\Model\HostType;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Renders uploaded icons for host types, feature groups, features and certificates.
  *
- * Uploaded equipment icons are small SVG/PNG pictograms. They must not be sent
- * through TYPO3 image processing, because SVG processing or an unexpected FAL
- * relation shape can otherwise break list/detail views. This ViewHelper resolves
- * the public URL directly and falls back to icon_class or a neutral placeholder.
+ * Important: The editor icon fields are FAL fields. Depending on TYPO3 caches,
+ * Extbase hydration and legacy records, the runtime value can be a FileReference,
+ * an ObjectStorage, a scalar counter or NULL. The frontend must never access
+ * originalResource directly, because that can break list/detail rendering when
+ * SVG/PNG icons are assigned. This ViewHelper resolves the public URL defensively
+ * and falls back to the sys_file_reference relation or to the configured CSS class.
  */
 final class IconViewHelper extends AbstractViewHelper
 {
+    use CompileWithRenderStatic;
+
     protected $escapeOutput = false;
 
     /** @var array<string,string> */
@@ -33,24 +43,21 @@ final class IconViewHelper extends AbstractViewHelper
         $this->registerArgument('fallbackClass', 'string', 'Fallback CSS class', false, 'gastgeber-icon gastgeber-icon--fallback');
     }
 
-    public function render(): string
+    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
-        $item = $this->arguments['item'] ?? null;
-        $imgClass = self::sanitizeClassList((string)($this->arguments['imgClass'] ?? 'gastgeber-icon-img')) ?: 'gastgeber-icon-img';
-        $iconBaseClass = self::sanitizeClassList((string)($this->arguments['iconClass'] ?? 'gastgeber-icon')) ?: 'gastgeber-icon';
-        $fallbackClass = self::sanitizeClassList((string)($this->arguments['fallbackClass'] ?? 'gastgeber-icon gastgeber-icon--fallback')) ?: 'gastgeber-icon gastgeber-icon--fallback';
+        $item = $arguments['item'] ?? null;
+        $imgClass = self::sanitizeClassList((string)($arguments['imgClass'] ?? 'gastgeber-icon-img')) ?: 'gastgeber-icon-img';
+        $iconBaseClass = self::sanitizeClassList((string)($arguments['iconClass'] ?? 'gastgeber-icon')) ?: 'gastgeber-icon';
+        $fallbackClass = self::sanitizeClassList((string)($arguments['fallbackClass'] ?? 'gastgeber-icon gastgeber-icon--fallback')) ?: 'gastgeber-icon gastgeber-icon--fallback';
 
-        $icon = self::readProperty($item, 'icon');
         $configuredClassOrPath = trim((string)(self::readProperty($item, 'iconClass') ?: self::readProperty($item, 'icon_class')));
 
-        $url = self::resolveIconUrl($icon);
+        // First use the actual FAL relation from sys_file_reference. This avoids
+        // depending on the exact runtime shape of the Extbase property.
+        $url = self::resolveIconUrlFromFileReferenceRelation($item);
 
-        // If getIcon() cannot safely return the FAL relation because the hydrated
-        // value has a different shape, resolve the file reference directly via
-        // sys_file_reference. This keeps the frontend stable even with old caches
-        // or records created by previous extension versions.
         if ($url === '') {
-            $url = self::resolveIconUrlFromFileReferenceRelation($item);
+            $url = self::resolveIconUrl(self::readProperty($item, 'icon'));
         }
 
         // Editors sometimes paste /fileadmin/... or EXT:... into the Icon-CSS field.
@@ -98,7 +105,7 @@ final class IconViewHelper extends AbstractViewHelper
         if (method_exists($item, '_loadRealInstance')) {
             try {
                 $realInstance = $item->_loadRealInstance();
-                if ($realInstance !== $item) {
+                if (is_object($realInstance) && $realInstance !== $item) {
                     return self::readProperty($realInstance, $property);
                 }
             } catch (\Throwable) {
@@ -182,10 +189,6 @@ final class IconViewHelper extends AbstractViewHelper
 
     private static function resolveIconUrlFromFileReferenceRelation(mixed $item): string
     {
-        if (!is_object($item)) {
-            return '';
-        }
-
         $uid = self::readUid($item);
         $tableName = self::resolveTableName($item);
         if ($uid <= 0 || $tableName === '') {
@@ -224,22 +227,66 @@ final class IconViewHelper extends AbstractViewHelper
         }
     }
 
-    private static function readUid(object $item): int
+    private static function readUid(mixed $item): int
     {
+        if (is_array($item)) {
+            return (int)($item['uid'] ?? 0);
+        }
+
+        if (!is_object($item)) {
+            return 0;
+        }
+
         foreach (['getUid', 'getLocalizedUid'] as $method) {
             if (method_exists($item, $method)) {
                 try {
-                    return (int)$item->{$method}();
+                    $uid = (int)$item->{$method}();
+                    if ($uid > 0) {
+                        return $uid;
+                    }
                 } catch (\Throwable) {
                     // Try next accessor.
                 }
             }
         }
+
+        if (method_exists($item, '_loadRealInstance')) {
+            try {
+                $realInstance = $item->_loadRealInstance();
+                if (is_object($realInstance) && $realInstance !== $item) {
+                    return self::readUid($realInstance);
+                }
+            } catch (\Throwable) {
+                return 0;
+            }
+        }
+
         return 0;
     }
 
-    private static function resolveTableName(object $item): string
+    private static function resolveTableName(mixed $item): string
     {
+        if (is_array($item)) {
+            return (string)($item['tableName'] ?? $item['_table'] ?? '');
+        }
+
+        if (!is_object($item)) {
+            return '';
+        }
+
+        if (is_a($item, Feature::class)) {
+            return 'tx_gastgeber_domain_model_feature';
+        }
+        if (is_a($item, FeatureGroup::class)) {
+            return 'tx_gastgeber_domain_model_featuregroup';
+        }
+        if (is_a($item, HostType::class)) {
+            return 'tx_gastgeber_domain_model_type';
+        }
+        if (is_a($item, Certificate::class)) {
+            return 'tx_gastgeber_domain_model_certificate';
+        }
+
         if (method_exists($item, '_loadRealInstance')) {
             try {
                 $realInstance = $item->_loadRealInstance();
@@ -247,12 +294,13 @@ final class IconViewHelper extends AbstractViewHelper
                     return self::resolveTableName($realInstance);
                 }
             } catch (\Throwable) {
-                // Continue with proxy class name.
+                // Continue with class-name fallback.
             }
         }
 
         $className = get_class($item);
         $shortName = substr(strrchr($className, '\\') ?: $className, 1) ?: $className;
+        $shortName = preg_replace('/_\w+$/', '', $shortName) ?: $shortName;
 
         return match ($shortName) {
             'Feature' => 'tx_gastgeber_domain_model_feature',
@@ -299,7 +347,7 @@ final class IconViewHelper extends AbstractViewHelper
             return false;
         }
 
-        return preg_match('#(?:^EXT:|^/|^https?://|^fileadmin/|^typo3conf/|^_assets/|^_processed/|\.(?:svg|png|jpe?g|gif|webp)(?:[?#].*)?$)#i', $value) === 1;
+        return preg_match('#(?:^EXT:|^/|^https?://|^fileadmin/|^typo3conf/|^_assets/|^processed/|^_processed/|\.(?:svg|png|jpe?g|gif|webp)(?:[?#].*)?$)#i', $value) === 1;
     }
 
     private static function sanitizeClassList(string $classes): string

@@ -5,15 +5,17 @@ declare(strict_types=1);
 namespace D3Werk\Gastgeber\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
-use TYPO3\CMS\Extbase\Domain\Model\FileReference;
-
 class Certificate extends AbstractEntity
 {
     protected string $title = '';
     protected string $slug = '';
     protected string $description = '';
     protected string $issuer = '';
-    protected ?FileReference $icon = null;
+    /**
+     * Icon may be a FAL FileReference, ObjectStorage, scalar DB counter or null depending on Extbase hydration/caches.
+     * It is intentionally untyped so uploaded icons cannot break frontend rendering.
+     */
+    protected mixed $icon = null;
     protected string $iconClass = '';
     protected string $url = '';
     protected float $ratingValue = 0.0;
@@ -26,8 +28,8 @@ class Certificate extends AbstractEntity
     public function setDescription(string $description): void { $this->description = $description; }
     public function getIssuer(): string { return $this->issuer; }
     public function setIssuer(string $issuer): void { $this->issuer = $issuer; }
-    public function getIcon(): ?FileReference { return $this->icon; }
-    public function setIcon(?FileReference $icon): void { $this->icon = $icon; }
+    public function getIcon(): mixed { return $this->icon; }
+    public function setIcon(mixed $icon): void { $this->icon = $icon; }
     public function getIconClass(): string { return $this->iconClass; }
     public function setIconClass(string $iconClass): void { $this->iconClass = $iconClass; }
     public function getUrl(): string { return $this->url; }

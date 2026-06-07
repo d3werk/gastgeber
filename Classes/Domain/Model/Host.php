@@ -310,13 +310,13 @@ class Host extends AbstractEntity
         return $features;
     }
 
-    /** @return array<int,array{title:string,iconClass:string,features:array<int,Feature>}> */
+    /** @return array<int,array{uid:int,tableName:string,title:string,icon:mixed,iconClass:string,features:array<int,Feature>}> */
     public function getGroupedDetailFeatures(): array
     {
         return $this->groupFeatures($this->getDetailFeatures());
     }
 
-    /** @return array<int,array{title:string,iconClass:string,features:array<int,Feature>}> */
+    /** @return array<int,array{uid:int,tableName:string,title:string,icon:mixed,iconClass:string,features:array<int,Feature>}> */
     public function getGroupedRemainingDetailFeatures(): array
     {
         return $this->groupFeatures($this->getRemainingDetailFeatures());
@@ -324,7 +324,7 @@ class Host extends AbstractEntity
 
     /**
      * @param array<int,Feature> $features
-     * @return array<int,array{title:string,iconClass:string,features:array<int,Feature>}>
+     * @return array<int,array{uid:int,tableName:string,title:string,icon:mixed,iconClass:string,features:array<int,Feature>}>
      */
     private function groupFeatures(array $features): array
     {
@@ -334,7 +334,10 @@ class Host extends AbstractEntity
             $groupUid = $group ? (string)$group->getUid() : '0';
             if (!isset($groups[$groupUid])) {
                 $groups[$groupUid] = [
+                    'uid' => $group ? (int)$group->getUid() : 0,
+                    'tableName' => $group ? 'tx_gastgeber_domain_model_featuregroup' : '',
                     'title' => $group ? $group->getTitle() : 'Weitere Merkmale',
+                    'icon' => $group ? $group->getIcon() : null,
                     'iconClass' => $group ? $group->getIconClass() : '',
                     'features' => [],
                 ];
