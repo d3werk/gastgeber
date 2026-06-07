@@ -241,17 +241,11 @@
     var detailElement = (root || document).querySelector('[data-gastgeber-detail-slug]');
     if (detailElement) {
       var slug = (detailElement.dataset.gastgeberDetailSlug || '').trim();
-      if (slug !== '' && hasGastgeberQueryParameters(currentUrl)) {
-        var path = currentUrl.pathname.replace(/\/+$/, '');
-        if (path === '') {
-          path = '/';
-        }
-        if (path.slice(-1 * (slug.length + 1)) !== '/' + slug) {
-          path = path.replace(/\/+$/, '') + '/' + encodeURIComponent(slug);
-        }
-        replaceBrowserUrl(currentUrl.origin + path + currentUrl.hash);
-      }
-      return;
+      if (detailElement) {
+  // GASTGEBER_DETAIL_RELOAD_FINAL_FIX_2026_06_07:
+  // Detail-URLs werden bewusst nicht per JavaScript gekürzt,
+  // damit F5/Strg+F5 die Extbase-Parameter nicht verliert.
+    return;
     }
 
     var directory = (root || document).querySelector('[data-gastgeber-directory]');
