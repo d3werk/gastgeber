@@ -203,7 +203,16 @@ class HostController extends ActionController
         }
 
         $segments = array_values(array_filter(explode('/', $path), static fn (string $segment): bool => $segment !== ''));
-        if ($segments === []) {
+        if ($segments === [] || count($segments) < 2) {
+            return '';
+        }
+
+        // GASTGEBER_SEO_ROUTE_FINAL_2026_06_07:
+        // Saubere Detail-URLs werden bewusst auf /gastgeber/{slug} begrenzt.
+        // Dadurch wird nicht jeder beliebige letzte Pfadbestandteil als Gastgeber
+        // interpretiert, sondern nur ein Slug direkt unter der Gastgeberseite.
+        $parentSegment = strtolower((string)($segments[count($segments) - 2] ?? ''));
+        if (!in_array($parentSegment, $this->getAllowedDetailBaseSegments(), true)) {
             return '';
         }
 
@@ -219,6 +228,18 @@ class HostController extends ActionController
         }
 
         return $slug;
+    }
+
+    /** @return array<int,string> */
+    private function getAllowedDetailBaseSegments(): array
+    {
+        $configured = (string)($this->settings['detailBaseSegments'] ?? 'gastgeber');
+        $segments = array_values(array_filter(array_map(
+            static fn (string $segment): string => trim(strtolower($segment)),
+            explode(',', $configured)
+        ), static fn (string $segment): bool => $segment !== ''));
+
+        return $segments !== [] ? $segments : ['gastgeber'];
     }
 
     /** @return array<string,mixed> */

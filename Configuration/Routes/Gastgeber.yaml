@@ -1,58 +1,64 @@
-# Route-Enhancer für sprechende Gastgeber-Detail-URLs.
+# Route-Enhancer für sprechende, reload-sichere Gastgeber-Detail-URLs.
 #
-# Diese Datei ist eine Copy-&-Paste-Vorlage für:
-#   config/sites/<site-identifier>/config.yaml
-#
-# WICHTIG für die aktuell gemeldete URL:
-# Die URL enthält tx_gastgeber_list[...]. Deshalb muss der Route-Enhancer
-# für das Plugin "List" aktiv sein. Ein Route-Enhancer für das Plugin
-# "Detail" greift bei dieser URL nicht.
-#
-# Ziel-URL:
+# Ziel:
 #   /gastgeber/hotel-acht-linden
 #
-# Einbau:
-# - Diesen Block in die bestehende Site-Config unter routeEnhancers kopieren.
-# - Falls routeEnhancers dort schon existiert, nur den Block GastgeberListDetail
-#   unterhalb von routeEnhancers einfügen.
-# - Optional limitToPages auf die UID der Seite mit dem Pfad /gastgeber setzen.
+# Wichtig:
+# - Die Detail-Links entstehen im Projekt über das Listen-Plugin:
+#   tx_gastgeber_list[action]=detail&tx_gastgeber_list[host]=...
+# - Deshalb muss der aktive Route-Enhancer auf plugin: List zeigen.
+# - Die Route ist bewusst auf genau einen Pfadbestandteil begrenzt: /{host}.
+#   Dadurch wird hinter der Seite /gastgeber ausschließlich der Gastgeber-Slug
+#   verwendet. Das ist SEO-sauber und reload-sicher.
+#
+# Einbau in config/sites/<site-identifier>/config.yaml:
+#
+# imports:
+#   - { resource: "EXT:gastgeber/Configuration/Routes/Gastgeber.yaml" }
+#
+# Falls routeEnhancers dort bereits direkt gepflegt werden, kann der Block
+# GastgeberListDetail auch direkt unter routeEnhancers kopiert werden.
+#
+# Empfehlung:
+# limitToPages auf die UID der Seite begrenzen, auf der die Gastgeberliste liegt.
+# Beispiel für die Seite /gastgeber:
+#
+# limitToPages:
+#   - 123
 
 routeEnhancers:
-  # AKTIVE VARIANTE für deine aktuelle URL:
-  # /gastgeber?tx_gastgeber_list[action]=detail&tx_gastgeber_list[controller]=Host&tx_gastgeber_list[host]=2
   GastgeberListDetail:
     type: Extbase
     extension: Gastgeber
     plugin: List
-    # Optional empfohlen, sobald die Seiten-UID sicher ist:
+    # SEO-/Sicherheits-Empfehlung:
+    # Bitte die UID der Gastgeber-Listenseite eintragen und entkommentieren.
+    # Dadurch greift /{host} nur auf dieser Seite, z. B. /gastgeber/hotel-acht-linden.
     # limitToPages:
-    #   - 514
+    #   - 123
     routes:
       -
         routePath: '/{host}'
         _controller: 'Host::detail'
         _arguments:
           host: host
-
     defaultController: 'Host::list'
-    
     aspects:
       host:
         type: PersistedAliasMapper
         tableName: tx_gastgeber_domain_model_host
         routeFieldName: slug
 
-  # Alternative nur verwenden, wenn die Detailseite ein eigenes Plugin
-  # "Gastgeber: Detailansicht" verwendet und die Links dadurch tx_gastgeber_detail
-  # enthalten. Für die aktuell gemeldete tx_gastgeber_list-URL ist diese Variante
-  # NICHT ausreichend.
-  #
+  # Nur verwenden, wenn tatsächlich ein eigenes Detail-Plugin mit dem Namespace
+  # tx_gastgeber_detail auf einer separaten Detailseite eingesetzt wird.
+  # In der aktuellen Undeloh-Konfiguration ist normalerweise GastgeberListDetail
+  # der entscheidende aktive Enhancer.
   # GastgeberDetail:
   #   type: Extbase
   #   extension: Gastgeber
   #   plugin: Detail
-  #   limitToPages:
-  #     - 514
+  #   # limitToPages:
+  #   #   - 124
   #   routes:
   #     -
   #       routePath: '/{host}'

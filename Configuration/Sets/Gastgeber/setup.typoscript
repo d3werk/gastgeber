@@ -11,6 +11,7 @@ plugin.tx_gastgeber {
     itemsPerPage = 24
     detailPid =
     listPid =
+    detailBaseSegments = gastgeber
     introText =
     defaultView = cards
     showFilter = 1

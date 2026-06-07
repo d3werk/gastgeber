@@ -1,46 +1,50 @@
-# Sprechende Gastgeber-Detail-URLs
+# Gastgeber Routing
 
-Der Gastgeber-Datensatz besitzt das Feld **URL-Segment / Slug** (`slug`).
-Damit daraus eine Browser-URL wie
+Diese Extension liefert eine Route-Enhancer-Vorlage für SEO-freundliche Gastgeber-Detail-URLs.
+
+## Ziel
+
+Aus einer technischen Extbase-URL:
+
+```text
+/gastgeber?tx_gastgeber_list[action]=detail&tx_gastgeber_list[controller]=Host&tx_gastgeber_list[host]=2&cHash=...
+```
+
+wird direkt serverseitig:
 
 ```text
 /gastgeber/hotel-acht-linden
 ```
 
-wird, muss der TYPO3 Route-Enhancer in der Site-Config aktiv sein.
+## Einbindung in die Site-Konfiguration
 
-## Ursache der URL mit Query-Parametern
+In `config/sites/<site-identifier>/config.yaml` eintragen:
 
-Wenn die URL so aussieht:
-
-```text
-/gastgeber?tx_gastgeber_list%5Baction%5D=detail&tx_gastgeber_list%5Bcontroller%5D=Host&tx_gastgeber_list%5Bhost%5D=2&cHash=...
+```yaml
+imports:
+  - { resource: "EXT:gastgeber/Configuration/Routes/Gastgeber.yaml" }
 ```
 
-ist der Route-Enhancer für das **Plugin `List`** nicht aktiv oder nicht passend eingerichtet.
-Ein Route-Enhancer für das Plugin `Detail` greift bei dieser URL nicht.
+Alternativ den Block `GastgeberListDetail` aus `Configuration/Routes/Gastgeber.yaml` direkt unter `routeEnhancers` kopieren.
 
-## Richtige Datei für die aktuelle Installation
+## Wichtige Begrenzung
 
-Für eine Seite `/gastgeber`, auf der Liste und Detail über dasselbe Listen-Plugin laufen:
+Empfohlen ist `limitToPages` mit der UID der Seite `/gastgeber`:
 
-```text
-EXT:gastgeber/Configuration/Routes/GastgeberListSamePage.example.yaml
+```yaml
+limitToPages:
+  - 123
 ```
 
-Diesen Block in `config/sites/<site-identifier>/config.yaml` einfügen.
-Wenn dort bereits `routeEnhancers:` existiert, nur den Block `GastgeberListDetail:` darunter einfügen.
+Dadurch wird der Platzhalter `/{host}` nur auf der Gastgeberseite ausgewertet.
+Der Platzhalter `host` wird über den TYPO3 `PersistedAliasMapper` auf `tx_gastgeber_domain_model_host.slug` begrenzt.
 
-## Prüfung
+## JavaScript-Fallback
 
-Nach dem Einbau und Cache-Flush sollte der Link nicht mehr so aussehen:
+`Resources/Public/JavaScript/gastgeber.js` kürzt Detail-URLs nur noch dann per History API, wenn wirklich Detail-Parameter vorhanden sind. Filter-, Listen- und Ansicht-URLs werden dadurch nicht mehr versehentlich als Detail-URL behandelt.
 
-```text
-/gastgeber?tx_gastgeber_list%5Bhost%5D=2&...
-```
-
-sondern so:
+Kennung im Code:
 
 ```text
-/gastgeber/hotel-acht-linden
+GASTGEBER_SEO_ROUTE_FINAL_2026_06_07
 ```

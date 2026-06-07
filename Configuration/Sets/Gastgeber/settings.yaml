@@ -6,6 +6,7 @@ plugin:
       introText: ''
       detailPid: ''
       listPid: ''
+      detailBaseSegments: 'gastgeber'
       showMap: '1'
       mapMarkerIconUrl: ''
       mapMarkerIconRetinaUrl: ''
