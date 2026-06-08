@@ -32,13 +32,21 @@ class HostController extends ActionController
 
     public function listAction(): ResponseInterface
     {
+        // GASTGEBER_DETAIL_DISPATCH_SAFE_FINAL_2026_06_08:
+        // Detail-URLs müssen auch dann stabil funktionieren, wenn TYPO3/Extbase nach
+        // Route-Enhancer, Middleware, cHash-Prüfung oder Cache-Kontext trotzdem die
+        // Listen-Action ausführt. Sobald ein echter Gastgeber über host/slug/action=detail
+        // oder über den Pfad /gastgeber/{slug} erkennbar ist, wird direkt das
+        // Detail-Template gerendert. Dadurch bleibt F5/Strg+F5 auf sauberen SEO-URLs stabil.
+        $hostFromDetailRequest = $this->resolveHostFromDetailRequestContext();
+        if ($hostFromDetailRequest instanceof Host) {
+            return $this->renderDetailResponse($hostFromDetailRequest, true);
+        }
+
         // Absicherung für bereinigte Detail-URLs wie /gastgeber/hotel-acht-linden.
-        // In einigen Installationen wird die Route zwar auf die Listen-Seite aufgelöst,
-        // Extbase erhält beim harten Browser-Reload aber keine tx_gastgeber_* Argumente.
-        // Dann würde die normale Liste statt der Detailansicht gerendert oder der Inhalt
-        // leer wirken. Wenn der letzte Pfadbestandteil eindeutig ein Gastgeber-Slug ist,
-        // rendern wir deshalb direkt die Detailansicht.
-        if (!$this->hasRequestArguments(['search', 'types', 'features', 'districts', 'sort', 'view', 'host', 'slug'])) {
+        // Nur wenn keine normalen Listen-/Filterargumente vorhanden sind, wird der Pfad
+        // als möglicher Gastgeber-Slug interpretiert.
+        if (!$this->hasRequestArguments(['search', 'types', 'features', 'districts', 'sort', 'view'])) {
             $hostFromPath = $this->resolveHostFromCurrentRequestPath();
             if ($hostFromPath instanceof Host) {
                 return $this->renderDetailResponse($hostFromPath, true);
@@ -80,19 +88,15 @@ class HostController extends ActionController
         return $this->htmlResponse();
     }
 
-    public function detailAction(?Host $host = null): ResponseInterface
+    public function detailAction(): ResponseInterface
     {
-        if (!$host instanceof Host && $this->request->hasArgument('host')) {
-            $argument = $this->request->getArgument('host');
-            if (is_numeric($argument)) {
-                $host = $this->hostRepository->findByUid((int)$argument);
-            } elseif (is_string($argument) && $argument !== '') {
-                $host = $this->hostRepository->findOneBySlug($argument);
-            }
-        }
-        if (!$host instanceof Host && $this->request->hasArgument('slug')) {
-            $host = $this->hostRepository->findOneBySlug((string)$this->request->getArgument('slug'));
-        }
+        // GASTGEBER_DETAIL_DISPATCH_SAFE_FINAL_2026_06_08:
+        // Kein typisiertes Host-Argument in der Action-Signatur verwenden.
+        // Hintergrund: Je nach Route-Enhancer-/Middleware-Zustand kann Extbase den
+        // Parameter host als UID, Slug oder Alias erhalten. Eine automatische
+        // Property-Mapping-Exception würde die Action stoppen, bevor der Fallback
+        // greifen kann. Deshalb lösen wir den Gastgeber bewusst selbst auf.
+        $host = $this->resolveHostFromDetailRequestContext();
         if (!$host instanceof Host) {
             $host = $this->resolveHostFromCurrentRequestPath();
         }
@@ -128,12 +132,133 @@ class HostController extends ActionController
     private function hasRequestArguments(array $argumentNames): bool
     {
         foreach ($argumentNames as $argumentName) {
-            if ($this->request->hasArgument($argumentName)) {
+            if ($this->readRequestArgumentAsString($argumentName) !== '') {
                 return true;
             }
         }
 
         return false;
+    }
+
+    private function resolveHostFromDetailRequestContext(): ?Host
+    {
+        $action = strtolower($this->readRequestArgumentAsString('action'));
+        $hostIdentifier = $this->readRequestArgumentAsString('host');
+        $slugIdentifier = $this->readRequestArgumentAsString('slug');
+
+        // Ohne Detail-Absicht keine Listenansicht versehentlich in eine Detailansicht wandeln.
+        if ($action !== 'detail' && $hostIdentifier === '' && $slugIdentifier === '') {
+            return null;
+        }
+
+        foreach ([$hostIdentifier, $slugIdentifier] as $identifier) {
+            $host = $this->resolveHostByIdentifier($identifier);
+            if ($host instanceof Host) {
+                return $host;
+            }
+        }
+
+        return null;
+    }
+
+    private function resolveHostByIdentifier(string $identifier): ?Host
+    {
+        $identifier = trim($identifier);
+        if ($identifier === '') {
+            return null;
+        }
+
+        try {
+            if (ctype_digit($identifier)) {
+                $host = $this->hostRepository->findByUid((int)$identifier);
+            } else {
+                $host = $this->hostRepository->findOneBySlug($identifier);
+            }
+        } catch (\Throwable) {
+            return null;
+        }
+
+        return $host instanceof Host ? $host : null;
+    }
+
+    private function readRequestArgumentAsString(string $argumentName): string
+    {
+        try {
+            if ($this->request->hasArgument($argumentName)) {
+                return $this->scalarToString($this->request->getArgument($argumentName));
+            }
+        } catch (\Throwable) {
+            // Fallback auf PSR-7 Query-Parameter.
+        }
+
+        foreach ($this->collectQueryParameterSets() as $queryParams) {
+            $value = $this->readArgumentFromQueryParams($queryParams, $argumentName);
+            if ($value !== '') {
+                return $value;
+            }
+        }
+
+        return '';
+    }
+
+    /**
+     * @return array<int,array<string,mixed>>
+     */
+    private function collectQueryParameterSets(): array
+    {
+        $sets = [];
+        $requests = [$this->request, $GLOBALS['TYPO3_REQUEST'] ?? null];
+
+        foreach ($requests as $request) {
+            if (!is_object($request) || !method_exists($request, 'getQueryParams')) {
+                continue;
+            }
+            try {
+                $queryParams = $request->getQueryParams();
+                if (is_array($queryParams)) {
+                    $sets[] = $queryParams;
+                }
+            } catch (\Throwable) {
+                // Ignore request variants without query params.
+            }
+        }
+
+        if (is_array($_GET ?? null)) {
+            $sets[] = $_GET;
+        }
+
+        return $sets;
+    }
+
+    /** @param array<string,mixed> $queryParams */
+    private function readArgumentFromQueryParams(array $queryParams, string $argumentName): string
+    {
+        if (array_key_exists($argumentName, $queryParams)) {
+            return $this->scalarToString($queryParams[$argumentName]);
+        }
+
+        foreach (['tx_gastgeber_list', 'tx_gastgeber_detail', 'tx_gastgeber_map', 'tx_gastgeber_teaser'] as $namespace) {
+            if (!isset($queryParams[$namespace]) || !is_array($queryParams[$namespace])) {
+                continue;
+            }
+            if (array_key_exists($argumentName, $queryParams[$namespace])) {
+                return $this->scalarToString($queryParams[$namespace][$argumentName]);
+            }
+        }
+
+        return '';
+    }
+
+    private function scalarToString(mixed $value): string
+    {
+        if (is_scalar($value)) {
+            return trim((string)$value);
+        }
+        if ($value instanceof \Stringable) {
+            return trim((string)$value);
+        }
+
+        return '';
     }
 
     private function resolveHostFromCurrentRequestPath(): ?Host
