@@ -1,0 +1,28 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:if condition="{host.mediaCount} &gt; 1">
+  <div class="modal fade gastgeber-modal gastgeber-gallery-modal" id="gastgeber-gallery-{host.uid}" tabindex="-1" aria-labelledby="gastgeber-gallery-title-{host.uid}" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable modal-dialog-centered modal-fullscreen-sm-down">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title h4" id="gastgeber-gallery-title-{host.uid}">Alle Bilder von {host.title}</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-3">
+            <f:for each="{host.media}" as="media">
+              <div class="col-12 col-md-6">
+                <figure class="gastgeber-gallery-modal__figure mb-0">
+                  <f:render partial="Detail/MediaItem" arguments="{media: media, host: host, class: 'gastgeber-gallery-modal__image', loading: 'lazy', width: '1200', height: '800c'}" />
+                  <f:if condition="{media.originalResource.description}">
+                    <figcaption class="gastgeber-gallery-modal__caption small mt-2">{media.originalResource.description}</figcaption>
+                  </f:if>
+                </figure>
+              </div>
+            </f:for>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</f:if>
+</html>

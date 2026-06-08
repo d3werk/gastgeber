@@ -1,0 +1,26 @@
+# Fertiger Route-Enhancer für eine Gastgeber-Seite, auf der Liste und Detail
+# über dasselbe Plugin "Gastgeber: Übersicht / Liste" laufen.
+#
+# In config/sites/<site-identifier>/config.yaml einfügen.
+# Falls dort bereits routeEnhancers: existiert, nur GastgeberListDetail darunter einfügen.
+
+routeEnhancers:
+  GastgeberListDetail:
+    type: Extbase
+    extension: Gastgeber
+    plugin: List
+    # Optional: auf die UID der Seite mit dem Pfad /gastgeber begrenzen.
+    # limitToPages:
+    #   - 514
+    routes:
+      -
+        routePath: '/{host}'
+        _controller: 'Host::detail'
+        _arguments:
+          host: host
+    defaultController: 'Host::list'
+    aspects:
+      host:
+        type: PersistedAliasMapper
+        tableName: tx_gastgeber_domain_model_host
+        routeFieldName: slug

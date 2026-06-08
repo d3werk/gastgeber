@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<T3DataStructure>
+  <sheets>
+    <sDEF>
+      <ROOT>
+        <sheetTitle>Kategorien-Teaser</sheetTitle>
+        <type>array</type>
+        <el>
+          <settings.targetPid>
+            <label>Zielseite Gastgeberliste</label>
+            <config>
+              <type>group</type>
+              <allowed>pages</allowed>
+              <relationship>manyToOne</relationship>
+              <size>1</size>
+              <maxitems>1</maxitems>
+              <minitems>0</minitems>
+              <suggestOptions>
+                <default>
+                  <addWhere>AND pages.doktype NOT in (6,199,254)</addWhere>
+                </default>
+              </suggestOptions>
+            </config>
+          </settings.targetPid>
+          <settings.types>
+            <label>Unterkunftsarten anzeigen</label>
+            <config>
+              <type>select</type>
+              <renderType>selectMultipleSideBySide</renderType>
+              <foreign_table>tx_gastgeber_domain_model_type</foreign_table>
+              <minitems>0</minitems>
+              <maxitems>99</maxitems>
+              <size>8</size>
+            </config>
+          </settings.types>
+        </el>
+      </ROOT>
+    </sDEF>
+  </sheets>
+</T3DataStructure>

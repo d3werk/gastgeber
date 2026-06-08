@@ -1,0 +1,18 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<div class="modal fade gastgeber-modal gastgeber-map-modal" id="{mapModalId}" tabindex="-1" aria-labelledby="{mapModalId}-title" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable modal-fullscreen-lg-down">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <p class="gastgeber-eyebrow mb-1">Kartenansicht</p>
+          <h2 class="modal-title h4" id="{mapModalId}-title">Gastgeber auf der Karte</h2>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+      </div>
+      <div class="modal-body">
+        <f:render partial="Map/List" arguments="{_all}" />
+      </div>
+    </div>
+  </div>
+</div>
+</html>

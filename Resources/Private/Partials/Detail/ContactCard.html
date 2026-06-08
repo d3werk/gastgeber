@@ -1,0 +1,20 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:gh="http://typo3.org/ns/D3Werk/Gastgeber/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+<section class="gastgeber-contact-card" aria-label="Anfragen und buchen">
+  <p class="gastgeber-eyebrow mb-1">Kontakt</p>
+  <h3>Anfragen / Buchen</h3>
+  <f:if condition="{host.bookingText}">
+    <div class="gastgeber-contact-card__text"><f:format.html>{host.bookingText}</f:format.html></div>
+  </f:if>
+  <div class="gastgeber-contact-card__actions">
+    <f:if condition="{host.bookingUrl}"><f:link.typolink parameter="{host.bookingUrl}" class="btn btn-primary w-100" additionalAttributes="{rel:'noopener'}">Jetzt buchen / anfragen</f:link.typolink></f:if>
+    <f:if condition="{host.email}"><a href="mailto:{host.email}" class="btn btn-outline-primary w-100">E-Mail schreiben</a></f:if>
+    <f:if condition="{host.phone}"><a href="tel:{host.phone}" class="btn btn-outline-primary w-100">{host.phone}</a></f:if>
+    <f:if condition="{host.website}"><f:link.typolink parameter="{host.website}" class="btn btn-outline-primary w-100 gastgeber-contact-card__website" additionalAttributes="{rel:'noopener'}"><gh:typolinkPath parameter="{host.website}" /></f:link.typolink></f:if>
+  </div>
+  <f:if condition="{host.contactName}"><p class="gastgeber-contact-card__person"><strong>Ansprechpartner:</strong><br />{host.contactName}</p></f:if>
+  <f:if condition="{host.addressLine}"><address class="gastgeber-contact-card__address">{host.addressLine}</address></f:if>
+  <f:if condition="{host.openingTimes}"><p class="gastgeber-contact-card__times"><strong>Zeiten / Saison:</strong><br /><f:format.nl2br>{host.openingTimes}</f:format.nl2br></p></f:if>
+</section>
+</html>

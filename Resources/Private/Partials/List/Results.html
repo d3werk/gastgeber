@@ -1,0 +1,25 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:gh="http://typo3.org/ns/D3Werk/Gastgeber/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+<f:if condition="{viewMode} == 'map'">
+  <f:then>
+    <f:render partial="Map/List" arguments="{_all}" />
+  </f:then>
+  <f:else>
+    <f:if condition="{hosts}">
+      <f:then>
+        <div class="gastgeber-results {gh:currentView(value:viewMode, expected:'list', then:'gastgeber-results--list', else:'row g-4')}" data-gastgeber-results>
+          <f:for each="{hosts}" as="host">
+            <div class="{gh:currentView(value:viewMode, expected:'list', then:'gastgeber-list-row', else:'col-12 col-md-6 col-xl-4')}" data-gastgeber-result-item>
+              <f:render partial="List/Item" arguments="{host: host, viewMode: viewMode, settings: settings}" />
+            </div>
+          </f:for>
+        </div>
+      </f:then>
+      <f:else>
+        <div class="gastgeber-empty alert alert-info">Es wurden keine passenden Gastgeber gefunden. Bitte passen Sie die Filter an.</div>
+      </f:else>
+    </f:if>
+  </f:else>
+</f:if>
+</html>

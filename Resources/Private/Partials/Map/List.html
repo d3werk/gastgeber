@@ -1,0 +1,47 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:gh="http://typo3.org/ns/D3Werk/Gastgeber/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:variable name="mapMarkerIconUrl"><f:uri.resource path="Icons/map-marker.svg" extensionName="Gastgeber" /></f:variable>
+<f:if condition="{settings.mapMarkerIconUrl}">
+  <f:variable name="mapMarkerIconUrl" value="{settings.mapMarkerIconUrl}" />
+</f:if>
+<div class="gastgeber-map-view">
+  <div class="gastgeber-map-wrap">
+    <div class="gastgeber-map"
+         data-gastgeber-map="1"
+         data-lat="{settings.mapCenterLat}"
+         data-lng="{settings.mapCenterLng}"
+         data-zoom="{settings.mapZoom}"
+         data-marker-icon-url="{mapMarkerIconUrl}"
+         data-marker-icon-retina-url="{settings.mapMarkerIconRetinaUrl}"
+         data-marker-shadow-url="{settings.mapMarkerShadowUrl}"
+         data-marker-icon-width="{settings.mapMarkerIconWidth}"
+         data-marker-icon-height="{settings.mapMarkerIconHeight}"
+         data-marker-icon-anchor-x="{settings.mapMarkerIconAnchorX}"
+         data-marker-icon-anchor-y="{settings.mapMarkerIconAnchorY}"
+         data-marker-popup-anchor-x="{settings.mapMarkerPopupAnchorX}"
+         data-marker-popup-anchor-y="{settings.mapMarkerPopupAnchorY}"
+         data-marker-shadow-width="{settings.mapMarkerShadowWidth}"
+         data-marker-shadow-height="{settings.mapMarkerShadowHeight}"
+         data-marker-shadow-anchor-x="{settings.mapMarkerShadowAnchorX}"
+         data-marker-shadow-anchor-y="{settings.mapMarkerShadowAnchorY}"></div>
+    <script type="application/json" class="gastgeber-map-markers"><gh:mapMarkers hosts="{hosts}" /></script>
+  </div>
+  <div class="gastgeber-map-list" aria-label="Gastgeber auf der Karte">
+    <f:for each="{hosts}" as="host">
+      <article>
+        <strong>
+          <f:if condition="{settings.detailPid}">
+            <f:then>
+              <f:link.action action="detail" controller="Host" extensionName="Gastgeber" pluginName="Detail" pageUid="{settings.detailPid}" arguments="{host: host.uid}">{host.title}</f:link.action>
+            </f:then>
+            <f:else>
+              <f:link.action action="detail" arguments="{host: host.uid}">{host.title}</f:link.action>
+            </f:else>
+          </f:if>
+        </strong>
+        <f:if condition="{host.type}"><span>{host.type.title}</span></f:if>
+        <f:if condition="{host.addressLine}"><small>{host.addressLine}</small></f:if>
+      </article>
+    </f:for>
+  </div>
+</div>
+</html>

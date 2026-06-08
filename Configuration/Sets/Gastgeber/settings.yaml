@@ -1,0 +1,23 @@
+plugin:
+  tx_gastgeber:
+    persistence:
+      storagePid: ''
+    settings:
+      introText: ''
+      detailPid: ''
+      listPid: ''
+      detailBaseSegments: 'gastgeber'
+      showMap: '1'
+      mapMarkerIconUrl: ''
+      mapMarkerIconRetinaUrl: ''
+      mapMarkerShadowUrl: ''
+      mapMarkerIconWidth: '38'
+      mapMarkerIconHeight: '46'
+      mapMarkerIconAnchorX: '19'
+      mapMarkerIconAnchorY: '46'
+      mapMarkerPopupAnchorX: '0'
+      mapMarkerPopupAnchorY: '-42'
+      mapMarkerShadowWidth: '41'
+      mapMarkerShadowHeight: '41'
+      mapMarkerShadowAnchorX: '12'
+      mapMarkerShadowAnchorY: '41'

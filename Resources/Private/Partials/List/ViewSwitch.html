@@ -1,0 +1,23 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:gh="http://typo3.org/ns/D3Werk/Gastgeber/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+<div class="gastgeber-view-switch" role="group" aria-label="Ansicht wählen" data-gastgeber-view-switch>
+  <a href="{f:uri.action(action:'list', arguments:{view:'cards', search:filters.search, types:filters.types, features:filters.features, districts:filters.districts})}"
+     class="gastgeber-view-switch__item {gh:currentView(value:viewMode, expected:'cards', then:'is-active')}"
+     data-gastgeber-view-toggle="cards"
+     aria-pressed="{gh:currentView(value:viewMode, expected:'cards', then:'true', else:'false')}">▦ Cards</a>
+
+  <a href="{f:uri.action(action:'list', arguments:{view:'list', search:filters.search, types:filters.types, features:filters.features, districts:filters.districts})}"
+     class="gastgeber-view-switch__item {gh:currentView(value:viewMode, expected:'list', then:'is-active')}"
+     data-gastgeber-view-toggle="list"
+     aria-pressed="{gh:currentView(value:viewMode, expected:'list', then:'true', else:'false')}">☰ Liste</a>
+
+  <f:if condition="{settings.showMap}">
+    <button type="button"
+            class="gastgeber-view-switch__item gastgeber-view-switch__item--button"
+            data-bs-toggle="modal"
+            data-bs-target="#{mapModalId}"
+            aria-controls="{mapModalId}">⌖ Karte</button>
+  </f:if>
+</div>
+</html>

@@ -1,0 +1,45 @@
+plugin.tx_gastgeber {
+  view {
+    templateRootPaths.10 = EXT:gastgeber/Resources/Private/Templates/
+    partialRootPaths.10 = EXT:gastgeber/Resources/Private/Partials/
+    layoutRootPaths.10 = EXT:gastgeber/Resources/Private/Layouts/
+  }
+  persistence {
+    storagePid = {$plugin.tx_gastgeber.persistence.storagePid}
+  }
+  settings {
+    itemsPerPage = 24
+    detailPid =
+    listPid =
+    detailBaseSegments = gastgeber
+    introText =
+    defaultView = cards
+    showFilter = 1
+    showViewSwitch = 1
+    showMap = 1
+    featureConjunction = and
+    mapCenterLat = 53.1966000
+    mapCenterLng = 9.9762000
+    mapZoom = 13
+    mapMarkerIconUrl =
+    mapMarkerIconRetinaUrl =
+    mapMarkerShadowUrl =
+    mapMarkerIconWidth = 38
+    mapMarkerIconHeight = 46
+    mapMarkerIconAnchorX = 19
+    mapMarkerIconAnchorY = 46
+    mapMarkerPopupAnchorX = 0
+    mapMarkerPopupAnchorY = -42
+    mapMarkerShadowWidth = 41
+    mapMarkerShadowHeight = 41
+    mapMarkerShadowAnchorX = 12
+    mapMarkerShadowAnchorY = 41
+  }
+}
+
+# GASTGEBER_MAP_LOCAL_ASSET_FINAL_2026_06_08 / GASTGEBER_MAP_503_CSP_SAFE_FINAL_2026_06_08 / GASTGEBER_MAP_CSP_NOOP_FINAL_2026_06_08:
+# Lokale Leaflet-Assets analog zum maps2-Prinzip. Keine unpkg.com-Abhängigkeit.
+page.includeCSSLibs.gastgeberLeaflet = EXT:gastgeber/Resources/Public/Vendor/Leaflet/Css/Leaflet.css
+page.includeCSS.gastgeber = EXT:gastgeber/Resources/Public/Css/gastgeber.css
+page.includeJSFooterlibs.gastgeberLeaflet = EXT:gastgeber/Resources/Public/Vendor/Leaflet/leaflet.min.js
+page.includeJSFooter.gastgeber = EXT:gastgeber/Resources/Public/JavaScript/gastgeber.js

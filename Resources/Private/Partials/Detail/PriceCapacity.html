@@ -1,0 +1,61 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<section class="gastgeber-section gastgeber-section--price">
+  <p class="gastgeber-eyebrow mb-1">Planung</p>
+  <h3>Preise &amp; Kapazität</h3>
+
+  <f:if condition="{host.priceItemCount}">
+    <div class="gastgeber-price-table-wrap">
+      <table class="gastgeber-price-table">
+        <caption class="visually-hidden">Preise und Leistungen von {host.title}</caption>
+        <tbody>
+          <f:for each="{host.priceItems}" as="priceItem">
+            <f:switch expression="{priceItem.rowType}">
+              <f:case value="heading">
+                <tr class="gastgeber-price-table__section">
+                  <th colspan="2" scope="rowgroup">
+                    <f:format.nl2br>{priceItem.title}</f:format.nl2br>
+                    <f:if condition="{priceItem.description}">
+                      <div class="gastgeber-price-table__section-text"><f:format.html>{priceItem.description}</f:format.html></div>
+                    </f:if>
+                  </th>
+                </tr>
+              </f:case>
+              <f:case value="note">
+                <tr class="gastgeber-price-table__note">
+                  <td colspan="2">
+                    <f:if condition="{priceItem.title}"><strong><f:format.nl2br>{priceItem.title}</f:format.nl2br></strong></f:if>
+                    <f:if condition="{priceItem.description}"><f:format.html>{priceItem.description}</f:format.html></f:if>
+                  </td>
+                </tr>
+              </f:case>
+              <f:defaultCase>
+                <tr class="gastgeber-price-table__row">
+                  <th scope="row"><f:format.nl2br>{priceItem.title}</f:format.nl2br></th>
+                  <td><f:format.html>{priceItem.description}</f:format.html></td>
+                </tr>
+              </f:defaultCase>
+            </f:switch>
+          </f:for>
+        </tbody>
+      </table>
+    </div>
+  </f:if>
+
+  <f:if condition="{host.priceInfo}"><div class="gastgeber-note gastgeber-note--price"><f:format.html>{host.priceInfo}</f:format.html></div></f:if>
+  <f:if condition="{host.seasonInfo}"><div class="gastgeber-note"><strong>Saisonzeiten:</strong><br /><f:format.nl2br>{host.seasonInfo}</f:format.nl2br></div></f:if>
+
+  <f:if condition="{host.priceFrom} || {host.persons} || {host.units} || {host.bedrooms} || {host.beds} || {host.bathrooms} || {host.sizeSqm}">
+    <dl class="gastgeber-facts gastgeber-facts--capacity">
+      <f:if condition="{host.priceFrom}"><div><dt>Preis ab</dt><dd>{host.priceFrom -> f:format.currency(currencySign:'€', decimalSeparator:',', thousandsSeparator:'.')}</dd></div></f:if>
+      <f:if condition="{host.persons}"><div><dt>Personen</dt><dd>{host.persons}</dd></div></f:if>
+      <f:if condition="{host.units}"><div><dt>Einheiten</dt><dd>{host.units}</dd></div></f:if>
+      <f:if condition="{host.bedrooms}"><div><dt>Schlafzimmer</dt><dd>{host.bedrooms}</dd></div></f:if>
+      <f:if condition="{host.beds}"><div><dt>Betten</dt><dd>{host.beds}</dd></div></f:if>
+      <f:if condition="{host.bathrooms}"><div><dt>Bäder</dt><dd>{host.bathrooms}</dd></div></f:if>
+      <f:if condition="{host.sizeSqm}"><div><dt>Größe</dt><dd>{host.sizeSqm} m²</dd></div></f:if>
+    </dl>
+  </f:if>
+
+  <f:if condition="{host.capacityNote}"><div class="gastgeber-note"><f:format.nl2br>{host.capacityNote}</f:format.nl2br></div></f:if>
+</section>
+</html>

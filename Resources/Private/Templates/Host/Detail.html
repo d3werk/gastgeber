@@ -1,0 +1,44 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="Default" />
+<f:section name="Main">
+<f:if condition="{host}">
+  <f:then>
+    <article class="gastgeber-detail" data-gastgeber-detail="1" data-gastgeber-detail-slug="{host.slug}" itemscope="itemscope" itemtype="https://schema.org/LodgingBusiness">
+      <header class="gastgeber-detail__headline">
+        <div class="gastgeber-detail__meta">
+          <f:if condition="{host.type}"><span class="gastgeber-badge gastgeber-badge--type"><f:render partial="Category/Icon" arguments="{item: host.type}" /> {host.type.title}</span></f:if>
+          <f:if condition="{host.district}"><span>{host.district.title}</span></f:if>
+        </div>
+        <h2 itemprop="name">{host.title}</h2>
+      </header>
+
+      <f:render partial="Detail/MediaHero" arguments="{host: host}" />
+      <f:render partial="Detail/TopFeatures" arguments="{host: host}" />
+      <f:render partial="Detail/MobileActions" arguments="{host: host}" />
+
+      <div class="gastgeber-detail__content mt-4">
+        <main class="gastgeber-detail__main">
+          <f:render partial="Detail/MainContent" arguments="{host: host}" />
+          <f:render partial="Detail/Features" arguments="{host: host}" />
+          <f:render partial="Detail/PriceCapacity" arguments="{host: host}" />
+          <f:render partial="Map/Detail" arguments="{host: host, settings: settings}" />
+        </main>
+        <aside class="gastgeber-detail__aside">
+          <f:render partial="Detail/ContactCard" arguments="{host: host}" />
+        </aside>
+      </div>
+
+      <footer class="gastgeber-detail__footer">
+        <f:render partial="Detail/BackButton" arguments="{settings: settings}" />
+      </footer>
+
+      <f:render partial="Detail/GalleryModal" arguments="{host: host}" />
+      <f:render partial="Detail/FeatureModal" arguments="{host: host}" />
+    </article>
+  </f:then>
+  <f:else>
+    <div class="alert alert-warning">Der Gastgeber wurde nicht gefunden.</div>
+  </f:else>
+</f:if>
+</f:section>
+</html>
