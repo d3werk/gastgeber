@@ -37,7 +37,7 @@ plugin.tx_gastgeber {
   }
 }
 
-# GASTGEBER_MAP_LOCAL_ASSET_FINAL_2026_06_08:
+# GASTGEBER_MAP_LOCAL_ASSET_FINAL_2026_06_08 / GASTGEBER_MAP_503_CSP_SAFE_FINAL_2026_06_08:
 # Lokale Leaflet-Assets analog zum maps2-Prinzip. Keine unpkg.com-Abhängigkeit.
 page.includeCSSLibs.gastgeberLeaflet = EXT:gastgeber/Resources/Public/Vendor/Leaflet/Css/Leaflet.css
 page.includeCSS.gastgeber = EXT:gastgeber/Resources/Public/Css/gastgeber.css
