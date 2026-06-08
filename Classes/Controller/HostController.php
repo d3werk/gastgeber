@@ -142,6 +142,27 @@ class HostController extends ActionController
 
     private function resolveHostFromDetailRequestContext(): ?Host
     {
+        // GASTGEBER_DETAIL_ROUTE_ARGUMENT_FINAL_2026_06_08:
+        // TYPO3 kann den Route-Enhancer-Parameter host je nach Routing-Zustand als
+        // Domain-Objekt, UID oder Slug in die Extbase-Request-Argumente legen.
+        // Zusätzlich kann die SlugRoutingMiddleware den sauberen Pfad vor dem
+        // PageResolver auf die echte Seite zurückschreiben. Dann wäre der Slug im
+        // Controller nicht mehr zuverlässig aus getUri()->getPath() lesbar. Deshalb
+        // werden hier zuerst echte Request-Argumente und Middleware-Attribute gelesen.
+        foreach (['host', 'slug'] as $argumentName) {
+            $host = $this->resolveHostFromRawRequestArgument($argumentName);
+            if ($host instanceof Host) {
+                return $host;
+            }
+        }
+
+        foreach (['gastgeberResolvedHostUid', 'gastgeberResolvedSlug'] as $attributeName) {
+            $host = $this->resolveHostByIdentifier($this->readRequestAttributeAsString($attributeName));
+            if ($host instanceof Host) {
+                return $host;
+            }
+        }
+
         $action = strtolower($this->readRequestArgumentAsString('action'));
         $hostIdentifier = $this->readRequestArgumentAsString('host');
         $slugIdentifier = $this->readRequestArgumentAsString('slug');
@@ -156,6 +177,37 @@ class HostController extends ActionController
             if ($host instanceof Host) {
                 return $host;
             }
+        }
+
+        return null;
+    }
+
+    private function resolveHostFromRawRequestArgument(string $argumentName): ?Host
+    {
+        try {
+            if ($this->request->hasArgument($argumentName)) {
+                $value = $this->request->getArgument($argumentName);
+                if ($value instanceof Host) {
+                    return $value;
+                }
+                if (is_array($value)) {
+                    foreach (['uid', 'slug', '__identity'] as $key) {
+                        if (isset($value[$key])) {
+                            $host = $this->resolveHostByIdentifier($this->scalarToString($value[$key]));
+                            if ($host instanceof Host) {
+                                return $host;
+                            }
+                        }
+                    }
+                }
+
+                $host = $this->resolveHostByIdentifier($this->scalarToString($value));
+                if ($host instanceof Host) {
+                    return $host;
+                }
+            }
+        } catch (\Throwable) {
+            // Fallback auf Query-Parameter und Middleware-Attribute.
         }
 
         return null;
@@ -195,6 +247,26 @@ class HostController extends ActionController
             $value = $this->readArgumentFromQueryParams($queryParams, $argumentName);
             if ($value !== '') {
                 return $value;
+            }
+        }
+
+        return '';
+    }
+
+    private function readRequestAttributeAsString(string $attributeName): string
+    {
+        foreach ([$this->request, $GLOBALS['TYPO3_REQUEST'] ?? null] as $request) {
+            if (!is_object($request) || !method_exists($request, 'getAttribute')) {
+                continue;
+            }
+            try {
+                $value = $request->getAttribute($attributeName);
+                $stringValue = $this->scalarToString($value);
+                if ($stringValue !== '') {
+                    return $stringValue;
+                }
+            } catch (\Throwable) {
+                // Ignore request variants without this attribute.
             }
         }
 
@@ -251,6 +323,10 @@ class HostController extends ActionController
 
     private function scalarToString(mixed $value): string
     {
+        if ($value instanceof Host) {
+            $slug = trim($value->getSlug());
+            return $slug !== '' ? $slug : (string)$value->getUid();
+        }
         if (is_scalar($value)) {
             return trim((string)$value);
         }

@@ -49,25 +49,29 @@ routeEnhancers:
         tableName: tx_gastgeber_domain_model_host
         routeFieldName: slug
 
-  # Nur verwenden, wenn tatsächlich ein eigenes Detail-Plugin mit dem Namespace
-  # tx_gastgeber_detail auf einer separaten Detailseite eingesetzt wird.
-  # In der aktuellen Undeloh-Konfiguration ist normalerweise GastgeberListDetail
-  # der entscheidende aktive Enhancer.
-  # GastgeberDetail:
-  #   type: Extbase
-  #   extension: Gastgeber
-  #   plugin: Detail
-  #   # limitToPages:
-  #   #   - 124
-  #   routes:
-  #     -
-  #       routePath: '/{host}'
-  #       _controller: 'Host::detail'
-  #       _arguments:
-  #         host: host
-  #   defaultController: 'Host::detail'
-  #   aspects:
-  #     host:
-  #       type: PersistedAliasMapper
-  #       tableName: tx_gastgeber_domain_model_host
-  #       routeFieldName: slug
+  # GASTGEBER_DETAIL_ROUTE_ARGUMENT_FINAL_2026_06_08:
+  # Zusätzlich aktiver Enhancer für das Detail-Plugin.
+  # Hintergrund: Die Listen-Templates können je nach FlexForm-Einstellung
+  # entweder über tx_gastgeber_list oder über tx_gastgeber_detail verlinken.
+  # Damit beide Varianten denselben SEO-Pfad /gastgeber/{host} erzeugen und
+  # beim Reload wieder auflösen, werden beide Plugin-Namespaces unterstützt.
+  GastgeberDetail:
+    type: Extbase
+    extension: Gastgeber
+    plugin: Detail
+    # Empfehlung: Falls das Detail-Plugin auf einer eigenen Seite liegt, hier
+    # die UID dieser Detailseite begrenzen.
+    # limitToPages:
+    #   - 124
+    routes:
+      -
+        routePath: '/{host}'
+        _controller: 'Host::detail'
+        _arguments:
+          host: host
+    defaultController: 'Host::detail'
+    aspects:
+      host:
+        type: PersistedAliasMapper
+        tableName: tx_gastgeber_domain_model_host
+        routeFieldName: slug

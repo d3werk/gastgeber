@@ -84,6 +84,15 @@ final class SlugRoutingMiddleware implements MiddlewareInterface
             $request
                 ->withUri($newUri)
                 ->withQueryParams($queryParams)
+                // GASTGEBER_DETAIL_ROUTE_ARGUMENT_FINAL_2026_06_08:
+                // Den ursprünglich erkannten Gastgeber zusätzlich als Attribut
+                // weiterreichen. Falls TYPO3/cHash die Query-Argumente verwirft
+                // oder der Controller nach dem internen Pfad /gastgeber keinen
+                // Slug mehr aus getUri()->getPath() lesen kann, bleibt die
+                // Detailauflösung trotzdem stabil.
+                ->withAttribute('gastgeberResolvedSlug', $slug)
+                ->withAttribute('gastgeberResolvedHostUid', (string)$hostUid)
+                ->withAttribute('gastgeberOriginalPath', $path)
         );
     }
 
