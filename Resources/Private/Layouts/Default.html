@@ -1,11 +1,13 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
-<!-- GASTGEBER_MAP_ASSET_INCLUDE_FINAL_2026_06_07
-     Die Karten-Assets werden zusätzlich direkt aus dem Fluid-Layout geladen.
-     Das ist bewusst redundant zur TypoScript-Einbindung, weil Site-Sets/TypoScript
-     je nach TYPO3-Installation nicht automatisch geladen sein können. -->
-<f:asset.css identifier="gastgeber-leaflet-css" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<f:asset.css identifier="gastgeber-extension-css" href="EXT:gastgeber/Resources/Public/Css/gastgeber.css" />
-<f:asset.script identifier="gastgeber-leaflet-js" src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" />
-<f:asset.script identifier="gastgeber-extension-js" src="EXT:gastgeber/Resources/Public/JavaScript/gastgeber.js" />
+<!-- GASTGEBER_MAP_LOCAL_ASSET_FINAL_2026_06_08
+     Karten-Assets werden bewusst als direkte HTML-Tags im Extension-Layout ausgegeben.
+     Hintergrund: Das Gastgeber-Plugin läuft teilweise als USER_INT/nicht-cachebarer Inhalt;
+     f:asset oder reine TypoScript/Site-Set-Einbindung können dann zu spät oder gar nicht
+     im finalen HTML landen. Der direkte lokale Asset-Import folgt dem maps2-Prinzip:
+     Leaflet wird lokal aus EXT:gastgeber geladen, nicht von unpkg.com. -->
+<link rel="stylesheet" href="{f:uri.resource(path: 'Vendor/Leaflet/Css/Leaflet.css', extensionName: 'Gastgeber')}" data-gastgeber-map-asset="leaflet-css" />
+<link rel="stylesheet" href="{f:uri.resource(path: 'Css/gastgeber.css', extensionName: 'Gastgeber')}" data-gastgeber-map-asset="gastgeber-css" />
+<script src="{f:uri.resource(path: 'Vendor/Leaflet/leaflet.min.js', extensionName: 'Gastgeber')}" data-gastgeber-leaflet-js="1"></script>
+<script src="{f:uri.resource(path: 'JavaScript/gastgeber.js', extensionName: 'Gastgeber')}" data-gastgeber-extension-js="1"></script>
 <f:render section="Main" />
 </html>

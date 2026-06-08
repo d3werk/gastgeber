@@ -37,7 +37,9 @@ plugin.tx_gastgeber {
   }
 }
 
+# GASTGEBER_MAP_LOCAL_ASSET_FINAL_2026_06_08:
+# Lokale Leaflet-Assets analog zum maps2-Prinzip. Keine unpkg.com-Abhängigkeit.
+page.includeCSSLibs.gastgeberLeaflet = EXT:gastgeber/Resources/Public/Vendor/Leaflet/Css/Leaflet.css
 page.includeCSS.gastgeber = EXT:gastgeber/Resources/Public/Css/gastgeber.css
+page.includeJSFooterlibs.gastgeberLeaflet = EXT:gastgeber/Resources/Public/Vendor/Leaflet/leaflet.min.js
 page.includeJSFooter.gastgeber = EXT:gastgeber/Resources/Public/JavaScript/gastgeber.js
-page.includeCSSLibs.leaflet = https://unpkg.com/leaflet@1.9.4/dist/leaflet.css
-page.includeJSFooterlibs.leaflet = https://unpkg.com/leaflet@1.9.4/dist/leaflet.js
