@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * GASTGEBER_MAP_CSP_NOOP_FINAL_2026_06_08
+ * GASTGEBER_MAP_CSP_NOOP_FINAL_2026_06_08 / GASTGEBER_MAP_JS_FORCE_FINAL_2026_06_08
  *
  * Safe no-op CSP configuration.
  *
