@@ -1,6 +1,6 @@
 # Gastgeber Routing
 
-Diese Extension liefert eine Route-Enhancer-Vorlage für SEO-freundliche Gastgeber-Detail-URLs.
+Diese Extension liefert eine Route-Enhancer-Konfiguration für SEO-freundliche und reload-sichere Gastgeber-Detail-URLs.
 
 ## Ziel
 
@@ -10,24 +10,45 @@ Aus einer technischen Extbase-URL:
 /gastgeber?tx_gastgeber_list[action]=detail&tx_gastgeber_list[controller]=Host&tx_gastgeber_list[host]=2&cHash=...
 ```
 
-wird direkt serverseitig:
+wird serverseitig:
 
 ```text
 /gastgeber/hotel-acht-linden
 ```
 
-## Einbindung in die Site-Konfiguration
+## Einbindung in die echte Site-Konfiguration
 
-In `config/sites/<site-identifier>/config.yaml` eintragen:
+Die Datei muss in der TYPO3-Site-Konfiguration geladen werden:
+
+```text
+config/sites/<site-identifier>/config.yaml
+```
+
+Dort auf oberster Ebene eintragen:
 
 ```yaml
 imports:
   - { resource: "EXT:gastgeber/Configuration/Routes/Gastgeber.yaml" }
 ```
 
-Alternativ den Block `GastgeberListDetail` aus `Configuration/Routes/Gastgeber.yaml` direkt unter `routeEnhancers` kopieren.
+Wichtig: Diese Zeile gehört nicht in `Configuration/Sets/Gastgeber/config.yaml` der Extension und nicht in das Sitepackage-Site-Set.
 
-## Wichtige Begrenzung
+## Slug-Fallback gegen 404
+
+Kennung:
+
+```text
+GASTGEBER_ROUTE_SLUG_FALLBACK_FINAL_2026_06_09
+```
+
+Die Route enthält absichtlich zwei Varianten:
+
+1. `/{slug}` ohne `PersistedAliasMapper` für eingehende URLs wie `/gastgeber/hotel-acht-linden`.
+2. `/{host}` mit `PersistedAliasMapper` für die SEO-Link-Erzeugung aus Extbase-Links.
+
+Dadurch wird ein gültiger URL-Slug nicht bereits im TYPO3-Routing mit 404 abgewiesen, wenn der Mapper den Alias nicht direkt auflösen kann. Der Controller erhält den Slug und löst den Gastgeber selbst auf.
+
+## Empfohlene Begrenzung
 
 Empfohlen ist `limitToPages` mit der UID der Seite `/gastgeber`:
 
@@ -36,15 +57,8 @@ limitToPages:
   - 123
 ```
 
-Dadurch wird der Platzhalter `/{host}` nur auf der Gastgeberseite ausgewertet.
-Der Platzhalter `host` wird über den TYPO3 `PersistedAliasMapper` auf `tx_gastgeber_domain_model_host.slug` begrenzt.
+Dadurch wird der Platzhalter nur auf der Gastgeberseite ausgewertet.
 
-## JavaScript-Fallback
+## Middleware-Fallback
 
-`Resources/Public/JavaScript/gastgeber.js` kürzt Detail-URLs nur noch dann per History API, wenn wirklich Detail-Parameter vorhanden sind. Filter-, Listen- und Ansicht-URLs werden dadurch nicht mehr versehentlich als Detail-URL behandelt.
-
-Kennung im Code:
-
-```text
-GASTGEBER_SEO_ROUTE_FINAL_2026_06_07
-```
+Zusätzlich enthält die Extension eine Middleware, die `/gastgeber/{slug}` vor dem PageResolver intern auf `/gastgeber` mit Extbase-Detailargumenten zurückschreibt. Auch diese Middleware ist auf den Pfadbestandteil `gastgeber` begrenzt.

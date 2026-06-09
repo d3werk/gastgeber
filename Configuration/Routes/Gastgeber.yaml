@@ -3,26 +3,24 @@
 # Ziel:
 #   /gastgeber/hotel-acht-linden
 #
-# Wichtig:
-# - Die Detail-Links entstehen im Projekt über das Listen-Plugin:
-#   tx_gastgeber_list[action]=detail&tx_gastgeber_list[host]=...
-# - Deshalb muss der aktive Route-Enhancer auf plugin: List zeigen.
-# - Die Route ist bewusst auf genau einen Pfadbestandteil begrenzt: /{host}.
-#   Dadurch wird hinter der Seite /gastgeber ausschließlich der Gastgeber-Slug
-#   verwendet. Das ist SEO-sauber und reload-sicher.
+# GASTGEBER_ROUTE_SLUG_FALLBACK_FINAL_2026_06_09:
+# Diese Version enthält zwei Ebenen:
+# 1. Slug-Fallback ohne PersistedAliasMapper für eingehende URLs.
+#    Dadurch erzeugt ein noch nicht auflösbarer Alias keinen 404 mehr,
+#    sondern der Controller bekommt den Slug und löst den Gastgeber selbst auf.
+# 2. Host-Route mit PersistedAliasMapper für die SEO-Link-Erzeugung aus
+#    Extbase-Links mit host-Argument.
 #
 # Einbau in config/sites/<site-identifier>/config.yaml:
 #
 # imports:
 #   - { resource: "EXT:gastgeber/Configuration/Routes/Gastgeber.yaml" }
 #
-# Falls routeEnhancers dort bereits direkt gepflegt werden, kann der Block
-# GastgeberListDetail auch direkt unter routeEnhancers kopiert werden.
+# Wichtig:
+# - imports: muss in der echten Site-Konfiguration liegen, nicht im Site-Set.
+# - Optional kann limitToPages auf die UID der Seite /gastgeber begrenzt werden.
 #
-# Empfehlung:
-# limitToPages auf die UID der Seite begrenzen, auf der die Gastgeberliste liegt.
-# Beispiel für die Seite /gastgeber:
-#
+# Beispiel:
 # limitToPages:
 #   - 123
 
@@ -31,45 +29,59 @@ routeEnhancers:
     type: Extbase
     extension: Gastgeber
     plugin: List
-    # SEO-/Sicherheits-Empfehlung:
-    # Bitte die UID der Gastgeber-Listenseite eintragen und entkommentieren.
-    # Dadurch greift /{host} nur auf dieser Seite, z. B. /gastgeber/hotel-acht-linden.
+    # Empfehlung: UID der Seite /gastgeber eintragen und entkommentieren.
     # limitToPages:
     #   - 123
     routes:
+      # Fallback für eingehende SEO-URLs wie /gastgeber/hotel-acht-linden.
+      # Bewusst OHNE aspect, damit TYPO3 nicht schon im Routing mit 404 abbricht,
+      # falls der PersistedAliasMapper den Datensatz nicht direkt auflösen kann.
+      -
+        routePath: '/{slug}'
+        _controller: 'Host::detail'
+        _arguments:
+          slug: slug
+      # Primäre Route für Extbase-Link-Erzeugung aus host-Argumenten.
       -
         routePath: '/{host}'
         _controller: 'Host::detail'
         _arguments:
           host: host
     defaultController: 'Host::list'
+    requirements:
+      slug: '^[a-z0-9][a-z0-9\-_]*$'
+      host: '^[a-z0-9][a-z0-9\-_]*$'
     aspects:
       host:
         type: PersistedAliasMapper
         tableName: tx_gastgeber_domain_model_host
         routeFieldName: slug
 
-  # GASTGEBER_DETAIL_ROUTE_ARGUMENT_FINAL_2026_06_08:
-  # Zusätzlich aktiver Enhancer für das Detail-Plugin.
-  # Hintergrund: Die Listen-Templates können je nach FlexForm-Einstellung
-  # entweder über tx_gastgeber_list oder über tx_gastgeber_detail verlinken.
-  # Damit beide Varianten denselben SEO-Pfad /gastgeber/{host} erzeugen und
-  # beim Reload wieder auflösen, werden beide Plugin-Namespaces unterstützt.
   GastgeberDetail:
     type: Extbase
     extension: Gastgeber
     plugin: Detail
-    # Empfehlung: Falls das Detail-Plugin auf einer eigenen Seite liegt, hier
-    # die UID dieser Detailseite begrenzen.
+    # Empfehlung: UID der Detailseite eintragen, falls das Detail-Plugin
+    # auf einer eigenen Seite verwendet wird.
     # limitToPages:
     #   - 124
     routes:
+      # Fallback für eingehende SEO-URLs.
+      -
+        routePath: '/{slug}'
+        _controller: 'Host::detail'
+        _arguments:
+          slug: slug
+      # Primäre Route für Extbase-Link-Erzeugung.
       -
         routePath: '/{host}'
         _controller: 'Host::detail'
         _arguments:
           host: host
     defaultController: 'Host::detail'
+    requirements:
+      slug: '^[a-z0-9][a-z0-9\-_]*$'
+      host: '^[a-z0-9][a-z0-9\-_]*$'
     aspects:
       host:
         type: PersistedAliasMapper
