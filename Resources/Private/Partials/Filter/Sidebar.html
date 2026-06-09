@@ -32,7 +32,7 @@
     </div>
   </f:if>
 
-  <section class="gastgeber-filter-group">
+  <section class="gastgeber-filter-group gastgeber-filter-group--types">
     <h4>Art der Unterkunft</h4>
     <nav class="gastgeber-filter-links" aria-label="Art der Unterkunft">
       <f:for each="{types}" as="type">
@@ -63,26 +63,26 @@
     </section>
   </f:if>
 
-  <section class="gastgeber-filter-group">
+  <section class="gastgeber-filter-group gastgeber-filter-group--features">
     <h4>Ausstattung</h4>
-    <f:for each="{featureGroups}" as="group">
+    <!-- GASTGEBER_LIST_FILTER_FEATURES_FINAL_2026_06_09:
+         Die Merkmale werden bereits im Controller gruppiert. Dadurch werden alle
+         Merkmale einer Gruppe zuverlässig angezeigt und nicht mehr durch Fluid-
+         Objektvergleiche oder einzelne Filterable-Flags versehentlich ausgeblendet. -->
+    <f:for each="{filterFeatureGroups}" as="group">
       <div class="gastgeber-filter-subgroup">
         <h5>
-          <f:render partial="Category/Icon" arguments="{item: group}" />
+          <span class="gastgeber-filter-subgroup__icon" aria-hidden="true"><f:render partial="Category/Icon" arguments="{item: group}" /></span>
           <span>{group.title}</span>
         </h5>
         <nav class="gastgeber-filter-links" aria-label="{group.title}">
-          <f:for each="{features}" as="feature">
-            <f:if condition="{feature.filterable}">
-              <f:if condition="{feature.group.uid} == {group.uid}">
-                <f:variable name="toggleArgs" value="{gh:toggleFilterArguments(filters: filters, field:'features', value:feature.uid, view:viewMode)}" />
-                <f:variable name="featureActive" value="{gh:inArray(needle: feature.uid, haystack: filters.features)}" />
-                <f:link.action action="list" arguments="{toggleArgs}" class="gastgeber-filter-link {f:if(condition: featureActive, then: 'is-active')}">
-                  <span class="gastgeber-filter-link__icon" aria-hidden="true"><f:render partial="Category/Icon" arguments="{item: feature}" /></span>
-                  <span>{feature.title}</span>
-                </f:link.action>
-              </f:if>
-            </f:if>
+          <f:for each="{group.features}" as="feature">
+            <f:variable name="toggleArgs" value="{gh:toggleFilterArguments(filters: filters, field:'features', value:feature.uid, view:viewMode)}" />
+            <f:variable name="featureActive" value="{gh:inArray(needle: feature.uid, haystack: filters.features)}" />
+            <f:link.action action="list" arguments="{toggleArgs}" class="gastgeber-filter-link {f:if(condition: featureActive, then: 'is-active')}">
+              <span class="gastgeber-filter-link__icon" aria-hidden="true"><f:render partial="Category/Icon" arguments="{item: feature}" /></span>
+              <span>{feature.title}</span>
+            </f:link.action>
           </f:for>
         </nav>
       </div>

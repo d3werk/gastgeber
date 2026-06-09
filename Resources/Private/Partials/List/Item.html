@@ -62,7 +62,7 @@
       </div>
     </f:if>
 
-    <f:render partial="List/FeatureStrip" arguments="{host: host}" />
+    <f:render partial="List/FeatureStrip" arguments="{host: host, viewMode: viewMode}" />
 
     <div class="gastgeber-card__facts" aria-label="Kurzinfos">
       <f:if condition="{host.priceFrom}"><span>ab {host.priceFrom -> f:format.currency(currencySign:'€', decimalSeparator:',', thousandsSeparator:'.')}</span></f:if>
