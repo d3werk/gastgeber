@@ -174,6 +174,43 @@
 .gastgeber-filter-link.is-active .gastgeber-icon { color: #fff; }
 .gastgeber-filter-link__icon { display: inline-flex; }
 
+
+/* GASTGEBER_LIST_FILTER_FEATURES_FINAL_2026_06_09:
+   Größere Filter-Icons für Unterkunftsarten und Ausstattungsmerkmale. */
+.gastgeber-filter-link {
+  min-height: 2.95rem;
+  gap: .55rem;
+  padding: .52rem .72rem;
+}
+.gastgeber-filter-link__icon,
+.gastgeber-filter-subgroup__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+.gastgeber-filter-link__icon .gastgeber-icon-img,
+.gastgeber-filter-subgroup__icon .gastgeber-icon-img {
+  width: 1.55rem;
+  height: 1.55rem;
+}
+.gastgeber-filter-link__icon .gastgeber-icon,
+.gastgeber-filter-subgroup__icon .gastgeber-icon {
+  min-width: 1.55rem;
+  font-size: 1.55rem;
+  line-height: 1;
+}
+.gastgeber-filter-group--types .gastgeber-filter-link__icon .gastgeber-icon-img,
+.gastgeber-filter-group--features .gastgeber-filter-link__icon .gastgeber-icon-img {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+.gastgeber-filter-group--types .gastgeber-filter-link__icon .gastgeber-icon,
+.gastgeber-filter-group--features .gastgeber-filter-link__icon .gastgeber-icon {
+  min-width: 1.6rem;
+  font-size: 1.6rem;
+}
+
 .gastgeber-card {
   border: 1px solid var(--gastgeber-border);
   background: #fff;
