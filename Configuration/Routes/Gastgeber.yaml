@@ -3,7 +3,7 @@
 # Ziel:
 #   /gastgeber/hotel-acht-linden
 #
-# GASTGEBER_ROUTE_SLUG_FALLBACK_FINAL_2026_06_09 / GASTGEBER_ROUTE_NO_CHASH_MIDDLEWARE_FINAL_2026_06_09:
+# GASTGEBER_ROUTE_SLUG_FALLBACK_FINAL_2026_06_09 / GASTGEBER_ROUTE_NO_CHASH_MIDDLEWARE_FINAL_2026_06_09 / GASTGEBER_ROUTE_PRESITE_REWRITE_FINAL_2026_06_09:
 # Diese Version enthält zwei Ebenen:
 # 1. Slug-Fallback ohne PersistedAliasMapper für eingehende URLs.
 #    Dadurch erzeugt ein noch nicht auflösbarer Alias keinen 404 mehr,

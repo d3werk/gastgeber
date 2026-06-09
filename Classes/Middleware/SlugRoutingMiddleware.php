@@ -15,9 +15,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Unterstützt sprechende Gastgeber-Detailpfade wie /gastgeber/hotel-acht-linden
  * auch dann, wenn der Site-Route-Enhancer noch nicht sauber greift.
  *
- * GASTGEBER_ROUTE_SLUG_FALLBACK_FINAL_2026_06_09 / GASTGEBER_ROUTE_NO_CHASH_MIDDLEWARE_FINAL_2026_06_09:
+ * GASTGEBER_ROUTE_SLUG_FALLBACK_FINAL_2026_06_09 / GASTGEBER_ROUTE_NO_CHASH_MIDDLEWARE_FINAL_2026_06_09 / GASTGEBER_ROUTE_PRESITE_REWRITE_FINAL_2026_06_09:
  * Die Middleware hängt nicht mehr zwingend davon ab, dass der Slug vorab in der
- * Datenbank gefunden wird. Sie schreibt den internen Pfad auf die Listenseite
+ * Datenbank gefunden wird. Sie läuft bewusst VOR der TYPO3-Site-Auflösung und
+ * schreibt den internen Pfad auf die Listenseite
  * zurück und übergibt den Slug als Request-Attribut. Der Controller entscheidet
  * anschließend, ob ein Gastgeber gefunden wird. So entsteht kein Routing-404
  * mehr, nur weil der PersistedAliasMapper den Alias nicht auflösen konnte.
@@ -49,7 +50,7 @@ final class SlugRoutingMiddleware implements MiddlewareInterface
         $slug = (string)end($segments);
         $parentSegment = (string)($segments[count($segments) - 2] ?? '');
 
-        // GASTGEBER_ROUTE_NO_CHASH_MIDDLEWARE_FINAL_2026_06_09:
+        // GASTGEBER_ROUTE_NO_CHASH_MIDDLEWARE_FINAL_2026_06_09 / GASTGEBER_ROUTE_PRESITE_REWRITE_FINAL_2026_06_09:
         // Begrenzung auf /gastgeber/{slug}. Dadurch werden andere Seitenpfade
         // nicht versehentlich als Gastgeber-Detailseite interpretiert.
         if (strtolower($parentSegment) !== self::GASTGEBER_PAGE_SEGMENT) {
@@ -80,13 +81,13 @@ final class SlugRoutingMiddleware implements MiddlewareInterface
             ->withAttribute('gastgeberResolvedSlug', $slug)
             ->withAttribute('gastgeberResolvedHostUid', $hostUid > 0 ? (string)$hostUid : '')
             ->withAttribute('gastgeberOriginalPath', $path)
-            ->withAttribute('gastgeberSlugRoutingMode', 'no-chash-attribute');
+            ->withAttribute('gastgeberSlugRoutingMode', 'presite-no-chash-attribute');
 
         $response = $handler->handle($modifiedRequest);
 
         // Diagnose-Header: Wenn dieser Header bei /gastgeber/{slug} fehlt, ist die
         // Middleware nicht im TYPO3-Middleware-Stack aktiv.
-        return $response->withHeader('X-Gastgeber-Slug-Routing', 'no-chash-attribute');
+        return $response->withHeader('X-Gastgeber-Slug-Routing', 'presite-no-chash-attribute');
     }
 
     /** @param array<string,mixed> $queryParams */
