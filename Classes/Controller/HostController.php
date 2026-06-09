@@ -455,6 +455,7 @@ class HostController extends ActionController
             'showFilter' => '1',
             'showViewSwitch' => '1',
             'showMap' => '1',
+            'showAllFeaturesInFilter' => '1',
             'mapCenterLat' => '53.1966000',
             'mapCenterLng' => '9.9762000',
             'mapZoom' => '13',
@@ -485,6 +486,7 @@ class HostController extends ActionController
         $settings['showMap'] = $this->getBooleanSetting('showMap', true) ? '1' : '0';
         $settings['showFilter'] = $this->getBooleanSetting('showFilter', true) ? '1' : '0';
         $settings['showViewSwitch'] = $this->getBooleanSetting('showViewSwitch', true) ? '1' : '0';
+        $settings['showAllFeaturesInFilter'] = $this->getBooleanSetting('showAllFeaturesInFilter', true) ? '1' : '0';
 
         return $settings;
     }
@@ -516,21 +518,114 @@ class HostController extends ActionController
     /** @return array<string,mixed> */
     private function buildListAssignments(iterable $hosts, array $filters, string $viewMode): array
     {
+        $types = $this->hostTypeRepository->findAllIgnoringStorage();
+        $featureGroups = $this->featureGroupRepository->findAllIgnoringStorage();
+        $features = $this->featureRepository->findAllIgnoringStorage();
+        $districts = $this->districtRepository->findAllIgnoringStorage();
+        $settings = $this->getNormalizedSettings();
+
         return [
             'hosts' => $hosts,
-            'types' => $this->hostTypeRepository->findAllIgnoringStorage(),
-            'featureGroups' => $this->featureGroupRepository->findAllIgnoringStorage(),
-            'features' => $this->featureRepository->findAllIgnoringStorage(),
-            'districts' => $this->districtRepository->findAllIgnoringStorage(),
+            'types' => $types,
+            'featureGroups' => $featureGroups,
+            'features' => $features,
+            // GASTGEBER_LIST_FILTER_FEATURES_FINAL_2026_06_09:
+            // Der Filter rendert die Merkmale gruppiert serverseitig. Dadurch hängt die
+            // Ausgabe nicht mehr von Fluid-Vergleichen wie {feature.group.uid} == {group.uid}
+            // ab und es werden alle Merkmale einer Gruppe zuverlässig ausgegeben.
+            'filterFeatureGroups' => $this->buildFilterFeatureGroups($featureGroups, $features, $settings),
+            'districts' => $districts,
             'filters' => $filters,
             'viewMode' => $viewMode,
             'mapModalId' => 'gastgeber-map-modal-' . substr(md5((string)microtime(true) . spl_object_id($this)), 0, 10),
             'activeTypeMap' => array_fill_keys($filters['types'] ?? [], true),
             'activeFeatureMap' => array_fill_keys($filters['features'] ?? [], true),
             'activeDistrictMap' => array_fill_keys($filters['districts'] ?? [], true),
-            'settings' => $this->getNormalizedSettings(),
+            'settings' => $settings,
             'introText' => $this->resolveIntroText(),
         ];
+    }
+
+
+    /**
+     * @param iterable<object> $featureGroups
+     * @param iterable<object> $features
+     * @param array<string,mixed> $settings
+     * @return array<int,array{uid:int,tableName:string,title:string,icon:mixed,iconClass:string,features:array<int,object>}>
+     */
+    private function buildFilterFeatureGroups(iterable $featureGroups, iterable $features, array $settings): array
+    {
+        $groups = [];
+
+        foreach ($featureGroups as $group) {
+            if (!is_object($group) || !method_exists($group, 'getUid')) {
+                continue;
+            }
+
+            $uid = (int)$group->getUid();
+            if ($uid <= 0) {
+                continue;
+            }
+
+            $groups[$uid] = [
+                'uid' => $uid,
+                'tableName' => 'tx_gastgeber_domain_model_featuregroup',
+                'title' => method_exists($group, 'getTitle') ? (string)$group->getTitle() : '',
+                'icon' => method_exists($group, 'getIcon') ? $group->getIcon() : null,
+                'iconClass' => method_exists($group, 'getIconClass') ? (string)$group->getIconClass() : '',
+                'features' => [],
+            ];
+        }
+
+        $showAllFeaturesInFilter = ((string)($settings['showAllFeaturesInFilter'] ?? '1')) !== '0';
+
+        foreach ($features as $feature) {
+            if (!is_object($feature) || !method_exists($feature, 'getUid')) {
+                continue;
+            }
+
+            // Standard für Undeloh: Alle gepflegten Merkmale sollen im Filter sichtbar sein.
+            // Optional kann über settings.showAllFeaturesInFilter = 0 wieder strikt das Feld
+            // „Im Filter anzeigen“ verwendet werden.
+            if (!$showAllFeaturesInFilter && method_exists($feature, 'isFilterable') && !$feature->isFilterable()) {
+                continue;
+            }
+
+            $group = method_exists($feature, 'getGroup') ? $feature->getGroup() : null;
+            $groupUid = is_object($group) && method_exists($group, 'getUid') ? (int)$group->getUid() : 0;
+
+            if ($groupUid > 0 && !isset($groups[$groupUid])) {
+                $groups[$groupUid] = [
+                    'uid' => $groupUid,
+                    'tableName' => 'tx_gastgeber_domain_model_featuregroup',
+                    'title' => method_exists($group, 'getTitle') ? (string)$group->getTitle() : '',
+                    'icon' => method_exists($group, 'getIcon') ? $group->getIcon() : null,
+                    'iconClass' => method_exists($group, 'getIconClass') ? (string)$group->getIconClass() : '',
+                    'features' => [],
+                ];
+            }
+
+            if ($groupUid <= 0) {
+                $groupUid = 0;
+                if (!isset($groups[$groupUid])) {
+                    $groups[$groupUid] = [
+                        'uid' => 0,
+                        'tableName' => '',
+                        'title' => 'Weitere Merkmale',
+                        'icon' => null,
+                        'iconClass' => '',
+                        'features' => [],
+                    ];
+                }
+            }
+
+            $groups[$groupUid]['features'][] = $feature;
+        }
+
+        return array_values(array_filter(
+            $groups,
+            static fn (array $group): bool => !empty($group['features'])
+        ));
     }
 
     private function resolveIntroText(): string

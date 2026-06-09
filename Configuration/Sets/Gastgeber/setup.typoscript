@@ -17,6 +17,10 @@ plugin.tx_gastgeber {
     showFilter = 1
     showViewSwitch = 1
     showMap = 1
+    # GASTGEBER_LIST_FILTER_FEATURES_FINAL_2026_06_09:
+    # Standard: Alle gepflegten Merkmale werden im Filter angezeigt.
+    # Auf 0 setzen, wenn nur Merkmale mit Backend-Flag "Im Filter anzeigen" erscheinen sollen.
+    showAllFeaturesInFilter = 1
     featureConjunction = and
     mapCenterLat = 53.1966000
     mapCenterLng = 9.9762000
