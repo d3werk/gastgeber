@@ -38,7 +38,7 @@ Wichtig: Diese Zeile gehört nicht in `Configuration/Sets/Gastgeber/config.yaml`
 Kennung:
 
 ```text
-GASTGEBER_ROUTE_SLUG_FALLBACK_FINAL_2026_06_09
+GASTGEBER_ROUTE_SLUG_FALLBACK_FINAL_2026_06_09 / GASTGEBER_ROUTE_NO_CHASH_MIDDLEWARE_FINAL_2026_06_09
 ```
 
 Die Route enthält absichtlich zwei Varianten:
